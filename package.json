@@ -14,7 +14,11 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/vue-fontawesome": "^2.0.8",
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/fontawesome": "^1.1.2",
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.19.3",
