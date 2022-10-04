@@ -30,6 +30,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -49,11 +50,14 @@ export default {
       };
       this.$axios
         .$post('http://localhost:5000/auth/signIn', userAcc)
-        .then((result) => this.$router.push('/'))
+        .then((result) => {
+          this.$emit('user-infor',result)
+          this.$router.push('/')
+        })
         .catch((e) => {
-          if (e.statusCode === 404 || e.statusCode === 400) this.loginFail = true;
-          else console.log(e);
-        });
+            this.loginFail = true;
+          }
+        );
     },
   },
 };
