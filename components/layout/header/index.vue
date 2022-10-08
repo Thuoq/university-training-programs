@@ -1,28 +1,26 @@
 <template>
-  <header>
-    <div class="wapper">
-      <div class>
-        <img src="~/static/logotlu1.png" width="329px" height="106px" alt="logoTLU" />
+  <div class="wapper">
+    <div class>
+      <img src="~/static/logotlu1.png" width="329px" height="106px" alt="logoTLU" />
+    </div>
+    <div class="text-block">Hệ thống Quản lý Chương trình Đào tạo</div>
+    <div class="acc-block">
+      <div class="icon-block">
+        <img class="icon" src="~/static/user.png" width="45px" height="45px" alt="userIcon" />
       </div>
-      <div class="text-block">Hệ thống Quản lý Chương trình Đào tạo</div>
-      <div class="acc-block">
-        <div class="icon-block">
-          <img class="icon" src="~/static/user.png" width="45px" height="45px" alt="userIcon" />
+      <div class="infor-block">
+        <div class="infor">
+          <span>Xin chào,</span>
+          <br />
+          <span class="text-infor">PDT005-Trần Thu Thủy</span>
         </div>
-        <div class="infor-block">
-          <div class="infor">
-            <span>Xin chào,</span>
-            <br />
-            <span class="text-infor">PDT005-Trần Thu Thủy</span>
-          </div>
-          <div>
-            <nuxt-link class="link" to="/forgetpassword"> Đổi mật khẩu? </nuxt-link>
-            <a href="" class="link" style="margin-left: 31.5px" @click.prevent="onClick">Đăng xuất</a>
-          </div>
+        <div>
+          <nuxt-link class="link" to="/forgetpassword"> Đổi mật khẩu? </nuxt-link>
+          <a href="" class="link" style="margin-left: 31.5px" @click.prevent="onClick">Đăng xuất</a>
         </div>
       </div>
     </div>
-  </header>
+  </div>
 </template>
 
 <script>
@@ -40,15 +38,11 @@ export default {
 </script>
 
 <style scoped>
-header {
+.wapper {
   width: 100%;
   height: 106px;
   margin: 0 auto;
-  /* background-color: aqua; */
-}
-.wapper {
   display: flex;
-  flex-wrap: wrap;
   /* margin-bottom: 4.5px; */
   /* margin-left: 50px; */
 }

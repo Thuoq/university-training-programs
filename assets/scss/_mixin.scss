@@ -1,0 +1,22 @@
+@mixin focus() {
+  @at-root {
+    &:focus {
+      border-color: var(--border-focus-color-base);
+    }
+  }
+}
+
+@mixin title-with-left-bar($bar-height: 28px) {
+  position: relative;
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    border-radius: var(--border-radius-small);
+    background-color: var(--color-primary);
+    width: 4px;
+    height: $bar-height;
+    content: '';
+  }
+}

@@ -4,9 +4,7 @@
     <layout-header v-if="currentUser" />
     <div class="display">
       <layout-sidebar v-if="currentUser" />
-      <div class="page-name">
-        <nuxt />
-      </div>
+      <nuxt class="container" />
     </div>
   </div>
 </template>
@@ -30,7 +28,7 @@ export default {
   display: flex;
 }
 
-.page-name {
+.container {
   width: 100%;
 }
 </style>
