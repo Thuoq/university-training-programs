@@ -24,10 +24,16 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/assets/css/bootstrap.css'],
+  css: [],
+  styleResources: {
+    scss: ['~/assets/scss/index.scss'],
+  },
+  publicRuntimeConfig: {
+    API_BASE_URL: process.env.API_BASE_URL,
+  },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [ ],
+  plugins: ['~/apis'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -36,7 +42,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
-    '@nuxtjs/fontawesome'
+    '@nuxtjs/fontawesome',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -45,8 +51,7 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
-
+    '@nuxtjs/auth-next',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -59,9 +64,9 @@ export default {
   build: {},
 
   fontawesome: {
-    icons:{
-     solid:true,
-     brands:true
-    }
-   }
+    icons: {
+      solid: true,
+      brands: true,
+    },
+  },
 };

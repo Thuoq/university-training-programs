@@ -7,12 +7,19 @@
     <form @submit.prevent="onSubmit">
       <div class="form_group text-center mt-5 input-icons">
         <i class="icon"><font-awesome-icon :icon="['fas', 'user']" /></i>
-        <input v-model="employeeCode" class="input-form" type="text" placeholder="Mã giáo viên" required/>
+        <input v-model="employeeCode" class="input-form" type="text" placeholder="Mã giáo viên" required />
       </div>
 
       <div class="form_group text-center mt-5 input-icons">
         <i class="icon"><font-awesome-icon :icon="['fas', 'lock']" /></i>
-        <input v-model="password" class="input-form" type="password" placeholder="Mật khẩu" autocomplete="off" required/>
+        <input
+          v-model="password"
+          class="input-form"
+          type="password"
+          placeholder="Mật khẩu"
+          autocomplete="off"
+          required
+        />
       </div>
 
       <div class="form_group pt-3">
@@ -30,7 +37,16 @@
 </template>
 
 <script>
+import { pathified } from '~/utils';
+const { $dispatch, $get } = pathified('user');
+
 export default {
+  middleware({ store, redirect }) {
+    // If the user is loggedin
+    if (store.state.user.currentUser) {
+      return redirect('/');
+    }
+  },
   data() {
     return {
       employeeCode: '',
@@ -41,23 +57,24 @@ export default {
   head: {
     title: 'Đăng nhập | Quản lí đào tạo',
   },
+  computed: {
+    currentUser: $get('currentUser'),
+  },
+  created() {
+    if (this.currentUser) {
+      this.$router.push('/');
+    }
+  },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       const userAcc = {
         employeeCode: this.employeeCode,
         password: this.password,
       };
-      
-      this.$axios
-        .$post('http://localhost:5000/auth/signIn', userAcc)
-        .then((result) => {
-          this.$router.push('/')
-        })
-        .catch((e) => {
-            this.loginFail = true;
-          }
-        );
-
+      await $dispatch('signIn', userAcc);
+      if (this.currentUser) {
+        await this.$router.push('/');
+      }
     },
   },
 };

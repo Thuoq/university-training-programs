@@ -1,0 +1,20 @@
+import { make } from 'vuex-pathify';
+import { signIn } from '~/models/user.model';
+
+export const state = () => ({
+  currentUser: null,
+});
+
+export const mutations = {
+  ...make.mutations(state),
+};
+export const getters = {
+  ...make.getters(state),
+};
+
+export const actions = {
+  async signIn({ commit }, credentials) {
+    const currentUser = await signIn(credentials);
+    commit('SET_CURRENT_USER', currentUser);
+  },
+};

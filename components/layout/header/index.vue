@@ -4,9 +4,7 @@
       <div class>
         <img src="~/static/logotlu1.png" width="329px" height="106px" alt="logoTLU" />
       </div>
-      <div class="text-block">
-        Hệ thống Quản lý Chương trình Đào tạo
-      </div>
+      <div class="text-block">Hệ thống Quản lý Chương trình Đào tạo</div>
       <div class="acc-block">
         <div class="icon-block">
           <img class="icon" src="~/static/user.png" width="45px" height="45px" alt="userIcon" />
@@ -29,16 +27,16 @@
 
 <script>
 // import defaultLogout from "../Logout/default-logout.vue";
-export default{
-  components:{
+export default {
+  components: {
     // defaultLogout,
   },
-  methods:{
-    onClick(){
-      console.log("Haha")
-    }
-  }
-}
+  methods: {
+    onClick() {
+      console.log('Haha');
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -115,6 +113,4 @@ header {
   font-size: 12px;
   text-decoration: underline;
 }
-
-
 </style>

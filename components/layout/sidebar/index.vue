@@ -6,8 +6,7 @@
           <span class="text-head">Quản lý danh mục</span>
         </li>
         <li>
-          <nuxt-link to="/forgetpassword">
-            <span @click="onClick('Quản lý khoa')">Quản lý Khoa</span></nuxt-link>
+          <nuxt-link to="/forgetpassword"> <span @click="onClick('Quản lý khoa')">Quản lý Khoa</span></nuxt-link>
         </li>
         <li>
           <nuxt-link to="/forgetpassword">Quản lý Bộ môn</nuxt-link>
@@ -47,7 +46,9 @@
           <nuxt-link to="/forgetpassword">Quản lý Người dùng</nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/QuanLiNhomQuyen"><span @click="onClick('Quản lý nhóm quyền')">Quản lý Nhóm quyền</span></nuxt-link>
+          <nuxt-link to="/QuanLiNhomQuyen"
+            ><span @click="onClick('Quản lý nhóm quyền')">Quản lý Nhóm quyền</span></nuxt-link
+          >
         </li>
       </ul>
       <ul>
@@ -64,17 +65,17 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
-  export default{
-    methods:{
-      ...mapActions({
-        'actSetName': 'pages/actSetName'
-      }),
-      onClick(name){
-       this.actSetName(name);
-      }
-    }
-  }
+import { mapActions } from 'vuex';
+export default {
+  methods: {
+    ...mapActions({
+      actSetName: 'pages/actSetName',
+    }),
+    onClick(name) {
+      this.actSetName(name);
+    },
+  },
+};
 </script>
 
 <style scoped>
