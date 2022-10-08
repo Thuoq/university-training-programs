@@ -30,7 +30,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -48,16 +47,17 @@ export default {
         employeeCode: this.employeeCode,
         password: this.password,
       };
+      
       this.$axios
         .$post('http://localhost:5000/auth/signIn', userAcc)
         .then((result) => {
-          this.$emit('user-infor',result)
           this.$router.push('/')
         })
         .catch((e) => {
             this.loginFail = true;
           }
         );
+
     },
   },
 };

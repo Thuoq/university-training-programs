@@ -6,7 +6,8 @@
           <span class="text-head">Quản lý danh mục</span>
         </li>
         <li>
-          <nuxt-link to="/forgetpassword">Quản lý Khoa</nuxt-link>
+          <nuxt-link to="/forgetpassword">
+            <span @click="onClick('Quản lý khoa')">Quản lý Khoa</span></nuxt-link>
         </li>
         <li>
           <nuxt-link to="/forgetpassword">Quản lý Bộ môn</nuxt-link>
@@ -32,9 +33,6 @@
           <span class="text-head">Quản lý CT Đào tạo</span>
         </li>
         <li>
-          <nuxt-link to="/forgetpassword">Quản lý Khối kiến thức</nuxt-link>
-        </li>
-        <li>
           <nuxt-link to="/forgetpassword">Quản lý Chương trình Đào tạo</nuxt-link>
         </li>
       </ul>
@@ -49,7 +47,7 @@
           <nuxt-link to="/forgetpassword">Quản lý Người dùng</nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/forgetpassword">Quản lý Nhóm quyền</nuxt-link>
+          <nuxt-link to="/QuanLiNhomQuyen"><span @click="onClick('Quản lý nhóm quyền')">Quản lý Nhóm quyền</span></nuxt-link>
         </li>
       </ul>
       <ul>
@@ -65,12 +63,26 @@
   </div>
 </template>
 
+<script>
+  import { mapActions } from 'vuex';
+  export default{
+    methods:{
+      ...mapActions({
+        'actSetName': 'pages/actSetName'
+      }),
+      onClick(name){
+       this.actSetName(name);
+      }
+    }
+  }
+</script>
+
 <style scoped>
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 257.25px;
+  width: 329px;
 }
 .head-list {
   height: 38.76px;
@@ -78,7 +90,7 @@ ul {
   padding-left: 18.75px;
 }
 li {
-  height: 36.6825px;
+  height: 36.7px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;

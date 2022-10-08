@@ -2,7 +2,7 @@
   <header>
     <div class="wapper">
       <div class>
-        <img src="~/static/logotlu1.png" width="257.25px" height="82.5px" alt="logoTLU" />
+        <img src="~/static/logotlu1.png" width="329px" height="106px" alt="logoTLU" />
       </div>
       <div class="text-block">
         Hệ thống Quản lý Chương trình Đào tạo
@@ -18,8 +18,8 @@
             <span class="text-infor">PDT005-Trần Thu Thủy</span>
           </div>
           <div>
-            <nuxt-link class="link" to="/forgetpassword"> Quên mật khẩu? </nuxt-link>
-            <nuxt-link class="link" style="margin-left: 31.5px" to="/forgetpassword"> Đăng xuất </nuxt-link>
+            <nuxt-link class="link" to="/forgetpassword"> Đổi mật khẩu? </nuxt-link>
+            <a href="" class="link" style="margin-left: 31.5px" @click.prevent="onClick">Đăng xuất</a>
           </div>
         </div>
       </div>
@@ -27,14 +27,24 @@
   </header>
 </template>
 
-<script sco>
-
+<script>
+// import defaultLogout from "../Logout/default-logout.vue";
+export default{
+  components:{
+    // defaultLogout,
+  },
+  methods:{
+    onClick(){
+      console.log("Haha")
+    }
+  }
+}
 </script>
 
 <style scoped>
 header {
   width: 100%;
-  height: 87px;
+  height: 106px;
   margin: 0 auto;
   /* background-color: aqua; */
 }
@@ -56,7 +66,7 @@ header {
   color: #3c4069;
   font-family: 'Arial';
   /* background-color: beige; */
-  width: 66%;
+  width: 62%;
 }
 
 .acc-block {
