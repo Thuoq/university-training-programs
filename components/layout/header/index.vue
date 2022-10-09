@@ -12,7 +12,7 @@
         <div class="infor">
           <span>Xin chào,</span>
           <br />
-          <span class="text-infor">{{currentUser.id}} - {{currentUser.name}}</span>
+          <span class="text-infor">{{currentUser.employeeCode}} - {{currentUser.name}}</span>
         </div>
         <div>
           <nuxt-link class="link" to="/forgetpassword"> Đổi mật khẩu? </nuxt-link>
