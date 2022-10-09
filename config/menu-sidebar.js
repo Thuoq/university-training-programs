@@ -72,8 +72,8 @@ export const SIDE_BAR_MENUS = [
       },
       {
         title: 'Quản lý Nhóm quyền',
-        className: 'item',
-        to: '#',
+        className: 'item -role',
+        to: '/roles',
       },
     ],
   },
