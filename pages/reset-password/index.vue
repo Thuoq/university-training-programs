@@ -3,10 +3,6 @@
     <layout-title :title="title"></layout-title>
     <div class="container">
       <form class="form_reset_pass" @submit.prevent="onSubmit">
-        <p v-if="checkCurrentPass === false" class="notification">Mật khẩu cũ không đúng</p>
-        <p v-if="checkNewPassEqual === false" class="notification">
-          Mật khẩu mới và xác nhận mật khẩu mới không giống nhau
-        </p>
         <div class="form">
           <label class="label">Mật khẩu cũ:</label>
           <input v-model="currentPass" class="input" type="password" required />
@@ -19,6 +15,13 @@
           <label class="label">Xác nhận mật khẩu mới:</label>
           <input v-model="newPassVerify" class="input" type="password" required />
         </div>
+        <div class="form">
+          <p v-if="checkCurrentPass === false" class="notification">Mật khẩu cũ của bạn không chính xác!</p>
+          <p v-if="checkNewPassEqual === false" class="notification">
+            Mật khẩu mới và xác nhận mật khẩu mới không khớp nhau!
+          </p>
+        </div>
+
         <div class="form">
           <button class="button" type="submit">Đổi mật khẩu</button>
         </div>
@@ -67,14 +70,6 @@ export default {
     > .form:not(:last-child) {
       margin-bottom: 20px;
     }
-
-    > .notification {
-      font-size: 15px;
-      font-weight: 400;
-      font-family: 'Arial';
-      color: red;
-      margin-bottom: 20px;
-    }
   }
 
   > .form_reset_pass > .form > .input {
@@ -82,6 +77,13 @@ export default {
     border: 1px solid black;
     width: 353px;
     height: 40px;
+  }
+
+  > .form_reset_pass > .form > .notification {
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Inter';
+    color: red;
   }
 
   > .form_reset_pass > .form > label {
