@@ -12,7 +12,7 @@
         <div class="infor">
           <span>Xin chào,</span>
           <br />
-          <span class="text-infor">PDT005-Trần Thu Thủy</span>
+          <span class="text-infor">{{currentUser.id}} - {{currentUser.name}}</span>
         </div>
         <div>
           <nuxt-link class="link" to="/forgetpassword"> Đổi mật khẩu? </nuxt-link>
@@ -24,15 +24,11 @@
 </template>
 
 <script>
-// import defaultLogout from "../Logout/default-logout.vue";
+import { pathified } from '~/utils';
+const { $get } = pathified('user');
 export default {
-  components: {
-    // defaultLogout,
-  },
-  methods: {
-    onClick() {
-      console.log('Haha');
-    },
+  computed: {
+    currentUser: $get('currentUser'),
   },
 };
 </script>
