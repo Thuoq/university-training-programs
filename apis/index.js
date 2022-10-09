@@ -11,6 +11,7 @@ function createAPI(options) {
   const { apiBaseURL, error, currentPath } = options;
   return ky.create({
     prefixUrl: apiBaseURL,
+    credentials: 'include',
     timeout: 30000,
     hooks: {
       beforeRequest: [

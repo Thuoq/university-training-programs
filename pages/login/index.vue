@@ -33,8 +33,8 @@ const { $dispatch, $get } = pathified('user');
 
 export default {
   middleware({ store, redirect }) {
-    // If the user is loggedin
-    if (store.state.user.currentUser) {
+    const currentUser = store.state?.user?.currentUser;
+    if (currentUser) {
       return redirect('/');
     }
   },
@@ -51,11 +51,6 @@ export default {
   computed: {
     currentUser: $get('currentUser'),
   },
-  created() {
-    if (this.currentUser) {
-      this.$router.push('/');
-    }
-  },
   methods: {
     async onSubmit() {
       const userAcc = {
@@ -64,6 +59,7 @@ export default {
       };
       await $dispatch('signIn', userAcc);
       if (this.currentUser) {
+        window.localStorage.setItem('user', JSON.stringify(this.currentUser));
         await this.$router.push('/');
       }
     },

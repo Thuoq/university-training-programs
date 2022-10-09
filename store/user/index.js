@@ -2,7 +2,7 @@ import { make } from 'vuex-pathify';
 import { signIn } from '~/models/user.model';
 
 export const state = () => ({
-  currentUser: null,
+  currentUser: JSON.parse(window.localStorage.getItem('user')) || null,
 });
 
 export const mutations = {
