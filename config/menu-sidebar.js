@@ -84,6 +84,7 @@ export const SIDE_BAR_MENUS = [
       {
         title: 'Báo cáo',
         to: '#',
+        className: 'item',
       },
     ],
   },

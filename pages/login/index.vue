@@ -77,7 +77,7 @@ export default {
   background-color: var(--color-white);
   text-align: center;
   height: 600px;
-  width: 300px;
+  width: 300px !important;
   > .img {
     width: 200px;
     height: 200px;
@@ -110,8 +110,9 @@ export default {
     color: var(--color-white);
     background: #2c3383;
     border-radius: 17px;
-    height: 35px;
+    height: 50px;
     width: 70%;
+    cursor: pointer;
   }
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="wrapper">
     <app-spinner v-if="isLoading"></app-spinner>
     <layout-header v-if="currentUser" />
     <div class="display">
-      <layout-sidebar v-if="currentUser" />
-      <nuxt class="container" />
+      <layout-sidebar v-if="currentUser" class="sidebar" />
+      <nuxt class="nuxt-container" />
     </div>
   </div>
 </template>
@@ -23,12 +23,18 @@ export default {
 };
 </script>
 
-<style scoped>
-.display {
-  display: flex;
-}
-
-.container {
-  width: 100%;
+<style scoped lang="scss">
+.wrapper {
+  > .display {
+    display: flex;
+  }
+  > .display > .nuxt-container {
+    width: 100%;
+    background-color: var(--color-white);
+  }
+  > .display > .sidebar {
+    flex-basis: 25%;
+    height: 100vh;
+  }
 }
 </style>
