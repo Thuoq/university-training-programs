@@ -2,7 +2,7 @@
   <div>
     <layout-title :title="title"></layout-title>
     <div class="container">
-      <form class="form_reset_pass" @submit.prevent="onSubmit">
+      <form class="formResetPass" @submit.prevent="onSubmit">
         <div class="form">
           <label class="label">Mật khẩu cũ:</label>
           <input v-model="currentPass" class="input" type="password" required />
@@ -61,7 +61,7 @@ export default {
 .container {
   background-color: var(--color-white);
   text-align: center;
-  > .form_reset_pass {
+  > .formResetPass {
     margin: 90px auto;
     > .form {
       position: relative;
@@ -72,21 +72,21 @@ export default {
     }
   }
 
-  > .form_reset_pass > .form > .input {
+  > .formResetPass > .form > .input {
     background-color: var(--color-white);
     border: 1px solid black;
     width: 353px;
     height: 40px;
   }
 
-  > .form_reset_pass > .form > .notification {
+  > .formResetPass > .form > .notification {
     font-size: 15px;
     font-weight: 700;
     font-family: 'Inter';
     color: red;
   }
 
-  > .form_reset_pass > .form > label {
+  > .formResetPass > .form > label {
     margin-right: 10px;
     display: inline-block;
     width: 200px;
@@ -97,7 +97,7 @@ export default {
     font-family: 'Inter';
   }
 
-  > .form_reset_pass > .form > .button {
+  > .formResetPass > .form > .button {
     background: rgba($color: #d9d9d9, $alpha: 0.3);
     border: 1px solid black;
     border-radius: 17px;
