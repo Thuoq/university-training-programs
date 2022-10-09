@@ -15,7 +15,7 @@
           <span class="text-infor">{{currentUser.employeeCode}} - {{currentUser.name}}</span>
         </div>
         <div>
-          <nuxt-link class="link" to="/forgetpassword"> Đổi mật khẩu? </nuxt-link>
+          <nuxt-link class="link" to="/reset-password"> Đổi mật khẩu? </nuxt-link>
           <a href="" class="link" style="margin-left: 31.5px" @click.prevent="onClick">Đăng xuất</a>
         </div>
       </div>
