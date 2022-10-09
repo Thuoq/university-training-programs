@@ -4,12 +4,12 @@
     <h6 v-if="loginFail === true" class="text-center">Mã đăng nhập hoặc mật khẩu không chính xác!</h6>
     <form class="formlogin" @submit.prevent="onSubmit">
       <div class="form">
-        <i class="icon"><font-awesome-icon :icon="['fas', 'user']" /></i>
+        <mwc-icon class="icon">account_circle</mwc-icon>
         <input v-model="employeeCode" class="input" type="text" placeholder="Mã giáo viên" required />
       </div>
 
       <div class="form">
-        <i class="icon"><font-awesome-icon :icon="['fas', 'lock']" /></i>
+        <mwc-icon class="icon">lock</mwc-icon>
         <input v-model="password" class="input" type="password" placeholder="Mật khẩu" autocomplete="off" required />
       </div>
 
