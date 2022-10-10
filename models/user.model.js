@@ -6,3 +6,11 @@ export const signIn = (credentials) => {
     })
     .json();
 };
+
+export const resetPass = (pass) => {
+  return apis.universityAPI
+    .patch(`auth/reset-password`, {
+      json: pass,
+    })
+    .json();
+};

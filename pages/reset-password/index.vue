@@ -2,10 +2,10 @@
   <div>
     <layout-title :title="title"></layout-title>
     <div class="container">
-      <form class="formResetPass" @submit.prevent="onSubmit">
+      <form v-if="checkSuccess === false" class="formresetpass" @submit.prevent="onSubmit">
         <div class="form">
           <label class="label">Mật khẩu cũ:</label>
-          <input v-model="currentPass" class="input" type="password" required />
+          <input v-model="oldPass" class="input" type="password" required />
         </div>
         <div class="form">
           <label class="label">Mật khẩu mới:</label>
@@ -16,41 +16,61 @@
           <input v-model="newPassVerify" class="input" type="password" required />
         </div>
         <div class="form">
-          <p v-if="checkCurrentPass === false" class="notification">Mật khẩu cũ của bạn không chính xác!</p>
+          <p v-if="checkOldPass === false" class="notification">Mật khẩu cũ của bạn không chính xác!</p>
           <p v-if="checkNewPassEqual === false" class="notification">
             Mật khẩu mới và xác nhận mật khẩu mới không khớp nhau!
           </p>
         </div>
-
         <div class="form">
           <button class="button" type="submit">Đổi mật khẩu</button>
         </div>
       </form>
+      <div v-if="checkSuccess === true" class="success">
+        Đổi mật khẩu thành công!
+        <br />
+        <br />
+        Mật khẩu của bạn đã được cập nhật
+      </div>
     </div>
   </div>
 </template>
 <script>
+import { pathified } from '~/utils';
+const { $dispatch, $get } = pathified('user');
 export default {
   data() {
     return {
       title: 'Đổi mật khẩu',
-      currentPass: null,
+      oldPass: null,
       newPass: null,
       newPassVerify: null,
-      checkCurrentPass: true,
+      checkOldPass: true,
       checkNewPassEqual: true,
+      checkSuccess: false,
     };
   },
+  computed: {
+    currentUser: $get('currentUser'),
+  },
   methods: {
-    onSubmit() {
-      if (this.currentPass === '123') {
-        if (this.newPass === this.newPassVerify) {
-          console.log(this.newPass);
+    async onSubmit() {
+      if (this.newPass === this.newPassVerify) {
+        this.checkNewPassEqual = true;
+        this.checkOldPass = true;
+        const userPass = {
+          oldPassword: this.oldPass,
+          newPassword: this.newPass,
+        };
+        const oldPass = this.currentUser.password;
+        await $dispatch('resetPass', userPass);
+        const newPass = this.currentUser.password;
+        if (oldPass === newPass) {
+          this.checkOldPass = false;
         } else {
-          this.checkNewPassEqual = false;
+          this.checkSuccess = true;
         }
       } else {
-        this.checkCurrentPass = false;
+        this.checkNewPassEqual = false;
       }
     },
   },
@@ -61,7 +81,7 @@ export default {
 .container {
   background-color: var(--color-white);
   text-align: center;
-  > .formResetPass {
+  > .formresetpass {
     margin: 90px auto;
     > .form {
       position: relative;
@@ -72,21 +92,27 @@ export default {
     }
   }
 
-  > .formResetPass > .form > .input {
+  > .success {
+    font-family: 'Inter';
+    font-size: 15px;
+    margin-top: 105px;
+  }
+
+  > .formresetpass > .form > .input {
     background-color: var(--color-white);
     border: 1px solid black;
     width: 353px;
     height: 40px;
   }
 
-  > .formResetPass > .form > .notification {
+  > .formresetpass > .form > .notification {
     font-size: 15px;
     font-weight: 700;
     font-family: 'Inter';
     color: red;
   }
 
-  > .formResetPass > .form > label {
+  > .formresetpass > .form > label {
     margin-right: 10px;
     display: inline-block;
     width: 200px;
@@ -97,7 +123,7 @@ export default {
     font-family: 'Inter';
   }
 
-  > .formResetPass > .form > .button {
+  > .formresetpass > .form > .button {
     background: rgba($color: #d9d9d9, $alpha: 0.3);
     border: 1px solid black;
     border-radius: 17px;
