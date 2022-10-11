@@ -66,11 +66,6 @@ export const SIDE_BAR_MENUS = [
         to: '#',
       },
       {
-        title: 'Quản lý Tài khoản Người dùng',
-        className: 'item',
-        to: '#',
-      },
-      {
         title: 'Quản lý Nhóm quyền',
         className: 'item -role',
         to: '/roles',

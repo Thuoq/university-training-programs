@@ -1,9 +1,15 @@
 <template>
-  <div></div>
+  <div>
+    <layout-title :title="title"></layout-title>
+  </div>
 </template>
 
 <script>
 export default {
-  layout: 'default-layout',
+  data() {
+    return {
+      title: 'Trang chủ',
+    };
+  },
 };
 </script>
