@@ -1,6 +1,6 @@
 <template>
   <div class="wapper">
-    <div class>
+    <div class="img">
       <img src="~/static/logotlu1.png" width="329px" height="106px" alt="logoTLU" />
     </div>
     <div class="text-block">Hệ thống Quản lý Chương trình Đào tạo</div>
@@ -14,9 +14,9 @@
           <br />
           <span class="text-infor">{{currentUser.employeeCode}} - {{currentUser.name}}</span>
         </div>
-        <div>
+        <div class="link-block">
           <nuxt-link class="link" to="/reset-password"> Đổi mật khẩu? </nuxt-link>
-          <a href="" class="link" style="margin-left: 31.5px" @click.prevent="onClick">Đăng xuất</a>
+          <Logout class="link" style="margin-left: 30px;"/>
         </div>
       </div>
     </div>
@@ -24,9 +24,13 @@
 </template>
 
 <script>
+import Logout from '../../logout/index.vue'
 import { pathified } from '~/utils';
 const { $get } = pathified('user');
 export default {
+  components:{
+    Logout,
+  },
   computed: {
     currentUser: $get('currentUser'),
   },
@@ -43,18 +47,22 @@ export default {
   /* margin-left: 50px; */
 }
 
+.img{
+  width: 20%;
+}
+
 .text-block {
   display: flex;
   align-items: center;
   padding-top: 12px;
-  padding-left: 17.5px;
+  padding-left: 23px;
   /* margin-left: 187.5px; */
   font-size: 32.25px;
   font-weight: bold;
   color: #3c4069;
   font-family: 'Arial';
   /* background-color: beige; */
-  width: 62%;
+  width: 58%;
 }
 
 .acc-block {
@@ -65,6 +73,7 @@ export default {
   align-items: center;
   padding-top: 9px;
   /* background-color: darkcyan; */
+  width: 22%;
 }
 
 .icon-block {
@@ -97,6 +106,10 @@ export default {
 
 .text-greeting {
   font-weight: 400;
+}
+
+.link-block{
+  display: flex;
 }
 
 .link {

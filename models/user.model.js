@@ -14,3 +14,9 @@ export const resetPass = (pass) => {
     })
     .json();
 };
+
+export const logOut= () => {
+  return apis.universityAPI
+    .post(`auth/log-out`)
+    .json();
+};
