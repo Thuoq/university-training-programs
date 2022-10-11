@@ -39,6 +39,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .logout {
+  --mdc-shape-medium: 5px;
+  border: 100px;
   .dialog-container {
     > .notification {
       font-size: 20px;
@@ -51,13 +53,14 @@ export default {
       justify-content: space-around;
     }
 
-    > .btngroup > .btncancel {
-        --mdc-theme-primary: var(--color-gray-base);
-        --mdc-theme-on-primary: var(--color-black);
-    }
-
     > .btngroup > .btnlogout {
         --mdc-theme-primary: var(--color-primary);
+       
+    }
+
+    > .btngroup > .btncancel {
+        --mdc-theme-primary: var(--color-gray-base);
+        --mdc-theme-on-primary: var(--color-back);
     }
   }
 }
