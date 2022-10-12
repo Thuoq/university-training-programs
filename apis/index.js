@@ -8,7 +8,7 @@ const UNAUTHORIZED = 401;
 export const apis = {};
 
 function createAPI(options) {
-  const { apiBaseURL, error, currentPath } = options;
+  const { apiBaseURL, currentPath, toast } = options;
   return ky.create({
     prefixUrl: apiBaseURL,
     credentials: 'include',
@@ -23,19 +23,14 @@ function createAPI(options) {
         async (req, options, res) => {
           $dispatch('setLoading', false);
           if (res.status === NOT_FOUND) {
-            error({ statusCode: 404, message: '存在しないページです。' });
+            toast.error('Not Found');
           }
           if (res.status === UNAUTHORIZED && !currentPath.includes('logout')) {
-            // const link = document.createElement('a')
-            // link.click()
+            toast.error('Đăng nhập lại');
           }
           if (!res.ok) {
             const body = await res.json();
-            const error = {
-              message: body.message || body || '',
-              statusCode: res.status,
-            };
-            console.log(error);
+            toast.error(body.message || body || '');
           }
         },
       ],
@@ -43,12 +38,12 @@ function createAPI(options) {
   });
 }
 
-export default async function ({ $config, error, route }) {
+export default async function ({ $config, error, route, $toast }) {
   if (process.client) {
     apis.universityAPI = await createAPI({
       apiBaseURL: $config.API_BASE_URL,
-      error,
       currentPath: route.path,
+      toast: $toast,
     });
   }
 }

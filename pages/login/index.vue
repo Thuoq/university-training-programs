@@ -101,6 +101,7 @@ export default {
     position: absolute;
     top: 33%;
     left: 2%;
+    font-size: 16px;
   }
   > .formlogin > .form > .button {
     color: var(--color-white);

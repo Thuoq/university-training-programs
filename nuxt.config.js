@@ -55,7 +55,13 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/auth-next',
     '@nuxtjs/style-resources',
+    '@nuxtjs/toast',
   ],
+  toast: {
+    position: 'top-center',
+    duration: 2400,
+    keepOnHover: true,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
