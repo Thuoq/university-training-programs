@@ -24,7 +24,7 @@ export const actions = {
     commit('SET_CURRENT_USER', currentUser);
   },
   async logOut({ commit }) {
-    const currentUser = await logOut();
-    commit('SET_CURRENT_USER', currentUser);
+    await logOut();
+    commit('SET_CURRENT_USER', null);
   },
 };
