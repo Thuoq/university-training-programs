@@ -53,11 +53,6 @@ export default {
     },
 
     fixedMenu: Boolean,
-
-    propertyName:{
-      type: String,
-      default: null,
-    }
   },
 
   data() {
@@ -109,10 +104,7 @@ export default {
       this.$watch('selectedIndex', (selectedIndex) => {
         const selectedItem = this.items[selectedIndex];
         if (selectedItem) {
-          this.$emit('input', {
-            value: selectedItem[this.valueProp],
-            propertyName: this.propertyName || this.labelProp
-          });
+          this.$emit('input', selectedItem[this.valueProp]);
         }
       });
     },

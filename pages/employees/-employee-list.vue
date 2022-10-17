@@ -8,7 +8,7 @@
       <th class="col">Khoa</th>
       <th class="col">Email</th>
     </tr>
-    <tr v-for="employee in employees" :key="employee.id" class="row" v-on:dblclick.prevent="openDialog(employee)">
+    <tr v-for="employee in employees" :key="employee.id" class="row" @dblclick.prevent="openDialog(employee)">
       <td class="cell">{{ employee.id }}</td>
       <td class="cell">{{ employee.employeeCode }}</td>
       <td class="cell">
@@ -21,19 +21,19 @@
       <td class="cell">{{ employee.email }}</td>
     </tr>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
-        <employee-dialog
-          :code="employeeCode"
-          :employeeName="employeeName"
-          :employeeEmail="employeeEmail"
-          :employeePass="employeePass"
-          @closed="closeDialog"
-        ></employee-dialog>
-      </app-dialog>
+      <employee-dialog
+        :roles="roles"
+        :current-employee="currentEmployee"
+        :employees="employees"
+        @closed="closeDialog"
+      ></employee-dialog>
+    </app-dialog>
   </table>
 </template>
 <script>
 import EmployeeDialog from './-employee-dialog.vue';
 import { pathified } from '~/utils';
+import { fetchListRoles } from '~/models/roles.model';
 const employeesStore = pathified('employees');
 export default {
   components: {
@@ -43,25 +43,20 @@ export default {
     employees: employeesStore.$get('employees'),
   },
   async created() {
+    this.roles = await fetchListRoles();
     await employeesStore.$dispatch('getListEmployees');
   },
   data() {
     return {
       visibleDialog: false,
-      employeeCode: null,
-      employeeName: null,
-      employeeEmail: null,
-      employeePass: null,
+      currentEmployee: null,
+      roles: null,
     };
   },
   methods: {
     openDialog(employee) {
       this.visibleDialog = true;
-      console.log(employee.password);
-      this.employeeCode = employee.employeeCode;
-      this.employeeName = employee.name;
-      this.employeeEmail = employee.email;
-      this.employeePass = employee.password;
+      this.currentEmployee = employee;
     },
     closeDialog() {
       this.visibleDialog = false;

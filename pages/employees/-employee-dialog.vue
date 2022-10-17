@@ -4,7 +4,7 @@
     <div class="body">
       <div class="inputgroup">
         <label class="label">Mã đăng nhập</label>
-        <app-input v-model="employeeCode" type="text" class="input" required ></app-input>
+        <app-input v-model="employeeCode" type="text" class="input" required></app-input>
       </div>
       <div class="inputgroup">
         <label class="label">Tên người dùng</label>
@@ -25,22 +25,17 @@
       <div class="inputgroup">
         <label class="label">Nhóm quyền</label>
         <app-select
+          v-model="roleId"
+          :model-value="roleId"
+          :value="roleId"
           :value-prop="'id'"
-          :labelProp="'name'"
-          :propertyName="'roleId'"
+          :label-prop="'name'"
           :items="roles"
-          @input="onInput"
         ></app-select>
       </div>
       <div class="inputgroup">
         <label class="label">Khoa</label>
-        <app-select
-          :value-prop="'id'"
-          :labelProp="'name'"
-          :propertyName="'facultyId'"
-          :items="faculties"
-          @input="onInput"
-        ></app-select>
+        <app-select v-model="facultyId" :value-prop="'id'" :label-prop="'name'" :items="faculties"></app-select>
       </div>
       <div class="inputgroup">
         <label class="label">Bộ môn</label>
@@ -64,35 +59,24 @@ export default {
       type: Array,
       default: () => [],
     },
-    code:{
-      type: String,
-      default: null
+    currentEmployee: {
+      type: Object,
+      default: () => {},
     },
-    employeeName:{
-      type: String,
-      default: null
+    employees: {
+      type: Array,
+      default: () => [],
     },
-    employeeEmail:{
-      type: String,
-      default: null
-    },
-    employeePass:{
-      type: String,
-      default: null
-    }
-  },
-  created(){
-    console.log(this.employeePass);
   },
   data() {
     return {
-      employeeCode: this.code ? this.code : null,
-      name: this.employeeName ? this.employeeName : null,
-      email: this.employeeEmail ? this.employeeEmail : null,
-      password: this.employeePass ? this.employeePass : null,
-      phoneNumber:'',
-      roleId: null,
-      facultyId: null,
+      employeeCode: this.currentEmployee?.employeeCode || null,
+      name: this.currentEmployee?.name || null,
+      email: this.currentEmployee?.email || null,
+      password: this.currentEmployee?.password || null,
+      phoneNumber: this.currentEmployee?.phoneNumber || '',
+      roleId: this.currentEmployee?.roleId || null,
+      facultyId: this.currentEmployee?.facultyId || null,
       positionId: 1,
       departmentId: 1,
     };
@@ -101,13 +85,10 @@ export default {
     onClosed() {
       this.$emit('closed');
     },
-    onInput(obj) {
-      this[`${obj.propertyName}`] = obj.value;
-    },
     onSubmit() {
-        const payload = this.$data;
-        this.$emit('submit', payload);
-        this.$emit('closed');
+      const payload = this.$data;
+      this.$emit('submit', payload);
+      this.$emit('closed');
     },
   },
 };
