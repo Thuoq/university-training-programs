@@ -14,7 +14,6 @@
 </template>
 <script>
 import { pathified } from '~/utils';
-
 const positionsStore = pathified('positions');
 export default {
   computed: {

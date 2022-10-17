@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { createPosition,fetchListPositions } from '~/models/positions';
+import { createPosition,fetchListPositions } from '~/models/positions.model';
 
 export const state = () => ({
   positions: null,
