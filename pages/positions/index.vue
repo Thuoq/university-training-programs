@@ -15,7 +15,7 @@
     },
     data() {
       return {
-        title: 'Quản lý Nhóm người dùng (chức vụ)',
+        title: 'Quản lý Nhóm người dùng',
       };
     },
   };

@@ -4,11 +4,11 @@
     <div class="body">
         <div class="inputgroup">
           <label class="label">Mã nhóm người dùng</label>
-          <input  class="input" type="text" required />
+          <app-input v-model="code" class="input" type="text" required></app-input>
         </div>
         <div class="inputgroup" style="margin-right: 3.5px;">
           <label class="label">Tên nhóm người dùng</label>
-          <input v-model="name" class="input" type="text" required />
+          <app-input v-model="name" class="input" type="text" required></app-input>
         </div>
     </div>
     <div class="footer">
@@ -21,7 +21,8 @@
 export default {
   data() {
     return {
-      name: '',
+      name: null,
+      code: null,
     };
   },
   methods: {

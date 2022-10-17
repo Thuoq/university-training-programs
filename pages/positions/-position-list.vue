@@ -7,7 +7,7 @@
     </tr>
     <tr v-for="position in positions" :key="position.id" class="row">
       <td class="cell">{{position.id}}</td>
-      <td class="cell">{{ position.id }}</td>
+      <td class="cell">{{ position.code }}</td>
       <td class="cell">{{ position.name }}</td>
     </tr>
   </table>
