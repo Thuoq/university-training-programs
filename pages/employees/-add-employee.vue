@@ -5,13 +5,16 @@
         Thêm mới
       </app-button>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
-        <employee-dialog  :roles="roles" @closed="closeDialog" ></employee-dialog>
+        <employee-dialog  :roles="roles" :faculties="faculties" @closed="closeDialog" @submit="onSubmit" ></employee-dialog>
       </app-dialog>
     </div>
   </template>
   <script>
   import EmployeeDialog from './-employee-dialog.vue'
   import {fetchListRoles} from '~/models/roles.model';
+  import {getListFaculties} from '~/models/faculties.model';
+  import { pathified } from '~/utils';
+const employeeStore = pathified('employees');
   export default {
     components:{
         EmployeeDialog
@@ -20,10 +23,12 @@
       return {
         visibleDialog: false,
         roles: [],
+        faculties: [],
       };
     },
     async created() {
       this.roles = await fetchListRoles();
+      this.faculties = await getListFaculties();
     },
     methods: {
       openDialog() {
@@ -32,10 +37,10 @@
       closeDialog() {
         this.visibleDialog = false;
       },
-    //   async onSubmit(payload) {
-    //     await employeeStore.$dispatch('createemployees', payload);
-    //     await employeeStore.$dispatch('getListemployees');
-    //   },
+      async onSubmit(payload) {
+        await employeeStore.$dispatch('createEmployees', payload);
+        await employeeStore.$dispatch('getListEmployees');
+      },
     },
   };
   </script>
@@ -54,7 +59,7 @@
       --mdc-theme-primary: var(--color-primary);
       --mdc-button-horizontal-padding: 10px;
     }
-    --mdc-dialog-min-width: 800px;
+    --mdc-dialog-min-width: 838px;
     --mdc-dialog-max-height: 800px;
   }
   </style>
