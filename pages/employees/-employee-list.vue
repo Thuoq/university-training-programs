@@ -8,8 +8,8 @@
       <th class="col">Khoa</th>
       <th class="col">Email</th>
     </tr>
-    <tr v-for="employee in employees" :key="employee.id" class="row" @dblclick.prevent="openDialog(employee)">
-      <td class="cell">{{ employee.id }}</td>
+    <tr v-for="(employee, index) in employees" :key="employee.id" class="row" @dblclick.prevent="openDialog(employee)">
+      <td class="cell">{{ index+1 }}</td>
       <td class="cell">{{ employee.employeeCode }}</td>
       <td class="cell">
         {{ employee.name }}
