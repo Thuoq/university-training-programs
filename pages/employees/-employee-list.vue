@@ -23,6 +23,7 @@
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
       <employee-dialog
         :roles="roles"
+        :faculties="faculties"
         :current-employee="currentEmployee"
         :employees="employees"
         @closed="closeDialog"
@@ -34,17 +35,11 @@
 import EmployeeDialog from './-employee-dialog.vue';
 import { pathified } from '~/utils';
 import { fetchListRoles } from '~/models/roles.model';
+import { getListFaculties } from '~/models/faculties.model';
 const employeesStore = pathified('employees');
 export default {
   components: {
     EmployeeDialog,
-  },
-  computed: {
-    employees: employeesStore.$get('employees'),
-  },
-  async created() {
-    this.roles = await fetchListRoles();
-    await employeesStore.$dispatch('getListEmployees');
   },
   data() {
     return {
@@ -52,6 +47,14 @@ export default {
       currentEmployee: null,
       roles: null,
     };
+  },
+  computed: {
+    employees: employeesStore.$get('employees'),
+  },
+  async created() {
+    this.roles = await fetchListRoles();
+    this.faculties = await getListFaculties();
+    await employeesStore.$dispatch('getListEmployees');
   },
   methods: {
     openDialog(employee) {

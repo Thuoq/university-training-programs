@@ -35,7 +35,13 @@
       </div>
       <div class="inputgroup">
         <label class="label">Khoa</label>
-        <app-select v-model="facultyId" :value-prop="'id'" :label-prop="'name'" :items="faculties"></app-select>
+        <app-select
+          v-model="facultyId"
+          :model-value="facultyId"
+          :value-prop="'id'"
+          :label-prop="'name'"
+          :items="faculties"
+        ></app-select>
       </div>
       <div class="inputgroup">
         <label class="label">Bộ môn</label>
