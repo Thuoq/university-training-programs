@@ -7,7 +7,7 @@
     </tr>
     <tr v-for="(faculty, index) in faculties" :key="faculty.id" class="row">
       <td class="cell">{{ index + 1 }}</td>
-      <td class="cell">{{ faculty.id }}</td>
+      <td class="cell">{{ faculty.code }}</td>
       <td class="cell">{{ faculty.name }}</td>
     </tr>
   </table>
