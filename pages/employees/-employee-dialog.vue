@@ -20,7 +20,14 @@
       </div>
       <div class="inputgroup">
         <label class="label">Nhóm người dùng</label>
-        <app-select></app-select>
+        <app-select
+          v-model="positionId"
+          :model-value="positionId"
+          :value="positionId"
+          :value-prop="'id'"
+          :label-prop="'name'"
+          :items="positions"
+        ></app-select>
       </div>
       <div class="inputgroup">
         <label class="label">Nhóm quyền</label>
@@ -73,6 +80,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    positions: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -83,9 +94,12 @@ export default {
       phoneNumber: this.currentEmployee?.phoneNumber || '',
       roleId: this.currentEmployee?.roleId || null,
       facultyId: this.currentEmployee?.facultyId || null,
-      positionId: 1,
+      positionId: this.currentEmployee?.positionEmployees[0].positionId || null,
       departmentId: 1,
     };
+  },
+  created(){
+    console.log()
   },
   methods: {
     onClosed() {

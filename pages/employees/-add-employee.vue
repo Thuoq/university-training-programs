@@ -5,13 +5,14 @@
       Thêm mới
     </app-button>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
-      <employee-dialog :roles="roles" :faculties="faculties" @closed="closeDialog" @submit="onSubmit"></employee-dialog>
+      <employee-dialog :roles="roles" :faculties="faculties" :positions="positions" @closed="closeDialog" @submit="onSubmit"></employee-dialog>
     </app-dialog>
   </div>
 </template>
 <script>
 import EmployeeDialog from './-employee-dialog.vue';
 import { fetchListRoles } from '~/models/roles.model';
+import { fetchListPositions } from '~/models/positions.model';
 import { getListFaculties } from '~/models/faculties.model';
 import { pathified } from '~/utils';
 const employeeStore = pathified('employees');
@@ -24,11 +25,13 @@ export default {
       visibleDialog: false,
       roles: [],
       faculties: [],
+      positions: []
     };
   },
   async created() {
     this.roles = await fetchListRoles();
     this.faculties = await getListFaculties();
+    this.positions = await fetchListPositions();
   },
   methods: {
     openDialog() {
