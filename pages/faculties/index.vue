@@ -9,9 +9,9 @@
 import FacultyList from '~/pages/faculties/-faculty-list';
 import AddFaculty from '~/pages/faculties/-add-faculty';
 export default {
-  components:{
+  components: {
     FacultyList,
-    AddFaculty
+    AddFaculty,
   },
   data() {
     return {
@@ -21,7 +21,6 @@ export default {
 };
 </script>
 
-</script>
 <style lang="scss" scoped>
 .faculty-page {
   > .role-list {

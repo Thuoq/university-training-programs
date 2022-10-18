@@ -5,25 +5,25 @@
         Thêm mới
       </app-button>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
-        <role-dialog :resources="resources" @closed="closeDialog" @submit="onSubmit"></role-dialog>
+        <faculty-dialog :faculties="faculties" @closed="closeDialog" @submit="onSubmit"></faculty-dialog>
       </app-dialog>
     </div>
   </template>
   <script>
-  import RoleDialog from '~/pages/roles/-role-dialog';
-  import { getListResource } from '~/models/resources.model';
+  import FacultyDialog from '~/pages/faculties/-faculty-dialog';
+  import { fetchListFaculties } from '~/models/faculties.model';
   import { pathified } from '~/utils';
-  const roleStore = pathified('roles');
+  const facultyStore = pathified('faculties');
   export default {
-    components: { RoleDialog },
+    components: { FacultyDialog },
     data() {
       return {
         visibleDialog: false,
-        resources: [],
+        faculties: [],
       };
     },
     async created() {
-      this.resources = await getListResource();
+      this.faculties = await fetchListFaculties();
     },
     methods: {
       openDialog() {
@@ -33,8 +33,8 @@
         this.visibleDialog = false;
       },
       async onSubmit(payload) {
-        await roleStore.$dispatch('createRoles', payload);
-        await roleStore.$dispatch('getListRoles');
+        await facultyStore.$dispatch('createFaculties', payload);
+        await facultyStore.$dispatch('getListFaculties');
       },
     },
   };
@@ -46,13 +46,14 @@
       width: 200px;
       height: 36px;
       background: #d3d8ea;
-      border: 1px solid #000000;
+      //   border: 1px solid #000000;
       cursor: pointer;
       --mdc-theme-primary: var(--color-primary);
       --mdc-button-horizontal-padding: 10px;
     }
-    --mdc-dialog-min-width: 800px;
-    --mdc-dialog-max-height: 800px;
+    --mdc-dialog-min-width: 560px;
+    --mdc-dialog-max-height: 560px;
+    --mdc-shape-medium: 15px;
   }
   </style>
   

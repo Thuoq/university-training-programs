@@ -10,7 +10,7 @@ export const SIDE_BAR_MENUS = [
       },
       {
         title: 'Quản lý Bộ môn',
-        to: '/section',
+        to: '/sections',
         className: 'item -section',
       },
       {

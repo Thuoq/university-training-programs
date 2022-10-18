@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { fetchListFaculties } from '~/models/faculties.model';
+import { createFaculty,fetchListFaculties } from '~/models/faculties.model';
 
 export const state = () => ({
   faculties: null,
@@ -16,7 +16,7 @@ export const actions = {
     const faculties = await fetchListFaculties();
     commit('SET_FACULTIES', faculties);
   },
-//   async createRoles({ commit, state }, payload) {
-//     await createRole(payload);
-//   },
+  async createFaculties({ commit, state }, payload) {
+    await createFaculty(payload);
+  },
 };
