@@ -5,7 +5,7 @@ export const SIDE_BAR_MENUS = [
     children: [
       {
         title: 'Quản lý Khoa',
-        to: '/faculty',
+        to: '/faculties',
         className: 'item -faculty',
       },
       {
