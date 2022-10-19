@@ -5,7 +5,12 @@
       Thêm mới
     </app-button>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
-      <section-dialog :sections="sections" @closed="closeDialog" @submit="onSubmit"></section-dialog>
+      <section-dialog
+        :sections="sections"
+        :faculties="faculties"
+        @closed="closeDialog"
+        @submit="onSubmit"
+      ></section-dialog>
     </app-dialog>
   </div>
 </template>
@@ -24,13 +29,11 @@ export default {
       faculties: [],
     };
   },
-  async created() {
-    this.sections = await fetchListSections();
-    this.faculties = await fetchListFaculties();
-  },
   methods: {
-    openDialog() {
+    async openDialog() {
       this.visibleDialog = true;
+      this.sections = await fetchListSections();
+      this.faculties = await fetchListFaculties();
     },
     closeDialog() {
       this.visibleDialog = false;
@@ -54,7 +57,7 @@ export default {
     --mdc-theme-primary: var(--color-primary);
     --mdc-button-horizontal-padding: 10px;
   }
-  --mdc-dialog-min-width: 800px;
-  --mdc-dialog-max-height: 800px;
+  //   --mdc-dialog-min-width: 800px;
+  //   --mdc-dialog-max-height: 800px;
 }
 </style>
