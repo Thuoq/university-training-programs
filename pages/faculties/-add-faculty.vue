@@ -22,12 +22,10 @@
         faculties: [],
       };
     },
-    async created() {
-      this.faculties = await fetchListFaculties();
-    },
     methods: {
-      openDialog() {
+      async openDialog() {
         this.visibleDialog = true;
+        this.faculties = await fetchListFaculties();
       },
       closeDialog() {
         this.visibleDialog = false;
