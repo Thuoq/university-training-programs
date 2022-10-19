@@ -79,11 +79,9 @@ export default {
       this.checkEmptyCode = check(this.code);
 
       //  checkDuplicate
-      console.log(this.sections)
       this.checkDuplicateCode = this.sections.some((element) => {
-        console.log(element.code);
         if (element.code === this.code) {
-            console.log(this.code)
+          console.log(this.code);
           return true;
         }
         return false;
@@ -104,16 +102,14 @@ export default {
         this.checkEmptyName === false
       ) {
         const section = {
-            name : this.name,
-            code : this.code,
-            facultyId : this.facultyId
-        }
+          name: this.name,
+          code: this.code,
+          facultyId: this.facultyId,
+        };
 
         const payload = section;
         this.$emit('submit', payload);
         this.$emit('closed');
-
-        console.log(this.$data)
       }
     },
   },
@@ -159,13 +155,13 @@ export default {
       height: 32px;
     }
 
-    >.notification{
-        color: red;
-        text-align: center;
-        font-size: 15px;
-        font-family: 'Inter';
-        margin-top: -16px;
-        margin-bottom: 10px;
+    > .notification {
+      color: red;
+      text-align: center;
+      font-size: 15px;
+      font-family: 'Inter';
+      margin-top: -16px;
+      margin-bottom: 10px;
     }
   }
 
