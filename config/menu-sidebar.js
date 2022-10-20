@@ -15,7 +15,7 @@ export const SIDE_BAR_MENUS = [
       },
       {
         title: 'Quản lý Ngành học',
-        to: '/major',
+        to: '/majors',
         className: 'item -major',
       },
       {
