@@ -137,14 +137,14 @@ export default {
   }
 
   > .body {
-    margin-top: 30px;
+    margin-top: 40px;
     > .inputgroup {
       width: 380px;
       text-align: left;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 26px;
+      margin-bottom: 37px;
     }
     > .inputgroup > .label {
       font-family: 'Inter';
@@ -169,7 +169,7 @@ export default {
     display: flex;
     justify-content: space-around;
     align-content: center;
-    margin: 0px 50px 0px 50px;
+    margin: 50px 50px 0px 50px;
   }
 
   > .footer > .btn {
