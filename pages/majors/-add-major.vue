@@ -5,13 +5,15 @@
         Thêm mới
       </app-button>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
-        <major-dialog :majors="majors" @closed="closeDialog" @submit="onSubmit"></major-dialog>
+        <major-dialog :majors="majors" :sections="sections" :faculties="faculties" @closed="closeDialog" @submit="onSubmit"></major-dialog>
       </app-dialog>
     </div>
   </template>
   <script>
   import MajorDialog from '~/pages/majors/-major-dialog';
   import { fetchListMajors } from '~/models/majors.model';
+  import { fetchListSections } from '~/models/sections.model';
+  import { fetchListFaculties } from '~/models/faculties.model';
   import { pathified } from '~/utils';
   const majorStore = pathified('majors');
   export default {
@@ -20,12 +22,16 @@
       return {
         visibleDialog: false,
         majors: [],
+        sections: [],
+        faculties: [],
       };
     },
     methods: {
       async openDialog() {
         this.visibleDialog = true;
         this.majors = await fetchListMajors();
+        this.sections = await fetchListSections();
+        this.faculties = await fetchListFaculties();
       },
       closeDialog() {
         this.visibleDialog = false;
