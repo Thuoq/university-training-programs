@@ -22,12 +22,10 @@ export default {
       positions: [],
     };
   },
-  async created() {
-    this.positions = await fetchListPositions();
-  },
   methods: {
-    openDialog() {
+    async openDialog() {
       this.visibleDialog = true;
+      this.positions = await fetchListPositions();
     },
     closeDialog() {
       this.visibleDialog = false;
