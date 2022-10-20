@@ -27,6 +27,7 @@
         :positions="positions"
         :current-employee="currentEmployee"
         :employees="employees"
+        :sections="sections"
         @closed="closeDialog"
       ></employee-dialog>
     </app-dialog>
@@ -38,6 +39,7 @@ import { pathified } from '~/utils';
 import { fetchListRoles } from '~/models/roles.model';
 import { fetchListPositions } from '~/models/positions.model';
 import { getListFaculties } from '~/models/faculties.model';
+import { fetchListSections } from '~/models/sections.model';
 const employeesStore = pathified('employees');
 export default {
   components: {
@@ -49,7 +51,8 @@ export default {
       currentEmployee: null,
       roles: null,
       faculties: null,
-      positions: null
+      positions: null,
+      sections: null
     };
   },
   computed: {
@@ -59,6 +62,7 @@ export default {
     this.roles = await fetchListRoles();
     this.faculties = await getListFaculties();
     this.positions = await fetchListPositions();
+    this.sections = await fetchListSections();
     await employeesStore.$dispatch('getListEmployees');
   },
   methods: {
