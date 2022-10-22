@@ -4,23 +4,19 @@
     <div class="body">
       <div class="inputgroup">
         <label class="label">Mã nhóm người dùng</label>
-        <app-input v-model="code" class="input" type="text" required></app-input>
-        <span v-if="checkEmptyCode === true" class="notification">
-          <br />
-         Mã người dùng không được để trống
-        </span>
-        <span v-if="checkNotification === true" class="notification">
-          <br />
-          Mã nhóm người dùng đã tồn tại
-        </span>
+        <app-input v-model="code" type="text" class="input" required></app-input>
+      </div>
+      <div class="notification">
+        <p v-if="checkEmptyCode === true">Mã nhóm người dùng không được để trống!</p>
+        <p v-if="checkDuplicateCode === true">Mã nhóm người dùng này đã tồn tại!</p>
       </div>
       <div class="inputgroup">
         <label class="label">Tên nhóm người dùng</label>
-        <app-input v-model="name" class="input" type="text" required></app-input>
-        <span v-if="checkEmptyName === true" class="notification">
-          <br />
-         Tên nhóm người dùng không được để trống
-        </span>
+        <app-input v-model="name" type="text" class="input" required></app-input>
+      </div>
+      <div class="notification">
+        <p v-if="checkEmptyName === true">Tên nhóm người dùng không được để trống!</p>
+        <p v-if="checkDuplicateName === true">Tên nhóm người dùng này đã tồn tại!</p>
       </div>
     </div>
     <div class="footer">
@@ -41,9 +37,10 @@ export default {
     return {
       name: null,
       code: null,
-      checkNotification: false,
+      checkDuplicateName: false,
+      checkDuplicateCode: false,
       checkEmptyCode: false,
-      checkEmptyName: false
+      checkEmptyName: false,
     };
   },
   methods: {
@@ -51,32 +48,42 @@ export default {
       this.$emit('closed');
     },
     onSubmit() {
-      this.checkNotification = false;
-      this.checkEmptyName = false;
-      this.checkEmptyCode = false;
-      if (this.name !== null && this.code !== null) {
-        const checkCode = this.positions.some((element) => {
-          if (element.code === this.code) {
-            return true;
-          }
-          return false;
-        });
-        if (checkCode) {
-          this.checkNotification = true;
-        } else {
-          const position = {
-            name : this.name,
-            code : this.code
-          }
-          const payload = position;
-          this.$emit('submit', payload);
-          this.$emit('closed');
+      const checkNull = (value) => {
+        if (!value) return true;
+        else return false;
+      };
+
+      // checkEmpty
+      this.checkEmptyCode = checkNull(this.code);
+      this.checkEmptyName = checkNull(this.name);
+
+      //  checkDuplicate
+      this.checkDuplicateCode = this.positions.some((element) => {
+        if (element.code === this.code) {
+          return true;
         }
-      }else{
-        if(this.name === null)
-          this.checkEmptyName = true;
-          if(this.code === null)
-          this.checkEmptyCode = true;  
+        return false;
+      });
+      this.checkDuplicateName = this.positions.some((element) => {
+        if (element.name === this.name) {
+          return true;
+        }
+        return false;
+      });
+
+      if (
+        this.checkDuplicateCode === false &&
+        this.checkDuplicateName === false &&
+        this.checkEmptyCode === false &&
+        this.checkEmptyName === false
+      ) {
+        const position = {
+          name: this.name,
+          code: this.code,
+        };
+        const payload = position;
+        this.$emit('submit', payload);
+        this.$emit('closed');
       }
     },
   },
@@ -111,6 +118,15 @@ export default {
     > .inputgroup:not(:last-child) {
       margin-bottom: 23.13px;
     }
+
+    > .notification {
+      color: red;
+      text-align: center;
+      font-size: 15px;
+      font-family: 'Inter';
+      margin-top: -16px;
+      margin-bottom: 10px;
+    }
   }
 
   > .body > .inputgroup > .input {
@@ -132,10 +148,7 @@ export default {
     color: var(--color-back);
   }
 
-  > .body > .inputgroup > .notification {
-    font-size: 12px;
-    color: red;
-  }
+  
 
   .footer {
     display: flex;
