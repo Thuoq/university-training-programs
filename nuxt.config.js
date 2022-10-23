@@ -37,7 +37,7 @@ export default {
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/apis', '~/plugins/material.js'],
+  plugins: ['~/apis', '~/plugins/material.js', '~/plugins/vue-validate.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
