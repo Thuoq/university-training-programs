@@ -1,104 +1,84 @@
 <template>
-  <table class="knowledge-block-list">
-    <thead class="head">
-      <tr class="row">
-        <th class="col">STT</th>
-        <th class="col">Mã Khối kiến thức</th>
-        <th class="col">Tên Khối kiến thức</th>
-      </tr>
-    </thead>
-    <tbody class="body">
-      <knowledge-block-item
-        v-for="knowledgeBlock in knowledgeBlockList"
-        :key="knowledgeBlock.code"
-        :knowledge-block="knowledgeBlock"
-      ></knowledge-block-item>
-    </tbody>
-  </table>
+  <vue-ads-table class="knowledge-block-list" :classes="classes" :columns="columns" :rows="knowledgeBlockList">
+    <template slot="toggle-children-icon" slot-scope="props">
+      <mwc-icon class="icon">{{ props.expanded ? 'remove' : 'add' }}</mwc-icon>
+    </template></vue-ads-table
+  >
 </template>
 <script>
-import KnowledgeBlockItem from '~/pages/knowledge-block/-row';
+import { VueAdsTable } from 'vue-ads-table-tree';
+
 export default {
-  components: { KnowledgeBlockItem },
+  components: {
+    VueAdsTable,
+  },
+  props: {
+    knowledgeBlockList: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
-      knowledgeBlockList: [
+      columns: [
         {
-          id: 1,
-          code: 'KT_DC',
-          name: 'Giáo dục Đại cương',
+          property: 'id',
+          title: 'STT',
         },
         {
-          id: 2,
-          code: 'KT_CN',
-          name: 'Giáo dục Chuyên ngành',
-          children: [
-            {
-              id: 1,
-              code: 'KT_CN_CS',
-              name: 'Giáo dục Chuyên ngành Cơ sở',
-            },
-            {
-              id: 2,
-              code: 'KT_CN_BB',
-              name: 'Giáo dục Chuyên ngành Bắt buộc',
-            },
-          ],
+          property: 'code',
+          title: 'Mã Khối kiến thức',
         },
         {
-          id: 3,
-          code: 'KT_TD',
-          name: 'Lựa chọn tự do',
-          children: [
-            {
-              id: 4,
-              code: 'KX',
-              name: 'Lựa chọn2',
-            },
-          ],
+          property: 'name',
+          title: 'Tên Khối kiến thức',
         },
       ],
+      classes: {
+        '0/': {
+          head: true,
+        },
+        '1_/': {
+          row: true,
+        },
+        '/1_3': {
+          cell: true,
+        },
+      },
     };
-  },
-
-  methods: {
-    hasChildren(l) {
-      return l.children.length > 0;
-    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .knowledge-block-list {
   border-collapse: collapse;
-  padding: 12px 48px 12px 25px;
+  padding: 12px 50px 12px 50px;
   font-size: 16px;
-  > .head > .row {
-    background-color: #e0e5f9;
-    color: var(--color-primary);
-    font-size: 20px;
-    line-height: 24px;
-    font-weight: bold;
-    text-align: left;
-  }
-  > .head > .row > .col {
-    padding: 10px 0px 10px 10px;
-  }
-  > .body > .row {
-    color: var(--color-back);
-    font-size: 16px;
-    line-height: 24px;
-    text-align: left;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-  }
-  > .body > .row > .cell {
-    padding: 10px 20px;
-    text-align: left;
-    &.-parent {
-      display: flex;
-      cursor: pointer;
-      align-items: center;
-    }
-  }
+}
+.knowledge-block-list ::v-deep(.head) {
+  background-color: #e0e5f9;
+  color: var(--color-primary);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: bold;
+  text-align: left;
+}
+.knowledge-block-list ::v-deep(.row) {
+  color: var(--color-back);
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.knowledge-block-list ::v-deep(.cell) {
+  padding: 10px 20px;
+  text-align: left;
+}
+.knowledge-block-list ::v-deep(.icon) {
+  cursor: pointer;
+}
+.knowledge-block-list ::v-deep(.vue-ads-cursor-pointer) {
+  display: flex;
+  align-items: self-start;
 }
 </style>

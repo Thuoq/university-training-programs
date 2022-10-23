@@ -38,6 +38,7 @@ export default {
     },
     async onSubmit(payload) {
       await knowledgeBlockStore.$dispatch('createKnowLedgeBlock', payload);
+      await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
       this.visibleDialog = false;
     },
   },
