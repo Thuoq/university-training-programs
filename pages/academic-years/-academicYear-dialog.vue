@@ -1,5 +1,5 @@
 <template>
-  <div class="faculty-dialog">
+  <div class="academicYear-dialog">
     <h2 class="title">Thêm mới</h2>
     <div class="body">
       <div class="inputgroup">
@@ -115,9 +115,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.faculty-dialog {
-  --app-select-height: 32px;
-  --app-select-width: 227px;
+.academicYear-dialog {
   > .title {
     margin: -19px -24px 0px -24px;
     padding-top: 13px;
