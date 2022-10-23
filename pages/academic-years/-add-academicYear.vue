@@ -5,14 +5,14 @@
         Thêm mới
       </app-button>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
-        <academicYear-dialog  @closed="closeDialog" @submit="onSubmit"></academicYear-dialog>
+        <academicYear-dialog @closed="closeDialog" @submit="onSubmit"></academicYear-dialog>
       </app-dialog>
     </div>
   </template>
   <script>
   import AcademicYearDialog from '~/pages/academic-years/-academicYear-dialog';
-//   import { pathified } from '~/utils';
-//   const academicYearStore = pathified('academicYears');
+  import { pathified } from '~/utils';
+  const academicYearStore = pathified('academicYears');
   export default {
     components: { AcademicYearDialog },
     data() {
@@ -28,8 +28,8 @@
         this.visibleDialog = false;
       },
       async onSubmit(payload) {
-        // await  academicYearStore.$dispatch('createAcademicYears', payload);
-        // await  academicYearStore.$dispatch('getListAcademicYears');
+        await  academicYearStore.$dispatch('createAcademicYears', payload);
+        await  academicYearStore.$dispatch('getListAcademicYears');
       },
     },
   };
