@@ -31,7 +31,7 @@
     </form>
     <div class="footer">
       <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" :disabled="showButtonSubmit" @click="onSubmit">Lưu</app-button>
+      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
     </div>
   </div>
 </template>
@@ -58,12 +58,6 @@ export default {
     },
     name: {
       required,
-    },
-  },
-  computed: {
-    showButtonSubmit() {
-      const { knowledgeParentId, ...payload } = this.$data;
-      return !Object.values(payload).every((data) => data);
     },
   },
   methods: {
