@@ -63,7 +63,7 @@ export const SIDE_BAR_MENUS = [
       {
         title: 'Quản lý Người dùng',
         className: 'item',
-        to: '#',
+        to: '/employees',
       },
       {
         title: 'Quản lý Nhóm quyền',

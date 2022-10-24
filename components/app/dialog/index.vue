@@ -1,6 +1,6 @@
 <template>
   <mwc-dialog v-if="visible" class="app-dialog" :open="visible" v-on="listeners">
-    <slot />
+    <slot/>
   </mwc-dialog>
 </template>
 
