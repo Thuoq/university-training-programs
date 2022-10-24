@@ -1,9 +1,15 @@
 <template>
-  <Tutorial />
+  <div>
+    <layout-title :title="title"></layout-title>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage',
-}
+  data() {
+    return {
+      title: 'Trang chủ',
+    };
+  },
+};
 </script>
