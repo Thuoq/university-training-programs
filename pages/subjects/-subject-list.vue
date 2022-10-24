@@ -17,7 +17,9 @@
       <td class="cell">{{ subject.numberOfCredits }}</td>
       <td class="cell">{{ subject.coefficient }}</td>
       <td class="cell">{{ subject.numberOfTeachingHours }}</td>
-      <td class="cell">{{ subject.prerequisiteSubjectsId }}</td>
+      <td class="cell">
+        <span v-for="x in subject.prerequisiteSubjects" :key="x.id" class="groupvalue">{{x.code}}</span>
+      </td>
       <td class="cell">{{ subject.numberPrerequisiteCredits === 0 ? null : subject.numberPrerequisiteCredits }}</td>
     </tr>
   </table>
@@ -62,6 +64,9 @@ export default {
   }
   > .row > .cell {
     padding: 13px 0px 13px 13px;
+  }
+  > .row > .cell>.groupvalue {
+    margin-right: 5px;
   }
 }
 </style>

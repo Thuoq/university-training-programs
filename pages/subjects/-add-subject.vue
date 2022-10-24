@@ -5,31 +5,35 @@
       Thêm mới
     </app-button>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
-      <subject-dialog @closed="closeDialog" @submit="onSubmit"></subject-dialog>
+      <subject-dialog :subjects="subjects" @closed="closeDialog" @submit="onSubmit"></subject-dialog>
     </app-dialog>
   </div>
 </template>
 <script>
 import SubjectDialog from '~/pages/subjects/-subject-dialog';
-// import { pathified } from '~/utils';
-// const subjectStore = pathified('subjects');
+import { fetchListSubjects } from '~/models/subjects.model';
+
+import { pathified } from '~/utils';
+const subjectStore = pathified('subjects');
 export default {
   components: { SubjectDialog },
   data() {
     return {
       visibleDialog: false,
+      subjects: []
     };
   },
   methods: {
-    openDialog() {
+   async openDialog() {
       this.visibleDialog = true;
+      this.subjects = await fetchListSubjects();
     },
     closeDialog() {
       this.visibleDialog = false;
     },
     async onSubmit(payload) {
-    //   await subjectStore.$dispatch('createSubjects', payload);
-    //   await subjectStore.$dispatch('getListSubjects');
+      await subjectStore.$dispatch('createSubjects', payload);
+      await subjectStore.$dispatch('getListSubjects');
     },
   },
 };
@@ -46,5 +50,6 @@ export default {
     --mdc-button-horizontal-padding: 10px;
   }
   --mdc-shape-medium: 15px;
+  --mdc-dialog-min-width: 850px;
 }
 </style>
