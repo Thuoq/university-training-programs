@@ -20,7 +20,7 @@ export const SIDE_BAR_MENUS = [
       },
       {
         title: 'Quản lý Năm học/Khóa',
-        to: '/academic-year',
+        to: '/academic-years',
         className: 'item -academic-year',
       },
       {
