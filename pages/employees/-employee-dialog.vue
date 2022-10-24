@@ -104,7 +104,6 @@
             :value-prop="'id'"
             :label-prop="'name'"
             :items="sections"
-            :disabled="true"
           ></app-select>
         </div>
         <div class="notification">
@@ -146,9 +145,7 @@ export default {
       default: () => [],
     },
   },
-  computed:{
-
-  },
+  computed: {},
   data() {
     return {
       employeeCode: this.currentEmployee?.employeeCode || null,
@@ -180,60 +177,60 @@ export default {
       this.$emit('closed');
     },
     onSubmit() {
-      // const checkNull = (value) => {
-      //   if (!value) return true;
-      //   else return false;
-      // };
-      // const checkDuplicate = (dataArray, fieldName, value) => {
-      //   return dataArray.some((e) => {
-      //     if (e[`${fieldName}`] === value) {
-      //       return true;
-      //     }
-      //     return false;
-      //   });
-      // };
-      // // checkEmpty
-      // this.checkEmptyEmployeeCode = checkNull(this.employeeCode);
-      // this.checkEmptyName = checkNull(this.name);
-      // this.checkEmptyEmail = checkNull(this.email);
-      // this.checkEmptyPass = checkNull(this.password);
-      // this.checkEmptyPosition = checkNull(this.positionId);
-      // this.checkEmptyRole = checkNull(this.roleId);
-      // this.checkEmptyFaculty = checkNull(this.facultyId);
-      // this.checkEmptySection = checkNull(this.sectionId);
-      // //  checkDuplicate
-      // this.checkDuplicateEmployeeCode = checkDuplicate(this.employees, 'employeeCode', this.employeeCode);
-      // this.checkDuplicateName = checkDuplicate(this.employees, 'name', this.name);
-      // this.checkDuplicateEmail = checkDuplicate(this.employees, 'email', this.email);
-      // if (
-      //   (this.checkEmptyEmployeeCode &&
-      //     this.checkEmptyName &&
-      //     this.checkEmptyEmail &&
-      //     this.checkEmptyPass &&
-      //     this.checkEmptyPosition &&
-      //     this.checkEmptyRole &&
-      //     this.checkEmptyFaculty &&
-      //     this.checkEmptySection &&
-      //     this.checkDuplicateName &&
-      //     this.checkDuplicateEmployeeCode &&
-      //     this.checkDuplicateEmail) === false
-      // ) {
-      //   const employee = {
-      //     name: this.name,
-      //     email: this.email,
-      //     employeeCode: this.employeeCode,
-      //     password: this.password,
-      //     // phoneNumber: 'string',
-      //     facultyId: this.facultyId,
-      //     // departmentId: 0,
-      //     positionId: this.positionId,
-      //     roleId: this.roleId,
-      //     sectionId: this.sectionId,
-      //   };
-      //   const payload = employee;
-      //   this.$emit('submit', payload);
-      //   this.$emit('closed');
-      // }
+      const checkNull = (value) => {
+        if (!value) return true;
+        else return false;
+      };
+      const checkDuplicate = (dataArray, fieldName, value) => {
+        return dataArray.some((e) => {
+          if (e[`${fieldName}`] === value) {
+            return true;
+          }
+          return false;
+        });
+      };
+      // checkEmpty
+      this.checkEmptyEmployeeCode = checkNull(this.employeeCode);
+      this.checkEmptyName = checkNull(this.name);
+      this.checkEmptyEmail = checkNull(this.email);
+      this.checkEmptyPass = checkNull(this.password);
+      this.checkEmptyPosition = checkNull(this.positionId);
+      this.checkEmptyRole = checkNull(this.roleId);
+      this.checkEmptyFaculty = checkNull(this.facultyId);
+      this.checkEmptySection = checkNull(this.sectionId);
+      //  checkDuplicate
+      this.checkDuplicateEmployeeCode = checkDuplicate(this.employees, 'employeeCode', this.employeeCode);
+      this.checkDuplicateName = checkDuplicate(this.employees, 'name', this.name);
+      this.checkDuplicateEmail = checkDuplicate(this.employees, 'email', this.email);
+      if (
+        this.checkEmptyEmployeeCode === false &&
+        this.checkEmptyName === false &&
+        this.checkEmptyEmail === false &&
+        this.checkEmptyPass === false &&
+        this.checkEmptyPosition === false &&
+        this.checkEmptyRole === false &&
+        this.checkEmptyFaculty === false &&
+        this.checkEmptySection === false &&
+        this.checkDuplicateName === false &&
+        this.checkDuplicateEmployeeCode === false &&
+        this.checkDuplicateEmail === false
+      ) {
+        const employee = {
+          name: this.name,
+          email: this.email,
+          employeeCode: this.employeeCode,
+          password: this.password,
+          // phoneNumber: 'string',
+          facultyId: this.facultyId,
+          // departmentId: 0,
+          positionId: this.positionId,
+          roleId: this.roleId,
+          sectionId: this.sectionId,
+        };
+        const payload = employee;
+        this.$emit('submit', payload);
+        this.$emit('closed');
+      }
       // const test =  this.positions.find(o => o.id === this.positionId).code;
       // console.log(test);
     },
