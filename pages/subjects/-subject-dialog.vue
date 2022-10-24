@@ -6,43 +6,60 @@
         <div class="group">
           <div class="inputgroup">
             <label class="label">Mã học phần</label>
-            <app-input v-model="code" type="text" class="input" required></app-input>
+            <app-input v-model="$v.code.$model" type="text" class="input" required></app-input>
           </div>
+          <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã học phần không được để trống!</div>
+          <div v-if="!$v.code.minLength" class="notification">Mã học phần phải có tối thiểu từ 2 kí tự trở lên!</div>
         </div>
 
         <div class="group">
           <div class="inputgroup">
             <label class="label">Tên học phần</label>
-            <app-input v-model="name" type="text" class="input" required></app-input>
+            <app-input v-model="$v.name.$model" type="text" class="input" required></app-input>
           </div>
+          <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên học phần không được để trống!</div>
+          <div v-if="!$v.name.minLength" class="notification">Mã học phần phải có tối thiểu từ 4 kí tự trở lên!</div>
         </div>
 
         <div class="group">
           <div class="inputgroup">
             <label class="label">Số tín chỉ</label>
-            <app-input v-model="numberOfCredits" type="text" class="input" required></app-input>
+            <app-input v-model.number="$v.numberOfCredits.$model" type="text" class="input" required></app-input>
           </div>
+          <div v-if="$v.numberOfCredits.$error && !$v.numberOfCredits.required" class="notification">
+            Số tín chỉ không được để trống!
+          </div>
+          <div v-if="!$v.numberOfCredits.numeric" class="notification">Số tín chỉ phải là số!</div>
         </div>
 
         <div class="group">
           <div class="inputgroup">
             <label class="label">Số giờ học</label>
-            <app-input v-model="numberOfTeachingHours" type="text" class="input" required></app-input>
+            <app-input v-model.number="$v.numberOfTeachingHours.$model" type="text" class="input" required></app-input>
           </div>
+          <div v-if="$v.numberOfTeachingHours.$error && !$v.numberOfTeachingHours.required" class="notification">
+            Số giờ học không được để trống!
+          </div>
+          <div v-if="!$v.numberOfTeachingHours.numeric" class="notification">Số giờ học phải là số!</div>
         </div>
 
         <div class="group">
           <div class="inputgroup">
             <label class="label">Hệ số</label>
-            <app-input v-model="coefficient" type="text" class="input" required></app-input>
+            <app-input v-model.number="$v.coefficient.$model" type="text" class="input" required></app-input>
           </div>
+          <div v-if="$v.coefficient.$error && !$v.coefficient.required" class="notification">
+            Hệ số không được để trống!
+          </div>
+          <div v-if="!$v.coefficient.numeric" class="notification">Hệ số phải là số!</div>
         </div>
 
         <div class="group">
           <div class="inputgroup">
             <label class="label">Số tín chỉ tiên quyết</label>
-            <app-input v-model="numberPrerequisiteCredits" type="text" class="input"></app-input>
+            <app-input v-model.number="$v.numberPrerequisiteCredits.$model" type="text" class="input"></app-input>
           </div>
+          <div v-if="!$v.numberPrerequisiteCredits.numeric" class="notification">Số tín chỉ tiên quyết phải là số!</div>
         </div>
       </div>
       <div class="mutilselect">
@@ -63,12 +80,13 @@
     </div>
     <div class="footer">
       <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" @click="onSubmit">Lưu</app-button>
+      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
     </div>
   </div>
 </template>
 <script>
 import Multiselect from 'vue-multiselect';
+import { required, numeric, minLength } from 'vuelidate/lib/validators';
 export default {
   components: {
     Multiselect,
@@ -90,6 +108,33 @@ export default {
       prerequisiteSubjectsId: null,
     };
   },
+  validations() {
+    return {
+      code: {
+        required,
+        minLength: minLength(4),
+      },
+      name: {
+        required,
+        minLength: minLength(4),
+      },
+      numberOfCredits: {
+        required,
+        numeric,
+      },
+      numberOfTeachingHours: {
+        required,
+        numeric,
+      },
+      numberPrerequisiteCredits: {
+        numeric,
+      },
+      coefficient: {
+        required,
+        numeric,
+      },
+    };
+  },
   methods: {
     onClosed() {
       this.$emit('closed');
@@ -98,10 +143,10 @@ export default {
       const subject = {
         name: this.name,
         numberOfCredits: this.numberOfCredits,
-        numberPrerequisiteCredits: !this.numberPrerequisiteCredits ? 0 : this.numberPrerequisiteCredits,
-        numberOfTeachingHours: Number(this.numberOfTeachingHours),
+        numberPrerequisiteCredits: this.numberPrerequisiteCredits,
+        numberOfTeachingHours: this.numberOfTeachingHours,
         code: this.code,
-        coefficient: 2,
+        coefficient: this.coefficient,
         prerequisiteSubjectsId: !this.prerequisiteSubjectsId
           ? []
           : this.prerequisiteSubjectsId.map((subject) => ({ id: subject.id })),
@@ -109,7 +154,7 @@ export default {
       const payload = subject;
       this.$emit('submit', payload);
       this.$emit('closed');
-    console.log(subject);
+      console.log(subject);
     },
   },
 };
@@ -158,7 +203,7 @@ export default {
       }
       > .group > .notification {
         color: red;
-        text-align: center;
+        text-align: left;
         font-size: 15px;
         font-family: 'Inter';
         margin-top: 16px;
