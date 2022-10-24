@@ -35,7 +35,7 @@ export const SIDE_BAR_MENUS = [
       },
       {
         title: 'Danh mục Chương trình Đào tạo',
-        to: '/training-program',
+        to: '#',
         className: 'item -training=program',
       },
     ],
