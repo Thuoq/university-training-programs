@@ -91,7 +91,7 @@ export default {
         required,
         numeric,
         mixLength: minLength(4),
-        between: between(this.startYear ? 2000 : Number(this.startYear), 2100),
+        between: between(!this.startYear ? 2000 : Number(this.startYear)+1, 2100),
       },
     };
   },
