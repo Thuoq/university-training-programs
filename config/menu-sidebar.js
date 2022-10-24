@@ -25,7 +25,7 @@ export const SIDE_BAR_MENUS = [
       },
       {
         title: 'Quản lý Học phần',
-        to: '/subject',
+        to: '/subjects',
         className: 'item -subject',
       },
       {
