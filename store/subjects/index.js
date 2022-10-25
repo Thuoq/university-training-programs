@@ -1,12 +1,12 @@
 import { make } from 'vuex-pathify';
-import { createSubject,fetchListSubjects } from '~/models/subjects.model';
+import { updateSubject, createSubject,fetchListSubjects } from '~/models/subjects.model';
 
 export const state = () => ({
   subjects: null,
 });
-export const getters = {
-  ...make.getters(state),
-};
+// export const getters = {
+//   ...make.getters(state),
+// };
 export const mutations = {
   ...make.mutations(state),
 };
@@ -18,5 +18,8 @@ export const actions = {
   },
   async createSubjects({ commit, state }, payload) {
     await createSubject(payload);
+  },
+  async updateSubjects({ commit, state }, payload) {
+    await updateSubject(payload);
   },
 };

@@ -12,7 +12,6 @@
 <script>
 import SubjectDialog from '~/pages/subjects/-subject-dialog';
 import { fetchListSubjects } from '~/models/subjects.model';
-
 import { pathified } from '~/utils';
 const subjectStore = pathified('subjects');
 export default {
