@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { createPosition,fetchListPositions } from '~/models/positions.model';
+import {updatePosition, createPosition,fetchListPositions } from '~/models/positions.model';
 
 export const state = () => ({
   positions: null,
@@ -18,5 +18,8 @@ export const actions = {
   },
   async createPositions({ commit, state }, payload) {
     await createPosition(payload);
+  },
+  async updatePositions({ commit, state }, payload) {
+    await updatePosition(payload);
   },
 };
