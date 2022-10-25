@@ -7,24 +7,62 @@
       <th class="col">Bộ môn</th>
       <th class="col">Khoa</th>
     </tr>
-    <tr v-for="(major, index) in majors" :key="major.id" class="row">
+    <tr v-for="(major, index) in majors" :key="major.id" class="row" @dblclick.prevent="openDialog(major)">
       <td class="cell">{{ index + 1 }}</td>
       <td class="cell">{{ major.code }}</td>
       <td class="cell">{{ major.name }}</td>
       <td class="cell">{{ major.section.name }}</td>
       <td class="cell">{{ major.faculty.name }}</td>
     </tr>
+    <app-dialog :visible="visibleDialog" @closed="closeDialog">
+      <major-dialog
+        :isEdit="isEdit"
+        :currentMajor="currentMajor"
+        :sections="sections"
+        :faculties="faculties"
+        @closed="closeDialog"
+        @submit="onSubmit"
+      ></major-dialog>
+    </app-dialog>
   </table>
 </template>
 <script>
+import MajorDialog from '~/pages/majors/-major-dialog';
+import { fetchListSections } from '~/models/sections.model';
+import { fetchListFaculties } from '~/models/faculties.model';
 import { pathified } from '~/utils';
 const majorsStore = pathified('majors');
 export default {
+  components: { MajorDialog },
+  data() {
+    return {
+      visibleDialog: false,
+      isEdit: true,
+      currentMajor: null,
+      sections: [],
+      faculties: [],
+    };
+  },
   computed: {
     majors: majorsStore.$get('majors'),
   },
   async created() {
     await majorsStore.$dispatch('getListMajors');
+  },
+  methods: {
+    async openDialog(major) {
+      this.visibleDialog = true;
+      this.currentMajor = major;
+      this.sections = await fetchListSections();
+      this.faculties = await fetchListFaculties();
+    },
+    closeDialog() {
+      this.visibleDialog = false;
+    },
+    async onSubmit(payload) {
+      await majorsStore.$dispatch('updateMajors', payload);
+      await majorsStore.$dispatch('getListMajors');
+    },
   },
 };
 </script>
@@ -57,5 +95,6 @@ export default {
   > .row > .cell {
     padding: 13px 0px 13px 13px;
   }
+  --mdc-shape-medium: 15px;
 }
 </style>
