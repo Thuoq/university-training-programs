@@ -6,3 +6,15 @@ export const createAcademicYear = (payload) =>
       json: payload,
     })
     .json();
+
+export const updateAcademicYear = (payload) =>
+  apis.universityAPI
+    .put(`academic-year/${payload.id}`, {
+      json: {
+        code: payload.code,
+        name: payload.name,
+        startYear: payload.startYear,
+        finishYear: payload.finishYear
+      },
+    })
+    .json();

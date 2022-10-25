@@ -46,8 +46,6 @@
       --mdc-theme-primary: var(--color-primary);
       --mdc-button-horizontal-padding: 10px;
     }
-    // --mdc-dialog-min-width: 500px;
-    // --mdc-dialog-max-height: 560px;
     --mdc-shape-medium: 15px;
   }
   </style>

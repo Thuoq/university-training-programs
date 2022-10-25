@@ -1,6 +1,6 @@
 <template>
   <div class="academicYear-dialog">
-    <h2 class="title">Thêm mới</h2>
+    <h2 class="title">{{ title }}</h2>
     <div class="body">
       <div class="inputgroup">
         <label class="label">Mã khóa</label>
@@ -57,19 +57,23 @@
 <script>
 import { required, numeric, minLength, between } from 'vuelidate/lib/validators';
 export default {
+  props: {
+    isEdit: {
+      type: Boolean,
+    },
+    currentAcademicYear: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
-      name: null,
-      code: null,
-      startYear: null,
-      finishYear: null,
+      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
+      name: this.currentAcademicYear?.name || null,
+      code: this.currentAcademicYear?.code || null,
+      startYear: this.currentAcademicYear?.startYear.split('-')[0] || null,
+      finishYear: this.currentAcademicYear?.finishYear.split('-')[0] || null,
     };
-  },
-  computed: {
-    getStartYear() {
-      if (!this.startYear) return 2000;
-      return this.startYear;
-    },
   },
   validations() {
     return {
@@ -91,7 +95,7 @@ export default {
         required,
         numeric,
         mixLength: minLength(4),
-        between: between(!this.startYear ? 2000 : Number(this.startYear)+1, 2100),
+        between: between(!this.startYear ? 2000 : Number(this.startYear) + 1, 2100),
       },
     };
   },
@@ -100,15 +104,28 @@ export default {
       this.$emit('closed');
     },
     onSubmit() {
-      const academicYear = {
-        name: this.name,
-        code: this.code,
-        startYear: new Date(`01-02-${this.startYear}`),
-        finishYear: new Date(`01-02-${this.finishYear}`),
-      };
-      const payload = academicYear;
-      this.$emit('submit', payload);
-      this.$emit('closed');
+      if (this.isEdit === true) {
+        const editAcademicYear = {
+          name: this.name,
+          code: this.code,
+          startYear: new Date(`01-02-${this.startYear}`),
+          finishYear: new Date(`01-02-${this.finishYear}`),
+          id: this.currentAcademicYear.id,
+        };
+        const payload = editAcademicYear;
+        this.$emit('submit', payload);
+        this.$emit('closed');
+      } else {
+        const academicYear = {
+          name: this.name,
+          code: this.code,
+          startYear: new Date(`01-02-${this.startYear}`),
+          finishYear: new Date(`01-02-${this.finishYear}`),
+        };
+        const payload = academicYear;
+        this.$emit('submit', payload);
+        this.$emit('closed');
+      }
     },
   },
 };
