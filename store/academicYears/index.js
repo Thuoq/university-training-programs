@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { createAcademicYear,fetchListAcademicYears } from '~/models/academicYears.model';
+import { updateAcademicYear,createAcademicYear,fetchListAcademicYears } from '~/models/academicYears.model';
 
 export const state = () => ({
     academicYears: null,
@@ -18,5 +18,8 @@ export const actions = {
   },
   async createAcademicYears({ commit, state }, payload) {
     await createAcademicYear(payload);
+  },
+  async updateAcademicYears({ commit, state }, payload) {
+    await  updateAcademicYear(payload);
   },
 };
