@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { createFaculty,fetchListFaculties } from '~/models/faculties.model';
+import { createFaculty,fetchListFaculties, updateFaculty } from '~/models/faculties.model';
 
 export const state = () => ({
   faculties: null,
@@ -19,4 +19,7 @@ export const actions = {
   async createFaculties({ commit, state }, payload) {
     await createFaculty(payload);
   },
+  async updateFaculties({ commit, state }, payload) {
+    await updateFaculty(payload);
+  }
 };

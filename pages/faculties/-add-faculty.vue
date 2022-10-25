@@ -5,13 +5,12 @@
       Thêm mới
     </app-button>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
-      <faculty-dialog :faculties="faculties" @closed="closeDialog" @submit="onSubmit"></faculty-dialog>
+      <faculty-dialog @closed="closeDialog" @submit="onSubmit"></faculty-dialog>
     </app-dialog>
   </div>
 </template>
 <script>
 import FacultyDialog from '~/pages/faculties/-faculty-dialog';
-import { fetchListFaculties } from '~/models/faculties.model';
 import { pathified } from '~/utils';
 const facultyStore = pathified('faculties');
 export default {
@@ -19,13 +18,11 @@ export default {
   data() {
     return {
       visibleDialog: false,
-      faculties: [],
     };
   },
   methods: {
-    async openDialog() {
+    openDialog() {
       this.visibleDialog = true;
-      this.faculties = await fetchListFaculties();
     },
     closeDialog() {
       this.visibleDialog = false;
@@ -49,8 +46,6 @@ export default {
     --mdc-theme-primary: var(--color-primary);
     --mdc-button-horizontal-padding: 10px;
   }
-  --mdc-dialog-min-width: 560px;
-  --mdc-dialog-max-height: 560px;
   --mdc-shape-medium: 15px;
 }
 </style>
