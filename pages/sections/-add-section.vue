@@ -6,7 +6,6 @@
     </app-button>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
       <section-dialog
-        :sections="sections"
         :faculties="faculties"
         @closed="closeDialog"
         @submit="onSubmit"
@@ -16,7 +15,6 @@
 </template>
 <script>
 import SectionDialog from '~/pages/sections/-section-dialog';
-import { fetchListSections } from '~/models/sections.model';
 import { fetchListFaculties } from '~/models/faculties.model';
 import { pathified } from '~/utils';
 const sectionStore = pathified('sections');
@@ -25,14 +23,12 @@ export default {
   data() {
     return {
       visibleDialog: false,
-      sections: [],
       faculties: [],
     };
   },
   methods: {
     async openDialog() {
       this.visibleDialog = true;
-      this.sections = await fetchListSections();
       this.faculties = await fetchListFaculties();
     },
     closeDialog() {
@@ -59,5 +55,6 @@ export default {
   }
   //   --mdc-dialog-min-width: 800px;
   //   --mdc-dialog-max-height: 800px;
+  --mdc-shape-medium: 15px;
 }
 </style>

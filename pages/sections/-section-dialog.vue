@@ -1,11 +1,11 @@
 <template>
   <div class="faculty-dialog">
-    <h2 class="title">Thêm mới</h2>
+    <h2 class="title">{{ title }}</h2>
     <div class="body">
       <div class="inputgroup">
         <label class="label">Khoa</label>
         <app-select
-          v-model="facultyId"
+          v-model="$v.facultyId.$model"
           :model-value="facultyId"
           :value="facultyId"
           :value-prop="'id'"
@@ -13,54 +13,65 @@
           :items="faculties"
         ></app-select>
       </div>
-      <div class="notification">
-        <p v-if="checkEmptyFaculty === true">Bạn phải chọn khoa!</p>
-      </div>
+      <div v-if="!$v.facultyId.required" class="notification">Khoa không được để trống!</div>
+
       <div class="inputgroup">
         <label class="label">Mã bộ môn</label>
-        <app-input v-model="code" type="text" class="input" required></app-input>
+        <app-input v-model="$v.code.$model" type="text" class="input" required></app-input>
       </div>
-      <div class="notification">
-        <p v-if="checkEmptyCode === true">Mã bộ môn không được để trống!</p>
-        <p v-if="checkDuplicateCode === true">Mã bộ môn này đã tồn tại!</p>
-      </div>
+      <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã bộ môn không được để trống!</div>
+      <div v-if="!$v.code.minLength" class="notification">Mã bộ môn phải có tối thiểu từ 2 kí tự trở lên!</div>
+
       <div class="inputgroup">
         <label class="label">Tên bộ môn</label>
-        <app-input v-model="name" type="text" class="input" required></app-input>
+        <app-input v-model="$v.name.$model" type="text" class="input" required></app-input>
       </div>
-      <div class="notification">
-        <p v-if="checkEmptyName === true">Tên bộ môn không được để trống!</p>
-        <p v-if="checkDuplicateName === true">Tên bộ môn này đã tồn tại!</p>
-      </div>
+      <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên bộ môn không được để trống!</div>
+      <div v-if="!$v.name.minLength" class="notification">Tên bộ môn phải có tối thiểu từ 2 kí tự trở lên!</div>
     </div>
     <div class="footer">
       <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" @click="onSubmit">Lưu</app-button>
+      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
     </div>
   </div>
 </template>
 <script>
+import { required, minLength } from 'vuelidate/lib/validators';
 export default {
   props: {
     faculties: {
       type: Array,
       default: () => [],
     },
-    sections: {
-      type: Array,
-      default: () => [],
+    isEdit: {
+      type: Boolean,
+    },
+    currentSection: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
     return {
-      name: null,
-      code: null,
-      facultyId: null,
-      checkEmptyFaculty: false,
-      checkEmptyCode: false,
-      checkDuplicateCode: false,
-      checkEmptyName: false,
-      checkDuplicateName: false,
+      name: this.currentSection?.name || null,
+      code: this.currentSection?.code || null,
+      facultyId: this.currentSection?.facultyId || null,
+      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
+    };
+  },
+  validations() {
+    return {
+      code: {
+        required,
+        minLength: minLength(2),
+      },
+      name: {
+        required,
+        minLength: minLength(2),
+      },
+      facultyId: {
+        required,
+      },
     };
   },
   methods: {
@@ -68,45 +79,22 @@ export default {
       this.$emit('closed');
     },
     onSubmit() {
-      const check = (value) => {
-        if (!value) return true;
-        else return false;
-      };
-
-      //  checkEmty
-      this.checkEmptyFaculty = check(this.facultyId);
-      this.checkEmptyName = check(this.name);
-      this.checkEmptyCode = check(this.code);
-
-      //  checkDuplicate
-      this.checkDuplicateCode = this.sections.some((element) => {
-        if (element.code === this.code) {
-          console.log(this.code);
-          return true;
-        }
-        return false;
-      });
-
-      this.checkDuplicateName = this.sections.some((element) => {
-        if (element.name === this.name) {
-          return true;
-        }
-        return false;
-      });
-
-      if (
-        this.checkDuplicateCode === false &&
-        this.checkDuplicateName === false &&
-        this.checkEmptyFaculty === false &&
-        this.checkEmptyCode === false &&
-        this.checkEmptyName === false
-      ) {
+      if (this.isEdit === true) {
+        const editSection = {
+          name: this.name,
+          code: this.code,
+          facultyId: this.facultyId,
+          id: this.currentSection.id,
+        };
+        const payload = editSection;
+        this.$emit('submit', payload);
+        this.$emit('closed');
+      } else {
         const section = {
           name: this.name,
           code: this.code,
           facultyId: this.facultyId,
         };
-
         const payload = section;
         this.$emit('submit', payload);
         this.$emit('closed');
@@ -119,7 +107,7 @@ export default {
 <style lang="scss" scoped>
 .faculty-dialog {
   --app-select-height: 32px;
-  --app-select-width: 227px;
+  --app-select-width: 228px;
   > .title {
     margin: -19px -24px 0px -24px;
     padding-top: 13px;
@@ -146,6 +134,7 @@ export default {
       align-items: center;
       margin-bottom: 37px;
     }
+
     > .inputgroup > .label {
       font-family: 'Inter';
       color: var(--color-back);
@@ -157,11 +146,11 @@ export default {
 
     > .notification {
       color: red;
-      text-align: center;
+      text-align: right;
       font-size: 15px;
       font-family: 'Inter';
-      margin-top: -16px;
-      margin-bottom: 10px;
+      margin-top: -17px;
+      margin-bottom: 20px;
     }
   }
 
