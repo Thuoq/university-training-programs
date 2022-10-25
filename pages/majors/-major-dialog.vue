@@ -1,11 +1,11 @@
 <template>
   <div class="major-dialog">
-    <h2 class="title">Thêm mới</h2>
+    <h2 class="title">{{ title }}</h2>
     <div class="body">
       <div class="inputgroup">
         <label class="label">Khoa</label>
         <app-select
-          v-model="facultyId"
+          v-model="$v.facultyId.$model"
           :model-value="facultyId"
           :value="facultyId"
           :value-prop="'id'"
@@ -13,55 +13,43 @@
           :items="faculties"
         ></app-select>
       </div>
-      <div class="notification">
-        <p v-if="checkEmptyFaculty === true">Bạn phải chọn khoa!</p>
-      </div>
+      <div v-if="!$v.facultyId.required" class="notification">Khoa không được để trống!</div>
 
       <div class="inputgroup">
         <label class="label">Bộ môn</label>
         <app-select
-          v-model="sectionId"
+          v-model="$v.sectionId.$model"
           :model-value="sectionId"
           :value="sectionId"
           :value-prop="'id'"
           :label-prop="'name'"
-          :items="
-            facultyId !== null
-              ? sections.filter((element) => {
-                  return element.facultyId === facultyId;
-                })
-              : sections
-          "
+          :items="getSection"
         ></app-select>
       </div>
-      <div class="notification">
-        <p v-if="checkEmptySection === true">Bạn phải chọn bộ môn!</p>
-      </div>
+      <div v-if="!$v.sectionId.required" class="notification">Bộ môn không được để trống!</div>
 
       <div class="inputgroup">
         <label class="label">Mã ngành học</label>
-        <app-input v-model="code" type="text" class="input" required></app-input>
+        <app-input v-model="$v.code.$model" type="text" class="input" required></app-input>
       </div>
-      <div class="notification">
-        <p v-if="checkEmptyCode === true">Mã ngành học không được để trống!</p>
-        <p v-if="checkDuplicateCode === true">Mã ngành học này đã tồn tại!</p>
-      </div>
+      <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã ngành học không được để trống!</div>
+      <div v-if="!$v.code.minLength" class="notification">Mã ngành học phải có tối thiểu từ 2 kí tự trở lên!</div>
+
       <div class="inputgroup">
         <label class="label">Tên ngành học</label>
-        <app-input v-model="name" type="text" class="input" required></app-input>
+        <app-input v-model="$v.name.$model" type="text" class="input" required></app-input>
       </div>
-      <div class="notification">
-        <p v-if="checkEmptyName === true">Tên ngành học không được để trống!</p>
-        <p v-if="checkDuplicateName === true">Tên ngành học này đã tồn tại!</p>
-      </div>
+      <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên ngành học không được để trống!</div>
+      <div v-if="!$v.name.minLength" class="notification">Tên ngành học phải có tối thiểu từ 4 kí tự trở lên!</div>
     </div>
     <div class="footer">
       <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" @click="onSubmit">Lưu</app-button>
+      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
     </div>
   </div>
 </template>
 <script>
+import { required, minLength } from 'vuelidate/lib/validators';
 export default {
   props: {
     faculties: {
@@ -72,74 +60,73 @@ export default {
       type: Array,
       default: () => [],
     },
-    majors: {
-      type: Array,
-      default: () => [],
+    isEdit: {
+      type: Boolean,
+    },
+    currentMajor: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
     return {
-      name: null,
-      code: null,
-      facultyId: null,
-      sectionId: null,
-      checkEmptyFaculty: false,
-      checkEmptySection: false,
-      checkEmptyCode: false,
-      checkDuplicateCode: false,
-      checkEmptyName: false,
-      checkDuplicateName: false,
+      name: this.currentMajor?.name || null,
+      code: this.currentMajor?.code || null,
+      facultyId: this.currentMajor?.facultyId || null,
+      sectionId: this.currentMajor?.sectionId || null,
+      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
     };
   },
-  created() {
-    // console.log(this.sections);
+  validations() {
+    return {
+      code: {
+        required,
+        minLength: minLength(2),
+      },
+      name: {
+        required,
+        minLength: minLength(4),
+      },
+      facultyId: {
+        required,
+      },
+      sectionId: {
+        required,
+      },
+    };
+  },
+  computed: {
+    getSection() {
+      return this.facultyId !== null
+        ? this.sections.filter((element) => {
+            return element.facultyId === this.facultyId;
+          })
+        : this.sections;
+    },
   },
   methods: {
     onClosed() {
       this.$emit('closed');
     },
     onSubmit() {
-      const check = (value) => {
-        if (!value) return true;
-        else return false;
-      };
-
-      //  checkEmty
-      this.checkEmptyFaculty = check(this.facultyId);
-      this.checkEmptySection = check(this.facultyId);
-      this.checkEmptyName = check(this.name);
-      this.checkEmptyCode = check(this.code);
-
-      //  checkDuplicate
-      this.checkDuplicateCode = this.majors.some((element) => {
-        if (element.code === this.code) {
-          return true;
-        }
-        return false;
-      });
-
-      this.checkDuplicateName = this.majors.some((element) => {
-        if (element.name === this.name) {
-          return true;
-        }
-        return false;
-      });
-
-      if (
-        this.checkDuplicateCode === false &&
-        this.checkDuplicateName === false &&
-        this.checkEmptyFaculty === false &&
-        this.checkEmptySection === false &&
-        this.checkEmptyCode === false &&
-        this.checkEmptyName === false
-      ) {
+      if (this.isEdit === true) {
+        const editMajor = {
+          name: this.name,
+          code: this.code,
+          facultyId: this.facultyId,
+          sectionId: this.sectionId,
+          id: this.currentMajor.id,
+        };
+        const payload = editMajor;
+        this.$emit('submit', payload);
+        this.$emit('closed');
+      } else {
         const major = {
           name: this.name,
           code: this.code,
           facultyId: this.facultyId,
           sectionId: this.sectionId,
         };
-
         const payload = major;
         this.$emit('submit', payload);
         this.$emit('closed');
@@ -190,11 +177,11 @@ export default {
 
     > .notification {
       color: red;
-      text-align: center;
+      text-align: right;
       font-size: 15px;
       font-family: 'Inter';
-      margin-top: -16px;
-      margin-bottom: 10px;
+      margin-top: -17px;
+      margin-bottom: 20px;
     }
   }
 
