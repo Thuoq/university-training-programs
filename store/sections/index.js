@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { createSection,fetchListSections } from '~/models/sections.model';
+import { updateSection,createSection,fetchListSections } from '~/models/sections.model';
 
 export const state = () => ({
   sections: null,
@@ -19,4 +19,8 @@ export const actions = {
   async createSections({ commit, state }, payload) {
     await createSection(payload);
   },
+
+  async updateSections({ commit, state }, payload) {
+    await updateSection(payload);
+  }
 };
