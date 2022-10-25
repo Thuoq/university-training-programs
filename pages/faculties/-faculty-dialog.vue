@@ -1,68 +1,77 @@
 <template>
   <div class="facultie-dialog">
-    <h2 class="title">Thêm mới</h2>
+    <h2 class="title">{{title}}</h2>
     <div class="body">
       <div class="inputgroup">
         <label class="label">Mã khoa</label>
-        <app-input v-model="code" class="input" type="text" required></app-input>
+        <app-input v-model="$v.code.$model" class="input" type="text" required></app-input>
       </div>
+      <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã khoa không được để trống!</div>
+      <div v-if="!$v.code.minLength" class="notification">Mã khoa phải có tối thiểu từ 2 kí tự trở lên!</div>
+
       <div class="inputgroup">
         <label class="label">Tên khoa</label>
-        <app-input v-model="name" class="input" type="text" required></app-input>
+        <app-input v-model="$v.name.$model" class="input" type="text" required></app-input>
       </div>
+      <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên khoa không được để trống!</div>
+      <div v-if="!$v.name.minLength" class="notification">Tên khoa phải có tối thiểu từ 4 kí tự trở lên!</div>
     </div>
-    <div v-if="checkDuplicateCode === true" class="notification">Mã khoa này đã tồn tại !</div>
-    <div v-if="checkDuplicateName === true" class="notification">Tên khoa này đã tồn tại !</div>
     <div class="footer">
       <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" @click="onSubmit">Lưu</app-button>
+      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
     </div>
   </div>
 </template>
 <script>
+import { required, minLength } from 'vuelidate/lib/validators';
 export default {
   props: {
-    faculties: {
-      type: Array,
-      default: () => [],
+    isEdit: {
+      type: Boolean,
+    },
+    currentFaculty: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
     return {
-      name: null,
-      code: null,
-      checkDuplicateCode: false,
-      checkDuplicateName: false,
+      name: this.currentFaculty?.name || null,
+      code: this.currentFaculty?.code || null,
+      title: !this.isEdit  ?'Thêm mới' : 'Chỉnh sửa'
     };
   },
-  created() {
-    console.log(this.faculties);
+  validations() {
+    return {
+      code: {
+        required,
+        minLength: minLength(2),
+      },
+      name: {
+        required,
+        minLength: minLength(4),
+      },
+    };
   },
   methods: {
     onClosed() {
       this.$emit('closed');
     },
     onSubmit() {
-      this.checkDuplicateCode = this.faculties.some((element) => {
-        if (element.code === this.code) {
-          return true;
-        }
-        return false;
-      });
-
-      this.checkDuplicateName = this.faculties.some((element) => {
-        if (element.name === this.name) {
-          return true;
-        }
-        return false;
-      });
-
-      if (this.checkDuplicateCode === false && this.checkDuplicateName === false) {
+      if (this.isEdit === true) {
+        const currentfaculty = {
+          code: this.code,
+          name: this.name,
+          id: this.currentFaculty.id,
+        };
+        const payload = currentfaculty;
+        this.$emit('submit', payload);
+        this.$emit('closed');
+      } else {
         const faculty = {
           code: this.code,
           name: this.name,
         };
-
         const payload = faculty;
         this.$emit('submit', payload);
         this.$emit('closed');
@@ -91,11 +100,14 @@ export default {
   }
 
   > .body {
-    text-align: center;
-    margin: 23px 0px 23px 0px;
+    margin-top: 40px;
     > .inputgroup {
-      position: relative;
-      display: inline-block;
+      width: 380px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 37px;
     }
     > .inputgroup:not(:last-child) {
       margin-bottom: 23.13px;
@@ -103,30 +115,21 @@ export default {
   }
 
   > .body > .inputgroup > .input {
-    background-color: var(--color-white);
-    border: 1px solid black;
-    width: 250px;
     height: 40px;
-    border-radius: 5px;
   }
 
   > .body > .inputgroup > .label {
-    margin-right: 10px;
-    width: 200px;
-    text-align: right;
-    margin-top: 10px;
-    font-size: 16px;
-    font-weight: 400;
     font-family: 'Inter';
     color: var(--color-back);
   }
 
-  .notification {
-    font-size: 15px;
+  > .body > .notification {
     color: red;
+    text-align: right;
+    font-size: 15px;
+    font-family: 'Inter';
     margin-top: 20px;
     margin-bottom: 20px;
-    text-align: center;
   }
 
   .footer {

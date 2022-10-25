@@ -7,3 +7,13 @@ export const createFaculty = (payload) =>
       json: payload,
     })
     .json();
+
+export const updateFaculty = (payload) =>
+  apis.universityAPI
+    .put(`faculties/${payload.id}`, {
+      json: {
+        code: payload.code,
+        name: payload.name,
+      },
+    })
+    .json();
