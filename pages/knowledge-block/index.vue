@@ -28,6 +28,7 @@ export default {
         state._hasChildren = true;
         state._showChildren = true;
         state._children = state.knowledgeChildren;
+        state._selectable = true;
         return state;
       });
     },

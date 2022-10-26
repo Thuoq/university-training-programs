@@ -1,5 +1,11 @@
 <template>
-  <vue-ads-table class="knowledge-block-list" :classes="classes" :columns="columns" :rows="knowledgeBlockList">
+  <vue-ads-table
+    class="knowledge-block-list"
+    :classes="classes"
+    :columns="columns"
+    :rows="knowledgeBlockList"
+    @selection-change="onSelectionChange"
+  >
     <template slot="toggle-children-icon" slot-scope="props">
       <mwc-icon class="icon">{{ props.expanded ? 'remove' : 'add' }}</mwc-icon>
     </template></vue-ads-table
@@ -46,6 +52,11 @@ export default {
         },
       },
     };
+  },
+  methods: {
+    onSelectionChange(val) {
+      console.log(val);
+    },
   },
 };
 </script>
