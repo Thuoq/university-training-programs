@@ -1,55 +1,51 @@
 <template>
   <div class="employee-dialog">
-    <h2 class="title">Thêm mới</h2>
+    <h2 class="title">{{ title }}</h2>
     <div class="body">
       <div class="group">
         <div class="inputgroup">
           <label class="label">Mã đăng nhập</label>
-          <app-input v-model="employeeCode" type="text" class="input" required></app-input>
+          <app-input v-model="$v.employeeCode.$model" type="text" class="input" required></app-input>
         </div>
-        <div class="notification">
-          <p v-if="checkEmptyEmployeeCode === true">Mã đăng nhập không được để trống!</p>
-          <p v-if="checkDuplicateEmployeeCode === true">Mã đăng nhập này đã tồn tại!</p>
+        <div v-if="$v.employeeCode.$error && !$v.employeeCode.required" class="notification">
+          Mã đăng nhập không được để trống!
+        </div>
+        <div v-if="!$v.employeeCode.minLength" class="notification">
+          Mã đăng nhập phải có tối thiểu từ 3 kí tự trở lên!
         </div>
       </div>
 
       <div class="group">
         <div class="inputgroup">
           <label class="label">Tên người dùng</label>
-          <app-input v-model="name" type="text" class="input" required></app-input>
+          <app-input v-model="$v.name.$model" type="text" class="input" required></app-input>
         </div>
-        <div class="notification">
-          <p v-if="checkEmptyName === true">Tên người dùng không được để trống!</p>
-          <p v-if="checkDuplicateName === true">Tên người dùng này đã tồn tại!</p>
-        </div>
+        <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên người dùng không được để trống!</div>
+        <div v-if="!$v.name.minLength" class="notification">Tên người dùng phải có tối thiểu từ 4 kí tự trở lên!</div>
       </div>
 
       <div class="group">
         <div class="inputgroup">
           <label class="label">Email</label>
-          <app-input v-model="email" type="text" class="input" required></app-input>
+          <app-input v-model="$v.email.$model" type="text" class="input" required></app-input>
         </div>
-        <div class="notification">
-          <p v-if="checkEmptyEmail === true">Email không được để trống!</p>
-          <p v-if="checkDuplicateEmail === true">Email này đã tồn tại!</p>
-        </div>
+        <div v-if="$v.email.$error && !$v.email.required" class="notification">Email không được để trống!</div>
+        <div v-if="!$v.email.email" class="notification">Email phải có định dang là 1 email ví dụ: test@gmail.com!</div>
       </div>
 
-      <div class="group">
+      <div class="group" v-if="isEdit!==true">
         <div class="inputgroup">
           <label class="label">Mật khẩu</label>
-          <app-input v-model="password" type="password" class="input" required></app-input>
+          <app-input v-model="$v.password.$model" type="password" class="input" required></app-input>
         </div>
-        <div class="notification">
-          <p v-if="checkEmptyPass === true">Mật khẩu không được để trống!</p>
-        </div>
+        <div v-if="$v.password.$error && !$v.password.required" class="notification">Mật khẩu không được để trống!</div>
       </div>
 
       <div class="group">
         <div class="inputgroup">
           <label class="label">Nhóm quyền</label>
           <app-select
-            v-model="roleId"
+            v-model="$v.roleId.$model"
             :model-value="roleId"
             :value="roleId"
             :value-prop="'id'"
@@ -57,16 +53,14 @@
             :items="roles"
           ></app-select>
         </div>
-        <div class="notification">
-          <p v-if="checkEmptyRole === true">Nhóm quyền không được để trống!</p>
-        </div>
+        <div v-if="!$v.roleId.required" class="notification">Nhóm quyền không được để trống!</div>
       </div>
 
       <div class="group">
         <div class="inputgroup">
           <label class="label">Nhóm người dùng</label>
           <app-select
-            v-model="positionId"
+            v-model="$v.positionId.$model"
             :model-value="positionId"
             :value="positionId"
             :value-prop="'id'"
@@ -74,9 +68,7 @@
             :items="positions"
           ></app-select>
         </div>
-        <div class="notification">
-          <p v-if="checkEmptyPosition === true">Nhóm người dùng không được để trống!</p>
-        </div>
+        <div v-if="!$v.positionId.required" class="notification">Nhóm người dùng không được để trống!</div>
       </div>
 
       <div class="group">
@@ -88,10 +80,8 @@
             :value-prop="'id'"
             :label-prop="'name'"
             :items="faculties"
+            :disabled="DisableByPDT"
           ></app-select>
-        </div>
-        <div class="notification">
-          <p v-if="checkEmptyFaculty === true">Khoa không được để trống!</p>
         </div>
       </div>
 
@@ -103,11 +93,9 @@
             :model-value="sectionId"
             :value-prop="'id'"
             :label-prop="'name'"
-            :items="sections"
+            :items="Sections"
+            :disabled="DisableByPDT || DisableByTK"
           ></app-select>
-        </div>
-        <div class="notification">
-          <p v-if="checkEmptySection === true">Bộ môn không được để trống!</p>
         </div>
       </div>
     </div>
@@ -118,6 +106,9 @@
   </div>
 </template>
 <script>
+import { required, minLength, email } from 'vuelidate/lib/validators';
+const PHONG_DAO_TAO_CODE = 'PDT';
+const TRUONG_KHOA_CODE = 'TK';
 export default {
   props: {
     roles: {
@@ -132,10 +123,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    employees: {
-      type: Array,
-      default: () => [],
-    },
     positions: {
       type: Array,
       default: () => [],
@@ -144,10 +131,13 @@ export default {
       type: Array,
       default: () => [],
     },
+    isEdit: {
+      type: Boolean,
+    },
   },
-  computed: {},
   data() {
     return {
+      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
       employeeCode: this.currentEmployee?.employeeCode || null,
       name: this.currentEmployee?.name || null,
       email: this.currentEmployee?.email || null,
@@ -157,82 +147,78 @@ export default {
       facultyId: this.currentEmployee?.facultyId || null,
       positionId: this.currentEmployee?.positionEmployees[0].positionId || null,
       sectionId: this.currentEmployee?.sectionId || null,
-
-      // check
-      checkEmptyEmployeeCode: false,
-      checkDuplicateEmployeeCode: false,
-      checkEmptyName: false,
-      checkDuplicateName: false,
-      checkEmptyEmail: false,
-      checkDuplicateEmail: false,
-      checkEmptyPass: false,
-      checkEmptyPosition: false,
-      checkEmptyRole: false,
-      checkEmptyFaculty: false,
-      checkEmptySection: false,
     };
+  },
+  validations() {
+    return {
+      employeeCode: {
+        required,
+        minLength: minLength(3),
+      },
+      name: {
+        required,
+        minLength: minLength(4),
+      },
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
+        minLength: minLength(4),
+      },
+      roleId: {
+        required,
+      },
+      positionId: {
+        required,
+      },
+    };
+  },
+  computed: {
+    Sections() {
+      return this.facultyId !== null
+        ? this.sections.filter((element) => {
+            return element.facultyId === this.facultyId;
+          })
+        : this.sections;
+    },
+    // disable by pos.code === 'PDT'
+    DisableByPDT() {
+      const currentPosition = this.positions.find(
+        (pos) => pos.id === this.positionId && pos.code === PHONG_DAO_TAO_CODE,
+      );
+      if (currentPosition) return true;
+      return false;
+    },
+    // disable by pos.code === 'TK'
+    DisableByTK() {
+      const currentPosition = this.positions.find((pos) => pos.id === this.positionId && pos.code === TRUONG_KHOA_CODE);
+      if (currentPosition) return true;
+      return false;
+    },
   },
   methods: {
     onClosed() {
       this.$emit('closed');
     },
     onSubmit() {
-      const checkNull = (value) => {
-        if (!value) return true;
-        else return false;
+      const employee = {
+        name: this.name,
+        email: this.email,
+        employeeCode: this.employeeCode,
+        password: this.password,
+        facultyId: this.facultyId,
+        positionId: this.positionId,
+        roleId: this.roleId,
+        sectionId: this.sectionId,
       };
-      const checkDuplicate = (dataArray, fieldName, value) => {
-        return dataArray.some((e) => {
-          if (e[`${fieldName}`] === value) {
-            return true;
-          }
-          return false;
-        });
-      };
-      // checkEmpty
-      this.checkEmptyEmployeeCode = checkNull(this.employeeCode);
-      this.checkEmptyName = checkNull(this.name);
-      this.checkEmptyEmail = checkNull(this.email);
-      this.checkEmptyPass = checkNull(this.password);
-      this.checkEmptyPosition = checkNull(this.positionId);
-      this.checkEmptyRole = checkNull(this.roleId);
-      this.checkEmptyFaculty = checkNull(this.facultyId);
-      this.checkEmptySection = checkNull(this.sectionId);
-      //  checkDuplicate
-      this.checkDuplicateEmployeeCode = checkDuplicate(this.employees, 'employeeCode', this.employeeCode);
-      this.checkDuplicateName = checkDuplicate(this.employees, 'name', this.name);
-      this.checkDuplicateEmail = checkDuplicate(this.employees, 'email', this.email);
-      if (
-        this.checkEmptyEmployeeCode === false &&
-        this.checkEmptyName === false &&
-        this.checkEmptyEmail === false &&
-        this.checkEmptyPass === false &&
-        this.checkEmptyPosition === false &&
-        this.checkEmptyRole === false &&
-        this.checkEmptyFaculty === false &&
-        this.checkEmptySection === false &&
-        this.checkDuplicateName === false &&
-        this.checkDuplicateEmployeeCode === false &&
-        this.checkDuplicateEmail === false
-      ) {
-        const employee = {
-          name: this.name,
-          email: this.email,
-          employeeCode: this.employeeCode,
-          password: this.password,
-          // phoneNumber: 'string',
-          facultyId: this.facultyId,
-          // departmentId: 0,
-          positionId: this.positionId,
-          roleId: this.roleId,
-          sectionId: this.sectionId,
-        };
-        const payload = employee;
-        this.$emit('submit', payload);
-        this.$emit('closed');
+      if(this.isEdit===true){
+        employee.id = this.currentEmployee.id;
       }
-      // const test =  this.positions.find(o => o.id === this.positionId).code;
-      // console.log(test);
+      const payload = employee;
+      this.$emit('submit', payload);
+      this.$emit('closed');
     },
   },
 };
@@ -284,11 +270,11 @@ export default {
 
     > .group > .notification {
       color: red;
-      text-align: center;
+      text-align: left;
       font-size: 15px;
       font-family: 'Inter';
       margin-top: 16px;
-      margin-bottom: 10px;
+      margin-bottom: -6px;
     }
   }
 

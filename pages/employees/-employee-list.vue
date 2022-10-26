@@ -14,10 +14,10 @@
       <td class="cell">
         {{ employee.name }}
         <br />
-        <p class="text">{{ employee.positionEmployees[0].position.name }}</p>
+        <p class="text">{{ employee.positionEmployees[0].position?.name }}</p>
       </td>
       <td class="cell">{{ employee.role.name }}</td>
-      <td class="cell">{{ employee.faculty.name }}</td>
+      <td class="cell">{{ employee.faculty?.name }}</td>
       <td class="cell">{{ employee.email }}</td>
     </tr>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
@@ -25,10 +25,11 @@
         :roles="roles"
         :faculties="faculties"
         :positions="positions"
+        :isEdit="isEdit"
         :current-employee="currentEmployee"
-        :employees="employees"
         :sections="sections"
         @closed="closeDialog"
+        @submit="onSubmit"
       ></employee-dialog>
     </app-dialog>
   </table>
@@ -48,6 +49,7 @@ export default {
   data() {
     return {
       visibleDialog: false,
+      isEdit:true,
       currentEmployee: null,
       roles: null,
       faculties: null,
@@ -73,6 +75,10 @@ export default {
     closeDialog() {
       this.visibleDialog = false;
     },
+    async onSubmit(payload) {
+      // await employeesStore.$dispatch('updateEmployees', payload);
+      // await employeesStore.$dispatch('getListEmployees');
+    },
   },
 };
 </script>
@@ -90,6 +96,7 @@ export default {
       line-height: 21px;
       font-weight: 700;
       text-align: left;
+      background-color: rgba($color: #3340bf, $alpha: 0.17);
     }
   }
   > .row > .col {
@@ -115,5 +122,6 @@ export default {
 
   --mdc-dialog-min-width: 838px;
   --mdc-dialog-max-height: 800px;
+  --mdc-shape-medium: 15px;
 }
 </style>
