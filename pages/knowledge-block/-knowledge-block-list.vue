@@ -13,7 +13,6 @@
 </template>
 <script>
 import { VueAdsTable } from 'vue-ads-table-tree';
-
 export default {
   components: {
     VueAdsTable,
@@ -55,7 +54,9 @@ export default {
   },
   methods: {
     onSelectionChange(val) {
-      console.log(val);
+      if(val.length !== 0){
+        this.$emit('openDialog', val);
+      }
     },
   },
 };

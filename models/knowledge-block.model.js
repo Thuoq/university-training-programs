@@ -6,3 +6,14 @@ export const createKnowledgeBlock = (payload) =>
       json: payload,
     })
     .json();
+
+export const updateKnowledgeBlock = (payload) =>
+  apis.universityAPI
+    .put(`knowledge-block/${payload.id}`, {
+      json: {
+        name: payload.name,
+        code: payload.code,
+        knowledgeParentId: !payload.knowledgeParentId ? null : payload.knowledgeParentId
+      },
+    })
+    .json();
