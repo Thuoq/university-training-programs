@@ -1,6 +1,6 @@
 <template>
   <div class="knowledge-block-dialog">
-    <h2 class="title">Thêm mới</h2>
+    <h2 class="title">{{ title }}</h2>
     <form class="formgroup" @submit.prevent="onSubmit">
       <div class="row">
         <label for="parent" class="label">Khối kiến thức cha</label>
@@ -43,12 +43,20 @@ export default {
       type: Array,
       default: () => [],
     },
+    isEdit: {
+      type: Boolean,
+    },
+    currentKnowledgeBlock: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
-      code: '',
-      knowledgeParentId: 0,
-      name: '',
+      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
+      code: this.currentKnowledgeBlock[0]?.code || '',
+      knowledgeParentId: this.currentKnowledgeBlock[0]?.knowledgeParentId ||  0,
+      name: this.currentKnowledgeBlock[0]?.name || '',
     };
   },
   validations: {
@@ -65,11 +73,20 @@ export default {
       this.$emit('closed');
     },
     onSubmit() {
-      const payload = this.$data;
+      const knowledgeBlock = {
+        code: this.code,
+        knowledgeParentId: this.knowledgeParentId,
+        name: this.name,
+      };
+      if(this.isEdit === true){
+        knowledgeBlock.id = this.currentKnowledgeBlock[0].id;
+      }
+      const payload = knowledgeBlock;
       if (!payload.knowledgeParentId) {
         delete payload.knowledgeParentId;
       }
       this.$emit('submit', payload);
+      this.$emit('closed');
     },
   },
 };
