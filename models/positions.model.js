@@ -8,3 +8,13 @@ export const createPosition = (payload) =>
       json: payload,
     })
     .json();
+
+export const updatePosition = (payload) =>
+  apis.universityAPI
+    .put(`positions/${payload.id}`, {
+      json: {
+        name: payload.name,
+        code: payload.code,
+      },
+    })
+    .json();
