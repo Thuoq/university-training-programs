@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <img src="~/static/logotlu.png" class="img" alt="logoTLU" />
-    <h6 v-if="loginFail === true" class="text-center">Mã đăng nhập hoặc mật khẩu không chính xác!</h6>
+    <h6 v-if="loginFail === true" class="notification">Mã đăng nhập hoặc mật khẩu không chính xác!</h6>
     <form class="formlogin" @submit.prevent="onSubmit">
       <div class="form">
         <mwc-icon class="icon">account_circle</mwc-icon>
@@ -14,7 +14,7 @@
       </div>
 
       <div class="form -text-right">
-        <nuxt-link class="forgotpassword" to="/forgetpassword">
+        <nuxt-link class="forgotpassword" to="/forgot-password">
           <span><font-awesome-icon :icon="['fas', 'key']" /></span>
           Quên mật khẩu?
         </nuxt-link>
@@ -61,6 +61,8 @@ export default {
       if (this.currentUser) {
         window.localStorage.setItem('user', JSON.stringify(this.currentUser));
         await this.$router.push('/');
+      } else if (!this.currentUser) {
+        this.loginFail = true;
       }
     },
   },
@@ -110,6 +112,16 @@ export default {
     height: 50px;
     width: 70%;
     cursor: pointer;
+  }
+
+  > .notification {
+    text-align: center;
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: 'Inter';
+    margin-top: -40px;
+    margin-bottom: 20px;
   }
 }
 </style>
