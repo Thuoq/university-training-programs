@@ -4,8 +4,9 @@
       <th class="col">STT</th>
       <th class="col">Mã</th>
       <th class="col">Tên người dùng</th>
-      <th class="col">Nhóm người dùng</th>
+      <th class="col">Nhóm quyền</th>
       <th class="col">Khoa</th>
+      <th class="col">Bộ môn</th>
       <th class="col">Email</th>
     </tr>
     <tr v-for="(employee, index) in employees" :key="employee.id" class="row" @dblclick.prevent="openDialog(employee)">
@@ -18,6 +19,7 @@
       </td>
       <td class="cell">{{ employee.role.name }}</td>
       <td class="cell">{{ employee.faculty?.name }}</td>
+      <td class="cell">{{ employee.section?.name }}</td>
       <td class="cell">{{ employee.email }}</td>
     </tr>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
@@ -76,8 +78,8 @@ export default {
       this.visibleDialog = false;
     },
     async onSubmit(payload) {
-      // await employeesStore.$dispatch('updateEmployees', payload);
-      // await employeesStore.$dispatch('getListEmployees');
+      await employeesStore.$dispatch('updateEmployees', payload);
+      await employeesStore.$dispatch('getListEmployees');
     },
   },
 };

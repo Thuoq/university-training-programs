@@ -33,7 +33,7 @@
         <div v-if="!$v.email.email" class="notification">Email phải có định dang là 1 email ví dụ: test@gmail.com!</div>
       </div>
 
-      <div class="group" v-if="isEdit!==true">
+      <div class="group" v-if="isEdit !== true">
         <div class="inputgroup">
           <label class="label">Mật khẩu</label>
           <app-input v-model="$v.password.$model" type="password" class="input" required></app-input>
@@ -76,7 +76,7 @@
           <label class="label">Khoa</label>
           <app-select
             v-model="facultyId"
-            :model-value="facultyId"
+            :model-value="!DisableByPDT ? facultyId : null"
             :value-prop="'id'"
             :label-prop="'name'"
             :items="faculties"
@@ -90,7 +90,7 @@
           <label class="label">Bộ môn</label>
           <app-select
             v-model="sectionId"
-            :model-value="sectionId"
+            :model-value="!(DisableByPDT || DisableByTK) ? sectionId : null"
             :value-prop="'id'"
             :label-prop="'name'"
             :items="Sections"
@@ -208,17 +208,18 @@ export default {
         email: this.email,
         employeeCode: this.employeeCode,
         password: this.password,
-        facultyId: this.facultyId,
+        facultyId: !this.DisableByPDT ? this.facultyId : null,
         positionId: this.positionId,
         roleId: this.roleId,
-        sectionId: this.sectionId,
+        sectionId: !(this.DisableByPDT || this.DisableByTK) ? this.sectionId : null,
       };
-      if(this.isEdit===true){
+      if (this.isEdit === true) {
         employee.id = this.currentEmployee.id;
       }
       const payload = employee;
       this.$emit('submit', payload);
       this.$emit('closed');
+      // console.log(payload);
     },
   },
 };

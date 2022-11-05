@@ -10,12 +10,12 @@ export const createEmployee = (payload) =>
 
 export const updateEmployee = (payload) =>
   apis.universityAPI
-    .put(`employees/${payload.id}`, {
+    .put(`employees/${payload.employeeCode}`, {
       json: {
         name: payload.name,
         email: payload.email,
         employeeCode: payload.employeeCode,
-        // password: payload.password,
+        password: payload.password,
         facultyId: payload.facultyId,
         positionId: payload.positionId,
         roleId: payload.roleId,
