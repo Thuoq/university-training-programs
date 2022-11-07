@@ -19,3 +19,11 @@ export const logOut= () => {
   return apis.universityAPI
     .post(`auth/log-out`)
 };
+
+export const forgotPass = (email) => {
+  return apis.universityAPI
+    .post(`auth/forgot-password`, {
+      json:email,
+    })
+};
+

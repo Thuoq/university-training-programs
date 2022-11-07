@@ -8,8 +8,4 @@ export const createEmployee = (payload) =>
     })
     .json();
 
-    // export const findEmployeeByEmployeeCode = (payload) =>
-    // apis.universityAPI
-    //   .get(`employees/${payload.}`)
-    //   .json();
-
+export const findEmployeeByEmployeeCode = (payload) => apis.universityAPI.get(`employees/${payload}`).json();

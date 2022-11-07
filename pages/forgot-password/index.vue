@@ -15,19 +15,35 @@
 </template>
 
 <script>
+import { findEmployeeByEmployeeCode } from '~/models/employees.model';
+import { forgotPass } from '~/models/user.model';
 export default {
   data() {
     return {
       employeeCode: '',
       findEmployeeFail: false,
+      employee: null,
     };
   },
   head: {
     title: 'Quên mật khẩu | Quản lí đào tạo',
   },
   methods: {
-    onSubmit() {
-      console.log(this.employeeCode);
+    async onSubmit() {
+      try {
+        this.employee = await findEmployeeByEmployeeCode(this.employeeCode);
+        if (this.employee) {
+          const email = {
+            email: this.employee.email,
+          };
+          await forgotPass(email);
+          await this.$router.push('/login');
+          this.$toast.success('Nhà trường đã cấp lại mật khẩu cho bạn trong email tương ứng với mã nhân viên!');
+          this.$toast.success('\tHãy kiểm tra hộp thư điện tử của bạn và đăng nhập lại');
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
@@ -46,7 +62,7 @@ export default {
     margin-bottom: 50px;
   }
 
-  >.notification{
+  > .notification {
     width: 100%;
     text-align: center;
     margin: -30px 0 40px 0;
