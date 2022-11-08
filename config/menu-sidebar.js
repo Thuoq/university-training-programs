@@ -46,7 +46,7 @@ export const SIDE_BAR_MENUS = [
     children: [
       {
         title: 'Quản lý Chương trình Đào tạo',
-        to: '#',
+        to: 'training-program-content',
         className: 'item',
       },
     ],

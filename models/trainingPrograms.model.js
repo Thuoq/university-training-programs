@@ -11,6 +11,7 @@ export const updateTrainingProgram = (payload) =>
   apis.universityAPI
     .put(`training-programs/${payload.id}`, {
       json: {
+        code: payload.code,
         name: payload.name,
         marjorId: payload.marjorId,
         academicYearId: payload.academicYearId,

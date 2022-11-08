@@ -1,6 +1,6 @@
 <template>
   <div class="employee-dialog">
-    <h2 class="title">Thêm mới</h2>
+    <h2 class="title">{{title}}</h2>
     <div class="body">
       <div class="grouptext">
         <div class="group">
@@ -111,6 +111,7 @@ export default {
     },
     onSubmit() {
       const TP = {
+        code: this.code,
         name: this.name,
         marjorId: this.marjorId,
         academicYearId: this.academicYearId,

@@ -14,10 +14,10 @@
       @dblclick.prevent="openDialog(trainingProgram)"
     >
       <td class="cell">{{ index + 1 }}</td>
-      <td class="cell">{{ trainingProgram.id }}</td>
+      <td class="cell">{{ trainingProgram.code }}</td>
       <td class="cell">{{ trainingProgram.name }}</td>
-      <td class="cell">{{ trainingProgram.academicYearId }}</td>
-      <td class="cell">{{ trainingProgram.marjorId }}</td>
+      <td class="cell">{{ trainingProgram.academicYear?.name }}</td>
+      <td class="cell">{{ trainingProgram.marjor?.name }}</td>
     </tr>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
       <trainingProgram-dialog
