@@ -23,8 +23,8 @@
         <trainingProgramContent-dialog
           :isEdit="isEdit"
           :currentTrainingProgram="currentTrainingProgram"
-          :academicYears="academicYears"
-          :majors="majors"
+          :knowledgeBlocks="knowledgeBlocks"
+          :subjects="subjects"
           @closed="closeDialog"
           @submit="onSubmit"
         ></trainingProgramContent-dialog>
@@ -33,8 +33,8 @@
   </template>
   <script>
   import TrainingProgramContentDialog from '~/pages/training-program-content/-trainingProgramContent-dialog';
-  import { fetchListMajors } from '~/models/majors.model';
-  import { fetchListAcademicYears } from '~/models/academicYears.model';
+  import { fetchListKnowledgeBlock } from '~/models/knowledge-block.model';
+  import { fetchListSubjects } from '~/models/subjects.model';
   import { pathified } from '~/utils';
   const trainingProgramsStore = pathified('trainingPrograms');
   export default {
@@ -44,9 +44,8 @@
         visibleDialog: false,
         isEdit: true,
         currentTrainingProgram: null,
-        academicYears: [],
-        majors: [],
-  
+        knowledgeBlocks: [],
+        subjects: [],
       };
     },
     computed: {
@@ -57,10 +56,10 @@
     },
     methods: {
       async openDialog(trainingProgram) {
-        this.visibleDialog = true;
         this.currentTrainingProgram = trainingProgram;
-        this.academicYears = await fetchListAcademicYears();
-        this.majors = await fetchListMajors();
+        this.knowledgeBlocks = await fetchListKnowledgeBlock();
+        this.subjects = await fetchListSubjects();
+        this.visibleDialog = true;
       },
       closeDialog() {
         this.visibleDialog = false;
@@ -102,7 +101,7 @@
       padding: 13px 0px 13px 13px;
     }
     --mdc-shape-medium: 15px;
-    --mdc-dialog-min-width: 850px;
+    --mdc-dialog-min-width: 1000px;
   }
   </style>
   

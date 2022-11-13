@@ -20,11 +20,11 @@ export default {
   data() {
     return {
       visibleDialog: false,
-      subjects: []
+      subjects: [],
     };
   },
   methods: {
-   async openDialog() {
+    async openDialog() {
       this.visibleDialog = true;
       this.subjects = await fetchListSubjects();
     },

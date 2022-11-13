@@ -30,6 +30,7 @@
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.19.3",
+    "dual-listbox-vue": "^1.0.2",
     "ky": "^0.30.0",
     "ky-universal": "^0.10.1",
     "nuxt": "^2.15.8",
