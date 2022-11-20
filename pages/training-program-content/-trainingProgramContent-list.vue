@@ -28,6 +28,7 @@
         :kBListWithSubject="KBListWithSubject"
         @closed="closeDialog"
         @submit="onSubmit"
+        @update="onUpdate"
       ></trainingProgramContent-dialog>
     </app-dialog>
   </table>
@@ -47,7 +48,7 @@ export default {
       knowledgeBlocks: [],
       subjects: [],
       KBListWithSubject: [],
-      isEdit: false
+      isEdit: false,
     };
   },
   computed: {
@@ -66,21 +67,33 @@ export default {
       let KBWithSubjectList = [];
       if (this.currentTrainingProgram.trainingProgramContents.length > 0) {
         this.isEdit = true;
+        // create a set of knowledgeBlockId 
         const knowledgeBlockIdList = [
           ...new Set(this.currentTrainingProgram.trainingProgramContents.map((a) => a.knowledgeBlockId)),
         ];
 
+        // add every knowblocklist include child of itself if exits and child.id exit in knowledgeBlockIdList 
         knowledgeBlockIdList.forEach((id) => {
           const temp = this.knowledgeBlocks.find((obj) => obj.id === id);
           if (temp) {
             KBWithSubjectList.push(temp);
+            if (temp.knowledgeChildren.length > 0) {
+              knowledgeBlockIdList.forEach((id) => {
+                temp.knowledgeChildren.forEach((kb) => {
+                  if (id === kb.id) {
+                    KBWithSubjectList.push(kb);
+                  }
+                });
+              });
+            }
           }
         });
+        
+        // add subject to corresponds knowledgeBlock to it
         KBWithSubjectList = KBWithSubjectList.map((obj) => ({ ...obj, subjectList: [] }));
         KBWithSubjectList.forEach((knowledgeBlock) => {
           this.currentTrainingProgram.trainingProgramContents.forEach((obj) => {
             if (obj.knowledgeBlockId === knowledgeBlock.id) {
-              obj.subject.idInTrainingContent = obj.id;
               knowledgeBlock.subjectList.push(obj.subject);
               const findIndex = this.subjects.findIndex((e) => e.id === obj.subject.id);
               findIndex !== -1 && this.subjects.splice(findIndex, 1);
@@ -89,17 +102,19 @@ export default {
         });
       }
       this.KBListWithSubject = KBWithSubjectList;
-      console.log(this.KBListWithSubject);
       this.visibleDialog = true;
     },
     closeDialog() {
       this.visibleDialog = false;
     },
     async onSubmit(payload) {
-      // if(this.isEdit === false){
-        await trainingProgramsStore.$dispatch('createTrainingProgramsContent', payload);
-      
-     
+      await trainingProgramsStore.$dispatch('createTrainingProgramsContent', payload);
+      await trainingProgramsStore.$dispatch('getListTrainingPrograms');
+    },
+    async onUpdate(payload, id) {
+      await trainingProgramsStore.$dispatch('deleteTrainingProgramContentByTPId', id);
+      await trainingProgramsStore.$dispatch('createTrainingProgramsContent', payload);
+      await trainingProgramsStore.$dispatch('getListTrainingPrograms');
     },
   },
 };

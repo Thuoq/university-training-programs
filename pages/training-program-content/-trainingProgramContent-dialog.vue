@@ -11,11 +11,11 @@
             :searchable="true"
             :close-on-select="false"
             :show-labels="false"
-            @remove="onRemove($event)"
-            @select="onSelect($event)"
             label="name"
             track-by="name"
             placeholder="Khối kiến thức"
+            @remove="onRemove($event)"
+            @select="onSelect($event)"
           ></multiselect>
         </div>
         <div class="title">
@@ -23,7 +23,7 @@
           <span class="main">{{ name }}</span>
         </div>
       </div>
-      <div v-for="knowledgeBlock in knowledgeBlockList" :key="knowledgeBlock.name" class="content">
+      <div v-for="knowledgeBlock in sortKnowledgeBlockList" :key="knowledgeBlock.name" class="content">
         <hr />
         <div class="table-group">
           <div class="table">
@@ -33,9 +33,8 @@
             </div>
             <table class="subjects-list">
               <tr class="row -head">
-                <th class="col">Mã môn học</th>
-                <th class="col">Tên môn học</th>
-                <th></th>
+                <th class="col" @click="sort('code')">Mã môn học</th>
+                <th class="col" @click="sort('name')">Tên môn học</th>
               </tr>
               <tr
                 v-for="subject in knowledgeBlock.subjectList"
@@ -55,11 +54,11 @@
             </div>
             <table class="subjects-list">
               <tr class="row -head">
-                <th class="col">Mã môn học</th>
-                <th class="col">Tên môn học</th>
+                <th class="col" @click="sort('code')">Mã môn học</th>
+                <th class="col" @click="sort('name')">Tên môn học</th>
               </tr>
               <tr
-                v-for="subject in destination"
+                v-for="subject in sortDestination"
                 :key="subject.id"
                 class="row"
                 @click.prevent="moveToSource(subject, knowledgeBlock.id)"
@@ -110,6 +109,9 @@ export default {
       name: this.currentTrainingProgram?.name || null,
       knowledgeBlockList: this.kBListWithSubject,
       destination: this.subjects,
+      currentSort: 'name',
+      currentSortDir: 'asc',
+      filter: '',
     };
   },
   computed: {
@@ -122,6 +124,30 @@ export default {
             data.push(kb);
           });
         }
+      });
+      return data;
+    },
+    sortDestination() {
+      const data = this.destination;
+      data.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir === 'desc') modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
+      });
+      return data;
+    },
+    sortKnowledgeBlockList() {
+      const data = this.knowledgeBlockList;
+      data.forEach((KB) => {
+        KB.subjectList.sort((a, b) => {
+          let modifier = 1;
+          if (this.currentSortDir === 'desc') modifier = -1;
+          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+          return 0;
+        });
       });
       return data;
     },
@@ -149,10 +175,12 @@ export default {
         data = data.map((obj) => ({ ...obj, trainingProgramId: this.currentTrainingProgram.id }));
       });
       const payload = data;
-      this.$emit('submit', payload);
+      if (this.isEdit === false) {
+        this.$emit('submit', payload);
+      } else {
+        this.$emit('update', payload, this.currentTrainingProgram.id);
+      }
       this.$emit('closed');
-      // console.log(this.knowledgeBlockList);
-      // console.log(this.destination);
     },
     moveToDestination(subject, id) {
       this.knowledgeBlockList.map((obj) => {
@@ -181,6 +209,13 @@ export default {
     },
     onSelect(obj) {
       obj.subjectList = [];
+    },
+    sort(s) {
+      // if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+      }
+      this.currentSort = s;
     },
   },
 };

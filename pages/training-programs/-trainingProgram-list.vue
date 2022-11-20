@@ -79,7 +79,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .trainingPrograms-list {
-  height: 40px;
+  height: 80vh;
   overflow-y: auto;
   > .table {
     border-collapse: collapse;

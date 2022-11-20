@@ -14,6 +14,10 @@ export const createTrainingProgramContent = (payload) =>
     })
     .json();
 
+// TP === Training Program
+export const deleteTrainingProgramContentByTPId = (trainingProgramId) =>
+  apis.universityAPI.delete(`training-program-contents/${trainingProgramId}`);
+
 export const updateTrainingProgram = (payload) =>
   apis.universityAPI
     .put(`training-programs/${payload.id}`, {
