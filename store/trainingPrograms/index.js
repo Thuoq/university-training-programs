@@ -1,8 +1,13 @@
 import { make } from 'vuex-pathify';
-import {updateTrainingProgram, createTrainingProgram,fetchListTrainingPrograms } from '~/models/trainingPrograms.model';
+import {
+  createTrainingProgramContent,
+  updateTrainingProgram,
+  createTrainingProgram,
+  fetchListTrainingPrograms,
+} from '~/models/trainingPrograms.model';
 
 export const state = () => ({
-    trainingPrograms: null,
+  trainingPrograms: null,
 });
 export const getters = {
   ...make.getters(state),
@@ -19,7 +24,10 @@ export const actions = {
   async createTrainingPrograms({ commit, state }, payload) {
     await createTrainingProgram(payload);
   },
+  async createTrainingProgramsContent({ commit, state }, payload) {
+    await createTrainingProgramContent(payload);
+  },
   async updateTrainingPrograms({ commit, state }, payload) {
-    await  updateTrainingProgram(payload);
+    await updateTrainingProgram(payload);
   },
 };

@@ -7,6 +7,13 @@ export const createTrainingProgram = (payload) =>
     })
     .json();
 
+export const createTrainingProgramContent = (payload) =>
+  apis.universityAPI
+    .post('training-program-contents/many', {
+      json: payload,
+    })
+    .json();
+
 export const updateTrainingProgram = (payload) =>
   apis.universityAPI
     .put(`training-programs/${payload.id}`, {

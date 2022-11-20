@@ -1,24 +1,28 @@
 <template>
   <table class="trainingPrograms-list">
-    <tr class="row -head">
-      <th class="col">STT</th>
-      <th class="col">Mã CTĐT</th>
-      <th class="col">Tên CTĐT</th>
-      <th class="col">Khóa</th>
-      <th class="col">Ngành</th>
-    </tr>
-    <tr
-      v-for="(trainingProgram, index) in trainingPrograms"
-      :key="trainingProgram.id"
-      class="row"
-      @dblclick.prevent="openDialog(trainingProgram)"
-    >
-      <td class="cell">{{ index + 1 }}</td>
-      <td class="cell">{{ trainingProgram.code }}</td>
-      <td class="cell">{{ trainingProgram.name }}</td>
-      <td class="cell">{{ trainingProgram.academicYear?.name }}</td>
-      <td class="cell">{{ trainingProgram.marjor?.name }}</td>
-    </tr>
+    <thead class="head">
+      <tr class="row -head">
+        <th class="col">STT</th>
+        <th class="col">Mã CTĐT</th>
+        <th class="col">Tên CTĐT</th>
+        <th class="col">Khóa</th>
+        <th class="col">Ngành</th>
+      </tr>
+    </thead>
+    <tbody class="body">
+      <tr
+        v-for="(trainingProgram, index) in trainingPrograms"
+        :key="trainingProgram.id"
+        class="row"
+        @dblclick.prevent="openDialog(trainingProgram)"
+      >
+        <td class="cell">{{ index + 1 }}</td>
+        <td class="cell">{{ trainingProgram.code }}</td>
+        <td class="cell">{{ trainingProgram.name }}</td>
+        <td class="cell">{{ trainingProgram.academicYear?.name }}</td>
+        <td class="cell">{{ trainingProgram.marjor?.name }}</td>
+      </tr>
+    </tbody>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
       <trainingProgram-dialog
         :isEdit="isEdit"
@@ -46,7 +50,6 @@ export default {
       currentTrainingProgram: null,
       academicYears: [],
       majors: [],
-
     };
   },
   computed: {
