@@ -77,5 +77,6 @@ export default {
   }
   --mdc-dialog-min-width: 838px;
   --mdc-dialog-max-height: 800px;
+  --mdc-shape-medium: 15px;
 }
 </style>

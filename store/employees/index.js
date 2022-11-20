@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import {createEmployee,fetchListEmployees } from '~/models/employees.model';
+import {updateEmployee,createEmployee,fetchListEmployees } from '~/models/employees.model';
 
 export const state = () => ({
   employees: null,
@@ -18,5 +18,8 @@ export const actions = {
   },
   async createEmployees({ commit, state }, payload) {
     await createEmployee(payload);
+  },
+  async updateEmployees({ commit, state }, payload) {
+    await updateEmployee(payload);
   },
 };

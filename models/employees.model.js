@@ -8,4 +8,20 @@ export const createEmployee = (payload) =>
     })
     .json();
 
+export const updateEmployee = (payload) =>
+  apis.universityAPI
+    .put(`employees/${payload.employeeCode}`, {
+      json: {
+        name: payload.name,
+        email: payload.email,
+        employeeCode: payload.employeeCode,
+        password: payload.password,
+        facultyId: payload.facultyId,
+        positionId: payload.positionId,
+        roleId: payload.roleId,
+        sectionId: payload.sectionId,
+      },
+    })
+    .json();
+
 export const findEmployeeByEmployeeCode = (payload) => apis.universityAPI.get(`employees/${payload}`).json();
