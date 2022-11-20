@@ -2439,15 +2439,6 @@
     postcss "^8.4.14"
     source-map "^0.6.1"
 
-"@vue/compiler-sfc@2.7.14":
-  version "2.7.14"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-2.7.14.tgz#3446fd2fbb670d709277fc3ffa88efc5e10284fd"
-  integrity sha512-aNmNHyLPsw+sVvlQFQ2/8sjNuLtK54TC6cuKnVzAY93ks4ZBrvwQSnkkIh7bsbNhum5hJBS00wSDipQ937f5DA==
-  dependencies:
-    "@babel/parser" "^7.18.4"
-    postcss "^8.4.14"
-    source-map "^0.6.1"
-
 "@vue/component-compiler-utils@^3.1.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@vue/component-compiler-utils/-/component-compiler-utils-3.3.0.tgz#f9f5fb53464b0c37b2c8d2f3fbfe44df60f61dc9"
@@ -4367,13 +4358,6 @@ downloadjs@^1.4.7:
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
   integrity sha512-LN1gO7+u9xjU5oEScGFKvXhYf7Y/empUIIEAGBs1LzUq/rg5duiDrkuH5A2lQGd5jfMOb9X9usDa2oVXwJ0U/Q==
-
-dual-listbox-vue@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/dual-listbox-vue/-/dual-listbox-vue-1.0.2.tgz#1143e2f93a807ccf60335d5ab9c67ada00eef257"
-  integrity sha512-lWGlRiclOfAsEDNwbyelyEJhYaYLCRgn6ZlMTvLjPGZ/2/wC0GXIGlsAxYg1ZAYoxVa+CFBtMeNWvf6e1U2fSw==
-  dependencies:
-    vue "^2.5.22"
 
 duplexer@^0.1.2:
   version "0.1.2"
@@ -10032,6 +10016,11 @@ vue-meta@^2.4.0:
   dependencies:
     deepmerge "^4.2.2"
 
+vue-multiselect-listbox@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/vue-multiselect-listbox/-/vue-multiselect-listbox-0.2.6.tgz#0ee11f8767839b96262521a4e7f2b7eb337fe5be"
+  integrity sha512-kCKfOPIUxLzkZVeR7XvkJ8GG4A1tFrH7qe8TqnEafC795QmaAFjinJxtYgI5HmlLbruW4nKFMuVPVFKMuc6Utg==
+
 vue-multiselect@^2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.6.tgz#5be5d811a224804a15c43a4edbb7485028a89c7f"
@@ -10091,14 +10080,6 @@ vue-toasted@^1.1.28:
   version "1.1.28"
   resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.1.28.tgz#dbabb83acc89f7a9e8765815e491d79f0dc65c26"
   integrity sha512-UUzr5LX51UbbiROSGZ49GOgSzFxaMHK6L00JV8fir/CYNJCpIIvNZ5YmS4Qc8Y2+Z/4VVYRpeQL2UO0G800Raw==
-
-vue@^2.5.22:
-  version "2.7.14"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.7.14.tgz#3743dcd248fd3a34d421ae456b864a0246bafb17"
-  integrity sha512-b2qkFyOM0kwqWFuQmgd4o+uHGU7T+2z3T+WQp8UBjADfEv2n4FEMffzBmCKNP0IGzOEEfYjvtcC62xaSKeQDrQ==
-  dependencies:
-    "@vue/compiler-sfc" "2.7.14"
-    csstype "^3.1.0"
 
 vue@^2.6.10, vue@^2.6.6:
   version "2.7.13"
