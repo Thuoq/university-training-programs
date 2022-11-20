@@ -35,8 +35,8 @@ export const SIDE_BAR_MENUS = [
       },
       {
         title: 'Danh mục Chương trình Đào tạo',
-        to: '#',
-        className: 'item -training=program',
+        to: 'training-programs',
+        className: 'item -training-program',
       },
     ],
   },
@@ -46,7 +46,7 @@ export const SIDE_BAR_MENUS = [
     children: [
       {
         title: 'Quản lý Chương trình Đào tạo',
-        to: '#',
+        to: 'training-program-content',
         className: 'item',
       },
     ],

@@ -5,35 +5,42 @@
       Thêm mới
     </app-button>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
-      <subject-dialog :subjects="subjects" @closed="closeDialog" @submit="onSubmit"></subject-dialog>
+      <trainingProgram-dialog
+        :academicYears="academicYears"
+        :majors="majors"
+        @closed="closeDialog"
+        @submit="onSubmit"
+      ></trainingProgram-dialog>
     </app-dialog>
   </div>
 </template>
 <script>
-import SubjectDialog from '~/pages/subjects/-subject-dialog';
-import { fetchListSubjects } from '~/models/subjects.model';
-
+import TrainingProgramDialog from '~/pages/training-programs/-trainingProgram-dialog';
+import { fetchListMajors } from '~/models/majors.model';
+import { fetchListAcademicYears } from '~/models/academicYears.model';
 import { pathified } from '~/utils';
-const subjectStore = pathified('subjects');
+const trainingProgramStore = pathified('trainingPrograms');
 export default {
-  components: { SubjectDialog },
+  components: { TrainingProgramDialog },
   data() {
     return {
       visibleDialog: false,
-      subjects: [],
+      majors: [],
+      academicYears: [],
     };
   },
   methods: {
     async openDialog() {
       this.visibleDialog = true;
-      this.subjects = await fetchListSubjects();
+      this.academicYears = await fetchListAcademicYears();
+      this.majors = await fetchListMajors();
     },
     closeDialog() {
       this.visibleDialog = false;
     },
     async onSubmit(payload) {
-      await subjectStore.$dispatch('createSubjects', payload);
-      await subjectStore.$dispatch('getListSubjects');
+      await trainingProgramStore.$dispatch('createTrainingPrograms', payload);
+      await trainingProgramStore.$dispatch('getListTrainingPrograms');
     },
   },
 };
@@ -45,6 +52,7 @@ export default {
     width: 200px;
     height: 36px;
     background: #d3d8ea;
+    //   border: 1px solid #000000;
     cursor: pointer;
     --mdc-theme-primary: var(--color-primary);
     --mdc-button-horizontal-padding: 10px;
