@@ -65,8 +65,8 @@ export default {
 .add-row {
   padding: 12px 48px 12px 25px;
   text-align: right;
-  margin-top: 40px;
-  margin-bottom: 54px;
+  margin-top: 30px;
+  margin-bottom: 40px;
   > .btn {
     width: 200px;
     height: 36px;

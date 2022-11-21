@@ -24,8 +24,8 @@
     }
     > .add-row {
       text-align: right;
-      margin-top: 40px;
-      margin-bottom: 54px;
+      margin-top: 30px;
+      margin-bottom: 40px;
     }
   }
   </style>

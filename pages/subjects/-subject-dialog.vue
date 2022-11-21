@@ -154,7 +154,7 @@ export default {
         numberPrerequisiteCredits: this.numberPrerequisiteCredits,
         numberOfTeachingHours: this.numberOfTeachingHours,
         code: this.code,
-        coefficient: this.coefficient,
+        coefficient: Number(this.coefficient),
         prerequisiteSubjectsId: !this.prerequisiteSubjectsId
           ? []
           : this.prerequisiteSubjectsId.map((subject) => ({ id: subject.id })),

@@ -1,5 +1,5 @@
 <template>
-  <div class="employee-dialog">
+  <div class="trainingProgramContent-dialog">
     <h2 class="title">Nội dung Chương trình Đào tạo</h2>
     <div class="body">
       <div class="header">
@@ -31,42 +31,54 @@
               <span class="sub">Học phần:</span>
               <span class="main">{{ knowledgeBlock.name }}</span>
             </div>
-            <table class="subjects-list">
-              <tr class="row -head">
-                <th class="col" @click="sort('code')">Mã môn học</th>
-                <th class="col" @click="sort('name')">Tên môn học</th>
-              </tr>
-              <tr
-                v-for="subject in knowledgeBlock.subjectList"
-                :key="subject.id"
-                class="row"
-                @click.prevent="moveToDestination(subject, knowledgeBlock.id)"
-              >
-                <td class="cell">{{ subject.code }}</td>
-                <td class="cell">{{ subject.name }}</td>
-              </tr>
-            </table>
+            <div class="subjects-list">
+              <table class="table">
+                <thead class="head">
+                  <tr class="row -head">
+                    <th class="col" @click="sort('code')">Mã môn học</th>
+                    <th class="col" @click="sort('name')">Tên môn học</th>
+                  </tr>
+                </thead>
+                <tbody class="body">
+                  <tr
+                    v-for="subject in knowledgeBlock.subjectList"
+                    :key="subject.id"
+                    class="row"
+                    @click.prevent="moveToDestination(subject, knowledgeBlock.id)"
+                  >
+                    <td class="cell">{{ subject.code }}</td>
+                    <td class="cell">{{ subject.name }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <div class="table">
             <div class="title">
               <span class="sub">Danh sách các học phần:</span>
             </div>
-            <table class="subjects-list">
-              <tr class="row -head">
-                <th class="col" @click="sort('code')">Mã môn học</th>
-                <th class="col" @click="sort('name')">Tên môn học</th>
-              </tr>
-              <tr
-                v-for="subject in sortDestination"
-                :key="subject.id"
-                class="row"
-                @click.prevent="moveToSource(subject, knowledgeBlock.id)"
-              >
-                <td class="cell">{{ subject.code }}</td>
-                <td class="cell">{{ subject.name }}</td>
-              </tr>
-            </table>
+            <div class="subjects-list">
+              <table class="table">
+                <thead class="head">
+                  <tr class="row -head">
+                    <th class="col" @click="sort('code')">Mã môn học</th>
+                    <th class="col" @click="sort('name')">Tên môn học</th>
+                  </tr>
+                </thead>
+                <tbody class="body">
+                  <tr
+                    v-for="subject in sortDestination"
+                    :key="subject.id"
+                    class="row"
+                    @click.prevent="moveToSource(subject, knowledgeBlock.id)"
+                  >
+                    <td class="cell">{{ subject.code }}</td>
+                    <td class="cell">{{ subject.name }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -111,7 +123,6 @@ export default {
       destination: this.subjects,
       currentSort: 'name',
       currentSortDir: 'asc',
-      filter: '',
     };
   },
   computed: {
@@ -221,7 +232,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.employee-dialog {
+.trainingProgramContent-dialog {
   > .title {
     margin: -19px -24px 0px -24px;
     padding-top: 13px;
@@ -290,36 +301,45 @@ export default {
               font-weight: bold;
             }
           }
-          > .subjects-list {
-            border-collapse: collapse;
-            padding: 12px 48px 12px 25px;
-            font-size: 16px;
+          .subjects-list {
+            max-height: 50vh;
+            overflow: auto;
+            > .table {
+              border-collapse: collapse;
+              padding: 12px 48px 12px 25px;
+              font-size: 16px;
+              width: 100%;
+            }
+          }
+          .subjects-list > .table > .head {
+            color: var(--color-primary);
+            font-size: 17px;
+            line-height: 21px;
+            font-weight: 700;
             width: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
-
+            text-align: left;
             > .row {
               border: 1px solid rgba(0, 0, 0, 0.15);
-              &.-head {
-                color: var(--color-primary);
-                font-size: 17px;
-                line-height: 21px;
-                font-weight: 700;
-                text-align: left;
-                background-color: rgba($color: #3340bf, $alpha: 0.17);
-              }
             }
             > .row > .col {
               padding: 10px 0px 10px 10px;
+              // position: sticky;
+              // top: 0;
+              // z-index: 1;
+              background-color: rgba($color: #3340bf, $alpha: 0.17);
+              &:first-child {
+                text-align: center;
+              }
             }
-            > .row .col:first-child {
-              text-align: center;
-            }
-            > .row > .cell:first-child {
-              text-align: center;
-            }
-            > .row > .cell {
+          }
+          .subjects-list > .table > .body > .row {
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            width: 100%;
+            > .cell {
               padding: 13px 0px 13px 13px;
+              &:first-child {
+                text-align: center;
+              }
             }
           }
         }
@@ -343,3 +363,5 @@ export default {
   }
 }
 </style>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

@@ -1,31 +1,37 @@
 <template>
-  <table class="academicYears-list">
-    <tr class="row -head">
-      <th class="col">STT</th>
-      <th class="col">Mã Khóa</th>
-      <th class="col">Tên Khóa</th>
-      <th class="col">Năm học</th>
-    </tr>
-    <tr
-      v-for="(academicYear, index) in academicYears"
-      :key="academicYear.id"
-      class="row"
-      @dblclick.prevent="openDialog(academicYear)"
-    >
-      <td class="cell">{{ index + 1 }}</td>
-      <td class="cell">{{ academicYear.code }}</td>
-      <td class="cell">{{ academicYear.name }}</td>
-      <td class="cell">{{ getYear(academicYear.startYear) }} - {{ getYear(academicYear.finishYear) }}</td>
-    </tr>
-    <app-dialog :visible="visibleDialog" @closed="closeDialog">
-      <academicYear-dialog
-        :isEdit="isEdit"
-        :currentAcademicYear="currentAcademicYear"
-        @closed="closeDialog"
-        @submit="onSubmit"
-      ></academicYear-dialog>
-    </app-dialog>
-  </table>
+  <div class="academicYears-list">
+    <table class="table">
+      <thead class="head">
+        <tr class="row -head">
+          <th class="col">STT</th>
+          <th class="col">Mã Khóa</th>
+          <th class="col">Tên Khóa</th>
+          <th class="col">Năm học</th>
+        </tr>
+      </thead>
+      <tbody class="body">
+        <tr
+          v-for="(academicYear, index) in academicYears"
+          :key="academicYear.id"
+          class="row"
+          @dblclick.prevent="openDialog(academicYear)"
+        >
+          <td class="cell">{{ index + 1 }}</td>
+          <td class="cell">{{ academicYear.code }}</td>
+          <td class="cell">{{ academicYear.name }}</td>
+          <td class="cell">{{ getYear(academicYear.startYear) }} - {{ getYear(academicYear.finishYear) }}</td>
+        </tr>
+      </tbody>
+      <app-dialog :visible="visibleDialog" @closed="closeDialog">
+        <academicYear-dialog
+          :isEdit="isEdit"
+          :currentAcademicYear="currentAcademicYear"
+          @closed="closeDialog"
+          @submit="onSubmit"
+        ></academicYear-dialog>
+      </app-dialog>
+    </table>
+  </div>
 </template>
 <script>
 import AcademicYearDialog from '~/pages/academic-years/-academicYear-dialog';
@@ -66,33 +72,46 @@ export default {
 </script>
 <style scoped lang="scss">
 .academicYears-list {
-  border-collapse: collapse;
-  padding: 12px 48px 12px 25px;
-  font-size: 16px;
+  height: 60vh;
+  overflow: auto;
+  > .table {
+    border-collapse: collapse;
+    padding: 12px 48px 12px 25px;
+    font-size: 16px;
+    width: 100%;
+  }
+  --mdc-shape-medium: 15px;
+  --mdc-dialog-min-width: 850px;
+}
+.academicYears-list > .table > .head {
+  color: var(--color-primary);
+  font-size: 17px;
+  line-height: 21px;
+  font-weight: 700;
   width: 100%;
+  text-align: left;
   > .row {
     border: 1px solid rgba(0, 0, 0, 0.15);
-    &.-head {
-      color: var(--color-primary);
-      font-size: 17px;
-      line-height: 21px;
-      font-weight: 700;
-      text-align: left;
-      background-color: rgba($color: #3340bf, $alpha: 0.17);
-    }
   }
   > .row > .col {
     padding: 10px 0px 10px 10px;
+    // position: sticky;
+    // top: 0;
+    // z-index: 1;
+    background-color: rgba($color: #3340bf, $alpha: 0.17);
+    &:first-child {
+      text-align: center;
+    }
   }
-  > .row .col:first-child {
-    text-align: center;
-  }
-  > .row > .cell:first-child {
-    text-align: center;
-  }
-  > .row > .cell {
+}
+.academicYears-list > .table > .body > .row {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  width: 100%;
+  > .cell {
     padding: 13px 0px 13px 13px;
+    &:first-child {
+      text-align: center;
+    }
   }
-  --mdc-shape-medium: 15px;
 }
 </style>

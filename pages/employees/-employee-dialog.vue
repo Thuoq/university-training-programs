@@ -81,6 +81,7 @@
             :label-prop="'name'"
             :items="faculties"
             :disabled="DisableByPDT"
+            @change="onChange($event)"
           ></app-select>
         </div>
       </div>
@@ -220,6 +221,19 @@ export default {
       this.$emit('submit', payload);
       this.$emit('closed');
       // console.log(payload);
+    },
+    onChange(faculty) {
+      if (this.sectionId) {
+        let findIndex = null;
+        this.sections.forEach((e) => {
+          if (e.id === this.sectionId) {
+            findIndex = e;
+          }
+        });
+        if (findIndex.facultyId !== faculty.id) {
+          this.sectionId = null;
+        }
+      }
     },
   },
 };
