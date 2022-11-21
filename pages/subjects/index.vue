@@ -29,7 +29,7 @@ export default {
   > .add-row {
     text-align: right;
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 }
 </style>

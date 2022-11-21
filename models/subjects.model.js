@@ -8,3 +8,18 @@ export const createSubject = (payload) =>
       json: payload,
     })
     .json();
+
+export const updateSubject = (payload) =>
+  apis.universityAPI
+    .put(`subjects/${payload.id}`, {
+      json: {
+        name: payload.name,
+        numberOfCredits: payload.numberOfCredits,
+        numberPrerequisiteCredits: payload.numberPrerequisiteCredits,
+        numberOfTeachingHours: payload.numberOfTeachingHours,
+        code: payload.code,
+        coefficient: payload.coefficient,
+        prerequisiteSubjectsId: payload.prerequisiteSubjectsId,
+      },
+    })
+    .json();

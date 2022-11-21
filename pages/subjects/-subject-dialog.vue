@@ -1,6 +1,6 @@
 <template>
-  <div class="employee-dialog">
-    <h2 class="title">Thêm mới</h2>
+  <div class="subject-dialog">
+    <h2 class="title">{{ title }}</h2>
     <div class="body">
       <div class="grouptext">
         <div class="group">
@@ -51,7 +51,7 @@
           <div v-if="$v.coefficient.$error && !$v.coefficient.required" class="notification">
             Hệ số không được để trống!
           </div>
-          <div v-if="!$v.coefficient.numeric" class="notification">Hệ số phải là số!</div>
+          <div v-if="!$v.coefficient.decimal" class="notification">Hệ số phải là số!</div>
         </div>
 
         <div class="group">
@@ -86,7 +86,7 @@
 </template>
 <script>
 import Multiselect from 'vue-multiselect';
-import { required, numeric, minLength } from 'vuelidate/lib/validators';
+import { required, numeric, minLength, decimal } from 'vuelidate/lib/validators';
 export default {
   components: {
     Multiselect,
@@ -96,16 +96,24 @@ export default {
       type: Array,
       default: () => [],
     },
+    isEdit: {
+      type: Boolean,
+    },
+    currentSubject: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
-      name: null,
-      code: null,
-      numberOfCredits: null,
-      numberPrerequisiteCredits: null,
-      numberOfTeachingHours: null,
-      coefficient: null,
-      prerequisiteSubjectsId: null,
+      name: this.currentSubject?.name || null,
+      code: this.currentSubject?.code || null,
+      numberOfCredits: this.currentSubject?.numberOfCredits || null,
+      numberPrerequisiteCredits: this.currentSubject?.numberPrerequisiteCredits || null,
+      numberOfTeachingHours: this.currentSubject?.numberOfTeachingHours || null,
+      coefficient: this.currentSubject?.coefficient || null,
+      prerequisiteSubjectsId: this.currentSubject?.prerequisiteSubjects || null,
+      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
     };
   },
   validations() {
@@ -131,7 +139,7 @@ export default {
       },
       coefficient: {
         required,
-        numeric,
+        decimal,
       },
     };
   },
@@ -146,22 +154,24 @@ export default {
         numberPrerequisiteCredits: this.numberPrerequisiteCredits,
         numberOfTeachingHours: this.numberOfTeachingHours,
         code: this.code,
-        coefficient: this.coefficient,
+        coefficient: Number(this.coefficient),
         prerequisiteSubjectsId: !this.prerequisiteSubjectsId
           ? []
           : this.prerequisiteSubjectsId.map((subject) => ({ id: subject.id })),
       };
+      if (this.isEdit === true) {
+        subject.id = this.currentSubject.id;
+      }
       const payload = subject;
       this.$emit('submit', payload);
       this.$emit('closed');
-      console.log(subject);
     },
   },
 };
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style lang="scss" scoped>
-.employee-dialog {
+<style lang="scss">
+.subject-dialog {
+  @import './vue-multiselect.min.scss';
   > .title {
     margin: -19px -24px 0px -24px;
     padding-top: 13px;

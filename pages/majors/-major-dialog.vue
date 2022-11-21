@@ -11,6 +11,7 @@
           :value-prop="'id'"
           :label-prop="'name'"
           :items="faculties"
+          @change="onChange($event)"
         ></app-select>
       </div>
       <div v-if="!$v.facultyId.required" class="notification">Khoa không được để trống!</div>
@@ -130,6 +131,19 @@ export default {
         const payload = major;
         this.$emit('submit', payload);
         this.$emit('closed');
+      }
+    },
+    onChange(faculty) {
+      if (this.sectionId) {
+        let findIndex = null;
+        this.sections.forEach((e) => {
+          if (e.id === this.sectionId) {
+            findIndex = e;
+          }
+        });
+        if (findIndex.facultyId !== faculty.id) {
+          this.sectionId = null;
+        }
       }
     },
   },

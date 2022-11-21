@@ -102,9 +102,9 @@ export default {
   }
   > .row > .col {
     padding: 10px 0px 10px 10px;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    // position: sticky;
+    // top: 0;
+    // z-index: 1;
     background-color: rgba($color: #3340bf, $alpha: 0.17);
     &:first-child {
       text-align: center;
@@ -122,3 +122,5 @@ export default {
   }
 }
 </style>
+
+
