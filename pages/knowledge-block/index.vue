@@ -53,7 +53,7 @@ export default {
       });
     },
   },
-  async created() {
+  async asyncData() {
     await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
   },
   methods: {
