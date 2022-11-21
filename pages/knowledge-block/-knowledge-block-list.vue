@@ -27,7 +27,7 @@ export default {
     return {
       columns: [
         {
-          property: 'id',
+          property: '_id',
           title: 'STT',
         },
         {
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     onSelectionChange(val) {
-      if(val.length !== 0){
+      if (val.length !== 0) {
         this.$emit('openDialog', val);
       }
     },

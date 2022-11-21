@@ -9,9 +9,9 @@
     ></knowledge-block-list>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
       <knowledge-block-dialog
-        :isEdit="isEdit"
-        :currentKnowledgeBlock="currentKnowledgeBlock"
-        :knowledgeBlocks="dataKnowledgeBlocks"
+        :is-edit="isEdit"
+        :current-knowledge-block="currentKnowledgeBlock"
+        :knowledge-blocks="dataKnowledgeBlocks"
         @closed="closeDialog"
         @submit="onSubmit"
       ></knowledge-block-dialog>
@@ -31,7 +31,7 @@ export default {
     return {
       title: 'Khối kiến thức',
       isEdit: true,
-      visibleDialog : false,
+      visibleDialog: false,
       currentKnowledgeBlock: null,
       dataKnowledgeBlocks: null,
     };
@@ -40,10 +40,14 @@ export default {
     knowledgeBlocks: knowledgeBlockStore.$get('knowledgeBlocks'),
     formatKnowledgeBlocks() {
       const prevState = JSON.parse(JSON.stringify(this.knowledgeBlocks));
-      return prevState?.map((state) => {
+      return prevState.map((state, index) => {
+        state._id = ++index;
         state._hasChildren = true;
         state._showChildren = true;
         state._children = state.knowledgeChildren;
+        state.knowledgeChildren.forEach((el, idx) => {
+          el._id = `${state._id}.${++idx}`;
+        });
         state._selectable = true;
         return state;
       });
@@ -52,7 +56,7 @@ export default {
   async created() {
     await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
   },
-  methods:{
+  methods: {
     async openDialog(val) {
       this.visibleDialog = true;
       this.currentKnowledgeBlock = val;
@@ -62,11 +66,11 @@ export default {
       this.visibleDialog = false;
     },
     async onSubmit(payload) {
-     await knowledgeBlockStore.$dispatch('updateKnowLedgeBlock', payload);
+      await knowledgeBlockStore.$dispatch('updateKnowLedgeBlock', payload);
       await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
       this.visibleDialog = false;
     },
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
