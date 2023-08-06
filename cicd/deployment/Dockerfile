@@ -8,6 +8,6 @@ COPY ./yarn.lock .
 
 RUN yarn install
 COPY . .
+
 RUN yarn build
-EXPOSE 3010
 CMD ["yarn", "start"]

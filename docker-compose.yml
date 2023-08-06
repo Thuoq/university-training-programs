@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  front-end:
+    container_name: university-training-programs
+    build:
+      context: .
+      dockerfile: cicd/deployment/Dockerfile
+    ports:
+      - "3010:3010"
+    env_file:
+      - .env
+    restart:
+      always
+    tty: true
+
