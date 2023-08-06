@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "env $(grep -v '^#' .env) nuxt build",
-    "start": "env $(grep -v '^#' .env) nuxt start",
+    "start": "env $(grep -v '^#' .env) nuxt start  --hostname 0.0.0.0 --port 3010",
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint:prettier": "prettier --check .",
