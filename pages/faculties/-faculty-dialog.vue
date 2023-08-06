@@ -1,24 +1,23 @@
 <template>
   <div class="facultie-dialog">
-    <h2 class="title">{{title}}</h2>
+    <h2 class="title">{{ title }}</h2>
     <div class="body">
-      <div class="inputgroup">
-        <label class="label">Mã khoa</label>
-        <app-input v-model="$v.code.$model" class="input" type="text" required></app-input>
-      </div>
+      <app-input-v2 v-model="code" type="text" required class="inputgroup" label="Mã Khoa"></app-input-v2>
       <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã khoa không được để trống!</div>
       <div v-if="!$v.code.minLength" class="notification">Mã khoa phải có tối thiểu từ 2 kí tự trở lên!</div>
 
-      <div class="inputgroup">
-        <label class="label">Tên khoa</label>
-        <app-input v-model="$v.name.$model" class="input" type="text" required></app-input>
-      </div>
+      <app-input-v2 v-model="name" type="text" required class="inputgroup" label="Tên Khoa"></app-input-v2>
       <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên khoa không được để trống!</div>
       <div v-if="!$v.name.minLength" class="notification">Tên khoa phải có tối thiểu từ 4 kí tự trở lên!</div>
     </div>
     <div class="footer">
-      <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      <div class="cancel">
+        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+      </div>
+      <div class="submit">
+        <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
+        <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      </div>
     </div>
   </div>
 </template>
@@ -38,7 +37,7 @@ export default {
     return {
       name: this.currentFaculty?.name || null,
       code: this.currentFaculty?.code || null,
-      title: !this.isEdit  ?'Thêm mới' : 'Chỉnh sửa'
+      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
     };
   },
   validations() {
@@ -77,6 +76,12 @@ export default {
         this.$emit('closed');
       }
     },
+    onDelete() {
+      this.$emit('delete', {
+        id: this.currentFaculty.id,
+      });
+      this.$emit('closed');
+    },
   },
 };
 </script>
@@ -114,17 +119,8 @@ export default {
     }
   }
 
-  > .body > .inputgroup > .input {
-    height: 40px;
-  }
-
-  > .body > .inputgroup > .label {
-    font-family: 'Inter';
-    color: var(--color-back);
-  }
-
   > .body > .notification {
-    color: red;
+    color: var(--color-error);
     text-align: right;
     font-size: 15px;
     font-family: 'Inter';
@@ -134,19 +130,21 @@ export default {
 
   .footer {
     display: flex;
-    justify-content: space-around;
-    align-content: center;
-    margin: 0px 50px 0px 50px;
+    justify-content: space-between;
+    align-items: center;
   }
-
-  > .footer > .btn {
-    &.-save {
-      --mdc-theme-primary: var(--color-primary);
-    }
-    &.-delete {
-      --mdc-theme-primary: var(--color-gray-base);
-      --mdc-theme-on-primary: var(--color-back);
-    }
+}
+.app-button {
+  &.-save {
+    --mdc-theme-primary: var(--color-primary);
+  }
+  &.-close {
+    --mdc-theme-primary: var(--color-gray-base);
+    --mdc-theme-on-primary: var(--color-back);
+  }
+  &.-delete {
+    --mdc-theme-primary: var(--color-error);
+    --mdc-theme-on-primary: var(--color-white);
   }
 }
 </style>

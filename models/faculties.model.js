@@ -17,3 +17,5 @@ export const updateFaculty = (payload) =>
       },
     })
     .json();
+
+export const deleteFacultyById = (payload) => apis.universityAPI.delete(`faculties/${payload.id}`).json();

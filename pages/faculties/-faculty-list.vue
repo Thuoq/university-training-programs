@@ -3,24 +3,25 @@
     <table class="table">
       <thead class="head">
         <tr class="row -head">
-          <th class="col">STT</th>
+          <th class="col">ID</th>
           <th class="col">Mã Khoa</th>
           <th class="col">Tên Khoa</th>
         </tr>
       </thead>
       <tbody class="body">
-        <tr v-for="(faculty, index) in faculties" :key="faculty.id" class="row" @dblclick.prevent="openDialog(faculty)">
-          <td class="cell">{{ index + 1 }}</td>
+        <tr v-for="faculty in faculties" :key="faculty.id" class="row" @dblclick.prevent="openDialog(faculty)">
+          <td class="cell">{{ faculty.id }}</td>
           <td class="cell">{{ faculty.code }}</td>
           <td class="cell">{{ faculty.name }}</td>
         </tr>
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <faculty-dialog
-          :isEdit="isEdit"
-          :currentFaculty="currentFaculty"
+          :is-edit="isEdit"
+          :current-faculty="currentFaculty"
           @closed="closeDialog"
           @submit="onSubmit"
+          @delete="onDelete"
         ></faculty-dialog>
       </app-dialog>
     </table>
@@ -57,11 +58,15 @@ export default {
       await facultiesStore.$dispatch('updateFaculties', payload);
       await facultiesStore.$dispatch('getListFaculties');
     },
+    async onDelete(payload) {
+      await facultiesStore.$dispatch('deleteFaculty', payload);
+      await facultiesStore.$dispatch('getListFaculties');
+    },
   },
 };
 </script>
 <style scoped lang="scss">
-.faculties-list{
+.faculties-list {
   height: 60vh;
   overflow: auto;
   > .table {
