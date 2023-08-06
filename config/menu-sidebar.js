@@ -77,8 +77,8 @@ export const SIDE_BAR_MENUS = [
     className: 'header',
     children: [
       {
-        title: 'Báo cáo',
-        to: '#',
+        title: 'Thống kê',
+        to: 'report',
         className: 'item',
       },
     ],
