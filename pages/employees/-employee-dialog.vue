@@ -33,7 +33,7 @@
         <div v-if="!$v.email.email" class="notification">Email phải có định dang là 1 email ví dụ: test@gmail.com!</div>
       </div>
 
-      <div class="group" v-if="isEdit !== true">
+      <div v-if="isEdit !== true" class="group">
         <div class="inputgroup">
           <label class="label">Mật khẩu</label>
           <app-input v-model="$v.password.$model" type="password" class="input" required></app-input>

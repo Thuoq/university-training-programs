@@ -24,7 +24,7 @@
           <td class="cell">
             {{ employee.name }}
             <br />
-            <p class="text">{{ employee.positionEmployees[0].position?.name }}</p>
+            <p class="text">{{ employee.positionEmployees[0]?.position?.name }}</p>
           </td>
           <td class="cell">{{ employee.role.name }}</td>
           <td class="cell">{{ employee.faculty?.name }}</td>
@@ -37,7 +37,7 @@
           :roles="roles"
           :faculties="faculties"
           :positions="positions"
-          :isEdit="isEdit"
+          :is-edit="isEdit"
           :current-employee="currentEmployee"
           :sections="sections"
           @closed="closeDialog"

@@ -14,7 +14,7 @@
           @change="onChange($event)"
         ></app-select>
       </div>
-      <div v-if="!$v.facultyId.required" class="notification">Khoa không được để trống!</div>
+      <div v-if="!$v.facultyId.required && $v.facultyId.$error" class="notification">Khoa không được để trống!</div>
 
       <div class="inputgroup">
         <label class="label">Bộ môn</label>

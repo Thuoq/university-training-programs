@@ -26,11 +26,11 @@
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <trainingProgramContent-dialog
-          :isEdit="isEdit"
-          :currentTrainingProgram="currentTrainingProgram"
-          :knowledgeBlocks="knowledgeBlocks"
+          :is-edit="isEdit"
+          :current-training-program="currentTrainingProgram"
+          :knowledge-blocks="knowledgeBlocks"
           :subjects="subjects"
-          :kBListWithSubject="KBListWithSubject"
+          :k-b-list-with-subject="KBListWithSubject"
           @closed="closeDialog"
           @submit="onSubmit"
           @update="onUpdate"
@@ -71,7 +71,7 @@ export default {
 
       // KBWithSubjectList = knowledgeBlockwithsubjectList
       let KBWithSubjectList = [];
-      if (this.currentTrainingProgram.trainingProgramContents.length > 0) {
+      if (this.currentTrainingProgram?.trainingProgramContents?.length > 0) {
         this.isEdit = true;
         // create a set of knowledgeBlockId
         const knowledgeBlockIdList = [
