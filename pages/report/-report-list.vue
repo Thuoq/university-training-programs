@@ -1,5 +1,5 @@
 <template>
-  <div class="trainingPrograms-list">
+  <div class="report-list">
     <table class="table">
       <thead class="head">
         <tr class="row -head">
@@ -8,6 +8,8 @@
           <th class="col">Tên CTĐT</th>
           <th class="col">Khóa</th>
           <th class="col">Ngành</th>
+          <th class="col">Tổng số học phần</th>
+          <th class="col">Tổng số tín chỉ</th>
         </tr>
       </thead>
       <tbody class="body">
@@ -22,38 +24,35 @@
           <td class="cell">{{ trainingProgram.name }}</td>
           <td class="cell">{{ trainingProgram.academicYear?.name }}</td>
           <td class="cell">{{ trainingProgram.marjor?.name }}</td>
+          <td class="cell">{{ getTotalSubject(trainingProgram) }}</td>
+          <td class="cell">{{ getTotalCredit(trainingProgram) }}</td>
         </tr>
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
-        <trainingProgramContent-dialog
-          :is-edit="isEdit"
-          :current-training-program="currentTrainingProgram"
-          :knowledge-blocks="knowledgeBlocks"
-          :subjects="subjects"
-          :k-b-list-with-subject="KBListWithSubject"
+        <report-dialog
+          :currentTrainingProgram="currentTrainingProgram"
+          :kBListWithSubject="KBListWithSubject"
           @closed="closeDialog"
-          @submit="onSubmit"
-          @update="onUpdate"
-        ></trainingProgramContent-dialog>
+        ></report-dialog>
       </app-dialog>
     </table>
   </div>
 </template>
 <script>
-import TrainingProgramContentDialog from '~/pages/training-program-content/-trainingProgramContent-dialog';
+import ReportDialog from '~/pages/report/-report-dialog.vue';
 import { fetchListKnowledgeBlock } from '~/models/knowledge-block.model';
 import { fetchListSubjects } from '~/models/subjects.model';
 import { pathified } from '~/utils';
 const trainingProgramsStore = pathified('trainingPrograms');
 export default {
-  components: { TrainingProgramContentDialog },
+  components: { ReportDialog },
   data() {
     return {
       visibleDialog: false,
       currentTrainingProgram: null,
+      KBListWithSubject: [],
       knowledgeBlocks: [],
       subjects: [],
-      KBListWithSubject: [],
       isEdit: false,
     };
   },
@@ -71,7 +70,7 @@ export default {
 
       // KBWithSubjectList = knowledgeBlockwithsubjectList
       let KBWithSubjectList = [];
-      if (this.currentTrainingProgram?.trainingProgramContents?.length > 0) {
+      if (this.currentTrainingProgram.trainingProgramContents.length > 0) {
         this.isEdit = true;
         // create a set of knowledgeBlockId
         const knowledgeBlockIdList = [
@@ -100,9 +99,12 @@ export default {
         KBWithSubjectList.forEach((knowledgeBlock) => {
           this.currentTrainingProgram.trainingProgramContents.forEach((obj) => {
             if (obj.knowledgeBlockId === knowledgeBlock.id) {
+              this.subjects.forEach((subject) => {
+                if (subject.id === obj.subject.id) {
+                  obj.subject.prerequisiteSubjects = subject.prerequisiteSubjects;
+                }
+              });
               knowledgeBlock.subjectList.push(obj.subject);
-              const findIndex = this.subjects.findIndex((e) => e.id === obj.subject.id);
-              findIndex !== -1 && this.subjects.splice(findIndex, 1);
             }
           });
         });
@@ -113,21 +115,22 @@ export default {
     closeDialog() {
       this.visibleDialog = false;
     },
-    async onSubmit(payload) {
-      await trainingProgramsStore.$dispatch('createTrainingProgramsContent', payload);
-      await trainingProgramsStore.$dispatch('getListTrainingPrograms');
+    getTotalSubject(trainingProgram) {
+      return trainingProgram.trainingProgramContents.length;
     },
-    async onUpdate(payload, id) {
-      await trainingProgramsStore.$dispatch('deleteTrainingProgramContentByTPId', id);
-      await trainingProgramsStore.$dispatch('createTrainingProgramsContent', payload);
-      await trainingProgramsStore.$dispatch('getListTrainingPrograms');
+    getTotalCredit(trainingProgram) {
+      let sum = 0;
+      trainingProgram.trainingProgramContents.forEach((obj) => {
+        sum += obj.subject.numberOfCredits;
+      });
+      return sum;
     },
   },
 };
 </script>
 <style scoped lang="scss">
-.trainingPrograms-list {
-  height: 60vh;
+.report-list {
+  height: 100vh;
   overflow: auto;
   > .table {
     border-collapse: collapse;
@@ -136,9 +139,9 @@ export default {
     width: 100%;
   }
   --mdc-shape-medium: 15px;
-  --mdc-dialog-min-width: 1100px;
+  --mdc-dialog-min-width: 1050px;
 }
-.trainingPrograms-list > .table > .head {
+.report-list > .table > .head {
   color: var(--color-primary);
   font-size: 17px;
   line-height: 21px;
@@ -159,7 +162,7 @@ export default {
     }
   }
 }
-.trainingPrograms-list > .table > .body > .row {
+.report-list > .table > .body > .row {
   border: 1px solid rgba(0, 0, 0, 0.15);
   width: 100%;
   > .cell {

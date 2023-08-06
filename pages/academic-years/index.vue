@@ -15,7 +15,7 @@
     },
     data() {
       return {
-        title: 'Quản lý Khóa/Năm học',
+        title: 'Quản lý Năm học/Khóa',
       };
     },
   };
