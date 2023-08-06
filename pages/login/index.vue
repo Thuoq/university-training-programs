@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img src="~/static/logotlu.png" class="img" alt="logoTLU" />
+    <img src="@/static/logotlu.png" class="img" alt="logoTLU" />
     <h6 v-if="loginFail === true" class="notification">Mã đăng nhập hoặc mật khẩu không chính xác!</h6>
     <form class="formlogin" @submit.prevent="onSubmit">
       <div class="form">
@@ -14,10 +14,7 @@
       </div>
 
       <div class="form -text-right">
-        <nuxt-link class="forgotpassword" to="/forgot-password">
-          <span><font-awesome-icon :icon="['fas', 'key']" /></span>
-          Quên mật khẩu?
-        </nuxt-link>
+        <nuxt-link class="forgotpassword" to="/forgot-password"> Quên mật khẩu? </nuxt-link>
       </div>
 
       <div class="form">

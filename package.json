@@ -18,7 +18,7 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
-    "@fortawesome/vue-fontawesome": "^2.0.8",
+    "@fortawesome/vue-fontawesome": "^2.0.10",
     "@material/mwc-button": "^0.27.0",
     "@material/mwc-checkbox": "^0.27.0",
     "@material/mwc-dialog": "^0.27.0",
@@ -35,6 +35,8 @@
     "ky": "^0.30.0",
     "ky-universal": "^0.10.1",
     "nuxt": "^2.15.8",
+    "sass": "^1.55.0",
+    "sass-loader": "10.1.1",
     "vue": "^2.6.14",
     "vue-ads-table-tree": "^2.4.2",
     "vue-multiselect": "^2.1.6",
@@ -56,8 +58,6 @@
     "eslint-plugin-nuxt": "^3.1.0",
     "eslint-plugin-vue": "^8.2.0",
     "husky": "^7.0.4",
-    "prettier": "^2.5.1",
-    "sass": "^1.55.0",
-    "sass-loader": "10.1.1"
+    "prettier": "^2.5.1"
   }
 }
