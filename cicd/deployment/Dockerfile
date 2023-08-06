@@ -4,7 +4,7 @@ ENV TZ=Asia/Ho_Chi_Minh
 
 WORKDIR /app
 COPY package.json .
-COPY ./yarn.lock .
+COPY yarn.lock .
 
 RUN yarn install
 COPY . .

@@ -35,6 +35,9 @@ export default {
   publicRuntimeConfig: {
     API_BASE_URL: process.env.API_BASE_URL,
   },
+  server: {
+    port: process.env.PORT, // default: 3000
+  },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ['~/apis', '~/plugins/material.js', '~/plugins/vue-validate.js'],
