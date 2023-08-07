@@ -40,7 +40,13 @@ export default {
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/apis', '@/plugins/material.js', '@/plugins/vue-validate.js', '~/plugins/fontawesome.js'],
+  plugins: [
+    '@/apis',
+    '@/plugins/material.js',
+    '@/plugins/vue-validate.js',
+    '~/plugins/fontawesome.js',
+    '~plugins/globalComputed.js',
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

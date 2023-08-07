@@ -2,13 +2,29 @@
   <div class="facultie-dialog">
     <h2 class="title">{{ title }}</h2>
     <div class="body">
-      <app-input-v2 v-model="code" type="text" required class="inputgroup" label="Mã Khoa"></app-input-v2>
-      <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã khoa không được để trống!</div>
-      <div v-if="!$v.code.minLength" class="notification">Mã khoa phải có tối thiểu từ 2 kí tự trở lên!</div>
+      <app-input-v2
+        v-model="code"
+        :error="$v.code.$error"
+        :error-messages="$validationError.code"
+        type="text"
+        required
+        class="inputgroup"
+        label="Mã Khoa"
+        @input="$v.code.$touch()"
+        @blur="$v.code.$touch()"
+      ></app-input-v2>
 
-      <app-input-v2 v-model="name" type="text" required class="inputgroup" label="Tên Khoa"></app-input-v2>
-      <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên khoa không được để trống!</div>
-      <div v-if="!$v.name.minLength" class="notification">Tên khoa phải có tối thiểu từ 4 kí tự trở lên!</div>
+      <app-input-v2
+        v-model="name"
+        type="text"
+        required
+        :error="$v.name.$error"
+        :error-messages="$validationError.name"
+        class="inputgroup"
+        label="Tên Khoa"
+        @input="$v.name.$touch()"
+        @blur="$v.name.$touch()"
+      ></app-input-v2>
     </div>
     <div class="footer">
       <div class="cancel">
@@ -40,17 +56,25 @@ export default {
       title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
     };
   },
-  validations() {
-    return {
-      code: {
-        required,
-        minLength: minLength(2),
-      },
-      name: {
-        required,
-        minLength: minLength(4),
-      },
-    };
+  validations: {
+    code: {
+      required,
+      minLength: minLength(2),
+    },
+    name: {
+      required,
+      minLength: minLength(4),
+    },
+  },
+  errorTextValidator: {
+    code: {
+      required: 'Mã khoa không được để trống!',
+      minLength: 'Mã khoa phải có tối thiểu từ 2 kí tự trở lên!',
+    },
+    name: {
+      required: 'Tên khoa không được để trống!',
+      minLength: 'Tên khoa phải có tối thiểu từ 4 kí tự trở lên!',
+    },
   },
   methods: {
     onClosed() {
@@ -108,24 +132,11 @@ export default {
     margin-top: 40px;
     > .inputgroup {
       width: 380px;
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 37px;
     }
     > .inputgroup:not(:last-child) {
       margin-bottom: 23.13px;
     }
-  }
-
-  > .body > .notification {
-    color: var(--color-error);
-    text-align: right;
-    font-size: 15px;
-    font-family: 'Inter';
-    margin-top: 20px;
-    margin-bottom: 20px;
   }
 
   .footer {

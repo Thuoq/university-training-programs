@@ -3,14 +3,14 @@
     <table class="table">
       <thead class="head">
         <tr class="row -head">
-          <th class="col">ID</th>
+          <th class="col">STT</th>
           <th class="col">Mã Khoa</th>
           <th class="col">Tên Khoa</th>
         </tr>
       </thead>
       <tbody class="body">
-        <tr v-for="faculty in faculties" :key="faculty.id" class="row" @dblclick.prevent="openDialog(faculty)">
-          <td class="cell">{{ faculty.id }}</td>
+        <tr v-for="(faculty, index) in faculties" :key="faculty.id" class="row" @dblclick.prevent="openDialog(faculty)">
+          <td class="cell">{{ index + 1 }}</td>
           <td class="cell">{{ faculty.code }}</td>
           <td class="cell">{{ faculty.name }}</td>
         </tr>

@@ -1,25 +1,33 @@
 <template>
   <div class="app-input-v2">
-    <div v-if="label" class="labelgroup">
-      <label class="label">{{ label }}</label>
-      <span v-if="required" class="required">*</span>
+    <div
+      class="wrapper"
+      :class="{
+        '-error': error,
+      }"
+    >
+      <div v-if="label" class="labelgroup">
+        <label class="label">{{ label }}</label>
+        <span v-if="required" class="required">*</span>
+      </div>
+      <mwc-textfield
+        ref="input"
+        class="input"
+        v-bind="$attrs"
+        outlined
+        :icon-trailing="icon"
+        :type="type"
+        :value="value"
+        :disabled="disabled"
+        :required="required"
+        @input="updateModel"
+        @change="onChange"
+        @focus="onFocus"
+        @blur="onBlur"
+        @mousedown="onMousedown"
+      />
     </div>
-    <mwc-textfield
-      ref="input"
-      class="input"
-      v-bind="$attrs"
-      outlined
-      :icon-trailing="icon"
-      :type="type"
-      :value="value"
-      :disabled="disabled"
-      :required="required"
-      @input="updateModel"
-      @change="onChange"
-      @focus="onFocus"
-      @blur="onBlur"
-      @mousedown="onMousedown"
-    />
+    <div v-for="(msg, idx) in errorMessages" :key="idx" class="msg">{{ msg }}</div>
   </div>
 </template>
 
@@ -45,6 +53,14 @@ export default {
     required: {
       type: Boolean,
       default: false,
+    },
+    error: {
+      type: Boolean,
+      default: false,
+    },
+    errorMessages: {
+      type: Array,
+      default: () => [],
     },
   },
 
@@ -77,11 +93,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.app-input-v2 {
+.app-input-v2 > .wrapper {
   font-family: 'Inter', serif;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  &.-error {
+    --mdc-theme-error: var(--color-error);
+    --mdc-text-field-outlined-idle-border-color: var(--color-error);
+    --mdc-text-field-outlined-hover-border-color: var(--color-error);
+    --mdc-text-field-fill-color: var(--color-error);
+    --mdc-text-field-ink-color: var(--color-error);
+    --mdc-theme-primary: var(--color-error);
+  }
   > .labelgroup {
     display: flex;
     align-items: center;
@@ -97,5 +121,11 @@ export default {
     height: var(--app-input-height, 40px);
     width: var(--app-input-width, 250px);
   }
+}
+.app-input-v2 > .msg {
+  color: var(--color-error);
+  text-align: right;
+  font-size: 12px;
+  margin: 20px 0;
 }
 </style>
