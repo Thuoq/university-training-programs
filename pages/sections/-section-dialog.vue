@@ -2,36 +2,57 @@
   <div class="faculty-dialog">
     <h2 class="title">{{ title }}</h2>
     <div class="body">
-      <div class="inputgroup">
-        <label class="label">Khoa</label>
-        <app-select
-          v-model="$v.facultyId.$model"
-          :model-value="facultyId"
-          :value="facultyId"
-          :value-prop="'id'"
-          :label-prop="'name'"
-          :items="faculties"
-        ></app-select>
-      </div>
-      <div v-if="!$v.facultyId.required" class="notification">Khoa không được để trống!</div>
+      <app-select-v2
+        v-model="$v.facultyId.$model"
+        :model-value="facultyId"
+        :value="facultyId"
+        value-prop="id"
+        label-prop="name"
+        :items="faculties"
+        :error-messages="$validationError.facultyId"
+        :error="$v.facultyId.$error"
+        class="inputgroup"
+        required
+        label="Khoa"
+        @input="$v.facultyId.$touch()"
+        @blur="$v.facultyId.$touch()"
+      >
+      </app-select-v2>
 
-      <div class="inputgroup">
-        <label class="label">Mã bộ môn</label>
-        <app-input v-model="$v.code.$model" type="text" class="input" required></app-input>
-      </div>
-      <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã bộ môn không được để trống!</div>
-      <div v-if="!$v.code.minLength" class="notification">Mã bộ môn phải có tối thiểu từ 2 kí tự trở lên!</div>
+      <app-input-v2
+        v-model="$v.code.$model"
+        type="text"
+        class="inputgroup"
+        required
+        label="Mã bộ môn"
+        :error-messages="$validationError.code"
+        :error="$v.code.$error"
+        @input="$v.code.$touch()"
+        @blur="$v.code.$touch()"
+      >
+      </app-input-v2>
 
-      <div class="inputgroup">
-        <label class="label">Tên bộ môn</label>
-        <app-input v-model="$v.name.$model" type="text" class="input" required></app-input>
-      </div>
-      <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên bộ môn không được để trống!</div>
-      <div v-if="!$v.name.minLength" class="notification">Tên bộ môn phải có tối thiểu từ 2 kí tự trở lên!</div>
+      <app-input-v2
+        v-model="name"
+        type="text"
+        class="inputgroup"
+        required
+        label="Tên bộ môn"
+        :error-messages="$validationError.name"
+        :error="$v.name.$error"
+        @input="$v.name.$touch()"
+        @blur="$v.name.$touch()"
+      >
+      </app-input-v2>
     </div>
     <div class="footer">
-      <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      <div class="cancel">
+        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+      </div>
+      <div class="submit">
+        <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
+        <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      </div>
     </div>
   </div>
 </template>
@@ -43,9 +64,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    isEdit: {
-      type: Boolean,
-    },
     currentSection: {
       type: Object,
       default: () => {},
@@ -56,8 +74,15 @@ export default {
       name: this.currentSection?.name || null,
       code: this.currentSection?.code || null,
       facultyId: this.currentSection?.facultyId || null,
-      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
     };
+  },
+  computed: {
+    isEdit() {
+      return !!this.currentSection?.id;
+    },
+    title() {
+      return !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa';
+    },
   },
   validations() {
     return {
@@ -73,6 +98,19 @@ export default {
         required,
       },
     };
+  },
+  errorTextValidator: {
+    code: {
+      required: 'Mã bộ môn không được để trống!',
+      minLength: 'Mã bộ môn phải có tối thiểu từ 2 kí tự trở lên!',
+    },
+    name: {
+      required: 'Tên bộ môn không được để trống!',
+      minLength: 'Tên bộ môn phải có tối thiểu từ 2 kí tự trở lên!',
+    },
+    facultyId: {
+      required: 'Khoa không được để trống!',
+    },
   },
   methods: {
     onClosed() {
@@ -100,14 +138,18 @@ export default {
         this.$emit('closed');
       }
     },
+    onDelete() {
+      this.$emit('delete', {
+        id: this.currentSection.id,
+      });
+      this.$emit('closed');
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .faculty-dialog {
-  --app-select-height: 32px;
-  --app-select-width: 228px;
   > .title {
     margin: -19px -24px 0px -24px;
     padding-top: 13px;
@@ -129,46 +171,27 @@ export default {
     > .inputgroup {
       width: 380px;
       text-align: left;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 37px;
-    }
-
-    > .inputgroup > .label {
-      font-family: 'Inter';
-      color: var(--color-back);
-    }
-
-    > .inputgroup > .input {
-      height: 32px;
-    }
-
-    > .notification {
-      color: red;
-      text-align: right;
-      font-size: 15px;
-      font-family: 'Inter';
-      margin-top: -17px;
-      margin-bottom: 20px;
     }
   }
 
   .footer {
     display: flex;
-    justify-content: space-around;
-    align-content: center;
-    margin: 50px 50px 0px 50px;
+    justify-content: space-between;
+    align-items: center;
   }
-
-  > .footer > .btn {
-    &.-save {
-      --mdc-theme-primary: var(--color-primary);
-    }
-    &.-delete {
-      --mdc-theme-primary: var(--color-gray-base);
-      --mdc-theme-on-primary: var(--color-back);
-    }
+}
+.app-button {
+  &.-save {
+    --mdc-theme-primary: var(--color-primary);
+  }
+  &.-close {
+    --mdc-theme-primary: var(--color-gray-base);
+    --mdc-theme-on-primary: var(--color-back);
+  }
+  &.-delete {
+    --mdc-theme-primary: var(--color-error);
+    --mdc-theme-on-primary: var(--color-white);
   }
 }
 </style>

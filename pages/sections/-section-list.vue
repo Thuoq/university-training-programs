@@ -19,11 +19,11 @@
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <section-dialog
-          :isEdit="isEdit"
-          :currentSection="currentSection"
+          :current-section="currentSection"
           :faculties="faculties"
           @closed="closeDialog"
           @submit="onSubmit"
+          @delete="onDelete"
         ></section-dialog>
       </app-dialog>
     </table>
@@ -40,7 +40,6 @@ export default {
     return {
       visibleDialog: false,
       faculties: [],
-      isEdit: true,
       currentSection: null,
     };
   },
@@ -61,6 +60,10 @@ export default {
     },
     async onSubmit(payload) {
       await sectionsStore.$dispatch('updateSections', payload);
+      await sectionsStore.$dispatch('getListSections');
+    },
+    async onDelete(payload) {
+      await sectionsStore.$dispatch('onDeleteSection', payload);
       await sectionsStore.$dispatch('getListSections');
     },
   },

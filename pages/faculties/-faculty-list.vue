@@ -17,7 +17,6 @@
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <faculty-dialog
-          :is-edit="isEdit"
           :current-faculty="currentFaculty"
           @closed="closeDialog"
           @submit="onSubmit"
@@ -35,7 +34,6 @@ export default {
   components: { FacultyDialog },
   data() {
     return {
-      isEdit: true,
       visibleDialog: false,
       currentFaculty: null,
     };

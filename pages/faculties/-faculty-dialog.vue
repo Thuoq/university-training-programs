@@ -41,9 +41,6 @@
 import { required, minLength } from 'vuelidate/lib/validators';
 export default {
   props: {
-    isEdit: {
-      type: Boolean,
-    },
     currentFaculty: {
       type: Object,
       default: () => {},
@@ -53,8 +50,15 @@ export default {
     return {
       name: this.currentFaculty?.name || null,
       code: this.currentFaculty?.code || null,
-      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
     };
+  },
+  computed: {
+    isEdit() {
+      return !!this.currentFaculty.id;
+    },
+    title() {
+      return !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa';
+    },
   },
   validations: {
     code: {

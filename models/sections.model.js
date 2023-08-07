@@ -15,7 +15,9 @@ export const updateSection = (payload) =>
       json: {
         code: payload.code,
         name: payload.name,
-        facultyId: payload.facultyId
+        facultyId: payload.facultyId,
       },
     })
     .json();
+
+export const deleteSection = (payload) => apis.universityAPI.delete(`sections/${payload.id}`).json();
