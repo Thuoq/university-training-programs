@@ -22,10 +22,10 @@
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <position-dialog
-          :isEdit="isEdit"
-          :currentPosition="currentPosition"
+          :current-position="currentPosition"
           @closed="closeDialog"
           @submit="onSubmit"
+          @delete="onDelete"
         ></position-dialog>
       </app-dialog>
     </table>
@@ -40,7 +40,6 @@ export default {
   data() {
     return {
       visibleDialog: false,
-      isEdit: true,
       currentPosition: null,
     };
   },
@@ -60,6 +59,10 @@ export default {
     },
     async onSubmit(payload) {
       await positionsStore.$dispatch('updatePositions', payload);
+      await positionsStore.$dispatch('getListPositions');
+    },
+    async onDelete(payload) {
+      await positionsStore.$dispatch('deletePosition', payload);
       await positionsStore.$dispatch('getListPositions');
     },
   },

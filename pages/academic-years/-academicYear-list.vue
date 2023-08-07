@@ -24,10 +24,10 @@
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <academicYear-dialog
-          :isEdit="isEdit"
-          :currentAcademicYear="currentAcademicYear"
+          :current-academic-year="currentAcademicYear"
           @closed="closeDialog"
           @submit="onSubmit"
+          @delete="onDelete"
         ></academicYear-dialog>
       </app-dialog>
     </table>
@@ -42,7 +42,6 @@ export default {
   data() {
     return {
       visibleDialog: false,
-      isEdit: true,
       currentAcademicYear: null,
     };
   },
@@ -67,6 +66,10 @@ export default {
       await academicYearsStore.$dispatch('updateAcademicYears', payload);
       await academicYearsStore.$dispatch('getListAcademicYears');
     },
+    async onDelete(payload) {
+      await academicYearsStore.$dispatch('deleteAcademicYear', payload);
+      await academicYearsStore.$dispatch('getListAcademicYears');
+    },
   },
 };
 </script>
@@ -81,7 +84,7 @@ export default {
     width: 100%;
   }
   --mdc-shape-medium: 15px;
-  --mdc-dialog-min-width: 850px;
+  --mdc-dialog-min-width: 550px;
 }
 .academicYears-list > .table > .head {
   color: var(--color-primary);

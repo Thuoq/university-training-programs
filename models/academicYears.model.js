@@ -14,7 +14,9 @@ export const updateAcademicYear = (payload) =>
         code: payload.code,
         name: payload.name,
         startYear: payload.startYear,
-        finishYear: payload.finishYear
+        finishYear: payload.finishYear,
       },
     })
     .json();
+
+export const deleteAcademicYearById = (payload) => apis.universityAPI.delete(`academic-year/${payload.id}`).json();

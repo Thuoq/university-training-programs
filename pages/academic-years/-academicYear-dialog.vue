@@ -2,55 +2,61 @@
   <div class="academicYear-dialog">
     <h2 class="title">{{ title }}</h2>
     <div class="body">
-      <div class="inputgroup">
-        <label class="label">Mã khóa</label>
-        <app-input v-model="$v.code.$model" type="text" class="input" required></app-input>
-      </div>
-      <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã khóa không được để trống!</div>
-      <div v-if="!$v.code.minLength" class="notification">Mã khóa phải có tối thiểu từ 2 kí tự trở lên!</div>
+      <app-input-v2
+        v-model="code"
+        :error="$v.code.$error"
+        :error-messages="$validationError.code"
+        type="text"
+        required
+        class="inputgroup"
+        label="Mã Khoá"
+        @input="$v.code.$touch()"
+        @blur="$v.code.$touch()"
+      ></app-input-v2>
 
-      <div class="inputgroup">
-        <label class="label">Tên khóa</label>
-        <app-input v-model="$v.name.$model" type="text" class="input" required></app-input>
-      </div>
-      <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên khóa không được để trống!</div>
-      <div v-if="!$v.name.minLength" class="notification">Tên khóa phải có tối thiểu từ 4 kí tự trở lên!</div>
-
-      <div class="inputgroup">
-        <label class="label">Năm bắt đầu</label>
-        <app-input v-model="$v.startYear.$model" type="text" class="input" required></app-input>
-      </div>
-      <div v-if="$v.startYear.$error && !$v.startYear.required" class="notification">
-        Năm bắt đầu không được để trống!
-      </div>
-      <div v-if="!$v.startYear.numeric" class="notification">Năm bắt đầu phải là số!</div>
-      <div v-if="$v.startYear.$error && !$v.startYear.minLength" class="notification">
-        Năm bắt đầu phải có 1 số có 4 chữ số trở lên!
-      </div>
-      <div v-if="$v.startYear.$error && !$v.startYear.between" class="notification">
-        Năm bắt đầu trong khoảng từ {{ $v.startYear.$params.between.min }} đến {{ $v.startYear.$params.between.max }}!
-      </div>
-
-      <div class="inputgroup">
-        <label class="label">Năm kết thúc</label>
-        <app-input v-model="$v.finishYear.$model" type="text" class="input" required></app-input>
-      </div>
-      <div v-if="$v.finishYear.$error && !$v.finishYear.required" class="notification">
-        Năm kết thúc không được để trống!
-      </div>
-      <div v-if="!$v.finishYear.numeric" class="notification">Năm kết thúc phải là số!</div>
-      <div v-if="$v.finishYear.$error && !$v.finishYear.minLength" class="notification">
-        Năm kết thúc phải có 1 số có 4 chữ số trở lên!
-      </div>
-      <div v-if="!$v.finishYear.between" class="notification">
-        Năm kết thúc trong khoảng từ {{ $v.finishYear.$params.between.min }} đến
-        {{ $v.finishYear.$params.between.max }}!
-      </div>
+      <app-input-v2
+        v-model="name"
+        type="text"
+        required
+        :error="$v.name.$error"
+        :error-messages="$validationError.name"
+        class="inputgroup"
+        label="Tên Khoá"
+        @input="$v.name.$touch()"
+        @blur="$v.name.$touch()"
+      ></app-input-v2>
+      <app-input-v2
+        v-model="startYear"
+        type="text"
+        required
+        :error="$v.startYear.$error"
+        :error-messages="$validationError.startYear"
+        class="inputgroup"
+        label="Tên Năm bắt đầu"
+        @input="$v.startYear.$touch()"
+        @blur="$v.startYear.$touch()"
+      ></app-input-v2>
+      <app-input-v2
+        v-model="finishYear"
+        type="text"
+        required
+        :error="$v.finishYear.$error"
+        :error-messages="$validationError.finishYear"
+        class="inputgroup"
+        label="Năm kết thúc"
+        @input="$v.finishYear.$touch()"
+        @blur="$v.finishYear.$touch()"
+      ></app-input-v2>
     </div>
 
     <div class="footer">
-      <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      <div class="cancel">
+        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+      </div>
+      <div class="submit">
+        <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
+        <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      </div>
     </div>
   </div>
 </template>
@@ -58,21 +64,17 @@
 import { required, numeric, minLength, between } from 'vuelidate/lib/validators';
 export default {
   props: {
-    isEdit: {
-      type: Boolean,
-    },
     currentAcademicYear: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   },
   data() {
     return {
-      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
       name: this.currentAcademicYear?.name || null,
       code: this.currentAcademicYear?.code || null,
-      startYear: this.currentAcademicYear?.startYear.split('-')[0] || null,
-      finishYear: this.currentAcademicYear?.finishYear.split('-')[0] || null,
+      startYear: this.currentAcademicYear?.startYear?.split('-')[0] || null,
+      finishYear: this.currentAcademicYear?.finishYear?.split('-')[0] || null,
     };
   },
   validations() {
@@ -99,12 +101,42 @@ export default {
       },
     };
   },
+  computed: {
+    isEdit() {
+      return this.currentAcademicYear?.id;
+    },
+    title() {
+      return !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa';
+    },
+  },
+  errorTextValidator: {
+    code: {
+      required: 'Mã khóa không được để trống!',
+      minLength: 'Mã khóa phải có tối thiểu từ 2 kí tự trở lên!',
+    },
+    name: {
+      required: 'Tên khóa không được để trống!',
+      minLength: 'Tên khóa phải có tối thiểu từ 4 kí tự trở lên!',
+    },
+    startYear: {
+      required: ' Năm bắt đầu không được để trống!',
+      numeric: 'Năm bắt đầu phải là số!',
+      mixLength: ' Năm bắt đầu phải có 1 số có 4 chữ số trở lên!',
+      between: `Năm bắt đầu phải nằm trong khoảng 2000-2100`,
+    },
+    finishYear: {
+      required: ' Năm kết thúc không được để trống!',
+      numeric: 'Năm kết thúc phải là số!',
+      mixLength: ' Năm kết thúc phải có 1 số có 4 chữ số trở lên!',
+      between: `Năm kết thúc  nằm trong khoảng 2000-2100 và phải lớn hơn năm bắt đầu`,
+    },
+  },
   methods: {
     onClosed() {
       this.$emit('closed');
     },
     onSubmit() {
-      if (this.isEdit === true) {
+      if (this.isEdit) {
         const editAcademicYear = {
           name: this.name,
           code: this.code,
@@ -126,6 +158,12 @@ export default {
         this.$emit('submit', payload);
         this.$emit('closed');
       }
+    },
+    onDelete() {
+      this.$emit('delete', {
+        id: this.currentAcademicYear.id,
+      });
+      this.$emit('closed');
     },
   },
 };
@@ -153,45 +191,27 @@ export default {
     margin-top: 40px;
     > .inputgroup {
       width: 450px;
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 37px;
-    }
-    > .inputgroup > .label {
-      font-family: 'Inter';
-      color: var(--color-back);
-    }
-    > .inputgroup > .input {
-      height: 32px;
-    }
-
-    > .notification {
-      color: red;
-      text-align: right;
-      font-size: 15px;
-      font-family: 'Inter';
-      margin-top: -20px;
-      margin-bottom: 20px;
     }
   }
 
   .footer {
     display: flex;
-    justify-content: space-around;
-    align-content: center;
-    margin: 30px 50px 0px 50px;
+    justify-content: space-between;
+    align-items: center;
   }
-
-  > .footer > .btn {
-    &.-save {
-      --mdc-theme-primary: var(--color-primary);
-    }
-    &.-delete {
-      --mdc-theme-primary: var(--color-gray-base);
-      --mdc-theme-on-primary: var(--color-back);
-    }
+}
+.app-button {
+  &.-save {
+    --mdc-theme-primary: var(--color-primary);
+  }
+  &.-close {
+    --mdc-theme-primary: var(--color-gray-base);
+    --mdc-theme-on-primary: var(--color-back);
+  }
+  &.-delete {
+    --mdc-theme-primary: var(--color-error);
+    --mdc-theme-on-primary: var(--color-white);
   }
 }
 </style>

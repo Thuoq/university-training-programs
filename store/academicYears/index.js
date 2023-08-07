@@ -1,8 +1,13 @@
 import { make } from 'vuex-pathify';
-import { updateAcademicYear,createAcademicYear,fetchListAcademicYears } from '~/models/academicYears.model';
+import {
+  updateAcademicYear,
+  createAcademicYear,
+  fetchListAcademicYears,
+  deleteAcademicYearById,
+} from '~/models/academicYears.model';
 
 export const state = () => ({
-    academicYears: null,
+  academicYears: null,
 });
 export const getters = {
   ...make.getters(state),
@@ -20,6 +25,9 @@ export const actions = {
     await createAcademicYear(payload);
   },
   async updateAcademicYears({ commit, state }, payload) {
-    await  updateAcademicYear(payload);
+    await updateAcademicYear(payload);
+  },
+  async deleteAcademicYear({ commit, state }, payload) {
+    await deleteAcademicYearById(payload);
   },
 };

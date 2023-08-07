@@ -18,3 +18,5 @@ export const updatePosition = (payload) =>
       },
     })
     .json();
+
+export const deletePositionById = (payload) => apis.universityAPI.delete(`positions/${payload.id}`).json();

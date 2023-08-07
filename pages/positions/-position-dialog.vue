@@ -2,27 +2,38 @@
   <div class="position-dialog">
     <h2 class="title">{{ title }}</h2>
     <div class="body">
-      <div class="inputgroup">
-        <label class="label">Mã nhóm người dùng</label>
-        <app-input v-model="$v.code.$model" type="text" class="input" required></app-input>
-      </div>
-      <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã nhóm người dùng không được để trống!</div>
-      <div v-if="!$v.code.minLength" class="notification">Mã nhóm người dùng phải có tối thiểu từ 2 kí tự trở lên!</div>
+      <app-input-v2
+        v-model="code"
+        :error="$v.code.$error"
+        :error-messages="$validationError.code"
+        type="text"
+        required
+        class="inputgroup"
+        label="Mã Khoa"
+        @input="$v.code.$touch()"
+        @blur="$v.code.$touch()"
+      ></app-input-v2>
 
-      <div class="inputgroup">
-        <label class="label">Tên nhóm người dùng</label>
-        <app-input v-model="$v.name.$model" type="text" class="input" required></app-input>
-      </div>
-      <div v-if="$v.name.$error && !$v.name.required" class="notification">
-        Tên nhóm người dùng không được để trống!
-      </div>
-      <div v-if="!$v.name.minLength" class="notification">
-        Tên nhóm người dùng phải có tối thiểu từ 4 kí tự trở lên!
-      </div>
+      <app-input-v2
+        v-model="name"
+        type="text"
+        required
+        :error="$v.name.$error"
+        :error-messages="$validationError.name"
+        class="inputgroup"
+        label="Tên Khoa"
+        @input="$v.name.$touch()"
+        @blur="$v.name.$touch()"
+      ></app-input-v2>
     </div>
     <div class="footer">
-      <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      <div class="cancel">
+        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+      </div>
+      <div class="submit">
+        <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
+        <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      </div>
     </div>
   </div>
 </template>
@@ -30,20 +41,24 @@
 import { required, minLength } from 'vuelidate/lib/validators';
 export default {
   props: {
-    isEdit: {
-      type: Boolean,
-    },
     currentPosition: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   },
   data() {
     return {
-      title: !this.currentPosition ? 'Thêm mới' : 'Chỉnh sửa',
       name: this.currentPosition?.name || null,
       code: this.currentPosition?.code || null,
     };
+  },
+  computed: {
+    isEdit() {
+      return !!this.currentPosition.id;
+    },
+    title() {
+      return this.isEdit ? 'Chỉnh sửa' : 'Thêm mới';
+    },
   },
   validations() {
     return {
@@ -57,6 +72,16 @@ export default {
       },
     };
   },
+  errorTextValidator: {
+    code: {
+      required: 'Mã nhóm người dùng không được để trống!',
+      minLength: 'Mã nhóm người dùng có tối thiểu từ 2 kí tự trở lên!',
+    },
+    name: {
+      required: 'Tên nhóm người dùng không được để trống!',
+      minLength: 'Tên nhóm người dùng phải có tối thiểu từ 4 kí tự trở lên!',
+    },
+  },
   methods: {
     onClosed() {
       this.$emit('closed');
@@ -66,11 +91,17 @@ export default {
         name: this.name,
         code: this.code,
       };
-      if (this.isEdit === true) {
+      if (this.isEdit) {
         position.id = this.currentPosition.id;
       }
       const payload = position;
       this.$emit('submit', payload);
+      this.$emit('closed');
+    },
+    onDelete() {
+      this.$emit('delete', {
+        id: this.currentPosition.id,
+      });
       this.$emit('closed');
     },
   },
@@ -99,47 +130,28 @@ export default {
     margin-top: 40px;
     > .inputgroup {
       width: 450px;
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 37px;
-    }
-
-    > .inputgroup > .label {
-      font-family: 'Inter';
-      color: var(--color-back);
-    }
-
-    > .inputgroup > .input {
-      height: 32px;
-    }
-
-    > .notification {
-      color: red;
-      text-align: right;
-      font-size: 15px;
-      font-family: 'Inter';
-      margin-top: -17px;
-      margin-bottom: 20px;
     }
   }
 
   .footer {
     display: flex;
-    justify-content: space-around;
-    align-content: center;
-    margin: 0px 50px 0px 50px;
+    justify-content: space-between;
+    align-items: center;
   }
+}
 
-  > .footer > .btn {
-    &.-save {
-      --mdc-theme-primary: var(--color-primary);
-    }
-    &.-delete {
-      --mdc-theme-primary: var(--color-gray-base);
-      --mdc-theme-on-primary: var(--color-back);
-    }
+.app-button {
+  &.-save {
+    --mdc-theme-primary: var(--color-primary);
+  }
+  &.-close {
+    --mdc-theme-primary: var(--color-gray-base);
+    --mdc-theme-on-primary: var(--color-back);
+  }
+  &.-delete {
+    --mdc-theme-primary: var(--color-error);
+    --mdc-theme-on-primary: var(--color-white);
   }
 }
 </style>
