@@ -43,7 +43,7 @@ export default {
   props: {
     currentFaculty: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   },
   data() {

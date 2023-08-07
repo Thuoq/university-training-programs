@@ -21,12 +21,12 @@
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <major-dialog
-          :isEdit="isEdit"
-          :currentMajor="currentMajor"
+          :current-major="currentMajor"
           :sections="sections"
           :faculties="faculties"
           @closed="closeDialog"
           @submit="onSubmit"
+          @delete="onDelete"
         ></major-dialog>
       </app-dialog>
     </table>
@@ -57,16 +57,23 @@ export default {
   },
   methods: {
     async openDialog(major) {
-      this.visibleDialog = true;
+      const [sections, faculties] = await Promise.all([fetchListSections(), fetchListFaculties()]);
+      this.sections = sections;
+      this.faculties = faculties;
+
       this.currentMajor = major;
-      this.sections = await fetchListSections();
-      this.faculties = await fetchListFaculties();
+
+      this.visibleDialog = true;
     },
     closeDialog() {
       this.visibleDialog = false;
     },
     async onSubmit(payload) {
       await majorsStore.$dispatch('updateMajors', payload);
+      await majorsStore.$dispatch('getListMajors');
+    },
+    async onDelete(payload) {
+      await majorsStore.$dispatch('deleteMajor', payload);
       await majorsStore.$dispatch('getListMajors');
     },
   },

@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { updateMajor,createMajor,fetchListMajors} from '~/models/majors.model';
+import { updateMajor, createMajor, fetchListMajors, deleteMajorById } from '~/models/majors.model';
 
 export const state = () => ({
   majors: null,
@@ -21,5 +21,8 @@ export const actions = {
   },
   async updateMajors({ commit, state }, payload) {
     await updateMajor(payload);
+  },
+  async deleteMajor({ commit, state }, payload) {
+    await deleteMajorById(payload);
   },
 };
