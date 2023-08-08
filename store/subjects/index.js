@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { updateSubject, createSubject,fetchListSubjects } from '~/models/subjects.model';
+import { updateSubject, createSubject, fetchListSubjects, deleteSubjectById } from '~/models/subjects.model';
 
 export const state = () => ({
   subjects: null,
@@ -21,5 +21,9 @@ export const actions = {
   },
   async updateSubjects({ commit, state }, payload) {
     await updateSubject(payload);
+  },
+
+  async deleteSubject({ commit, state }, payload) {
+    await deleteSubjectById(payload);
   },
 };

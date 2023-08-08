@@ -29,9 +29,9 @@
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <subject-dialog
-          :isEdit="isEdit"
-          :currentSubject="currentSubject"
+          :current-subject="currentSubject"
           :subjects="subjects"
+          @delete="onDelete"
           @closed="closeDialog"
           @submit="onSubmit"
         ></subject-dialog>
@@ -71,7 +71,10 @@ export default {
     async onSubmit(payload) {
       await subjectsStore.$dispatch('updateSubjects', payload);
       await subjectsStore.$dispatch('getListSubjects');
-      // await console.log(payload);
+    },
+    async onDelete(payload) {
+      await subjectsStore.$dispatch('deleteSubject', payload);
+      await subjectsStore.$dispatch('getListSubjects');
     },
   },
 };

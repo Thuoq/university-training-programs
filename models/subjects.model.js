@@ -23,3 +23,5 @@ export const updateSubject = (payload) =>
       },
     })
     .json();
+
+export const deleteSubjectById = (payload) => apis.universityAPI.delete(`subjects/${payload.id}`).json();

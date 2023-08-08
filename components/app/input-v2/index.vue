@@ -7,7 +7,7 @@
       }"
     >
       <div v-if="label" class="labelgroup">
-        <label class="label">{{ label }}</label>
+        <span class="label">{{ label }}</span>
         <span v-if="required" class="required">*</span>
       </div>
       <mwc-textfield
@@ -110,6 +110,7 @@ export default {
     display: flex;
     align-items: center;
     column-gap: 2px;
+    font-size: 14px;
   }
   > .labelgroup > .required {
     color: var(--color-error);
