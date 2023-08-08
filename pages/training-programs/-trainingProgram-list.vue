@@ -26,12 +26,12 @@
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
         <trainingProgram-dialog
-          :is-edit="isEdit"
           :current-training-program="currentTrainingProgram"
           :academic-years="academicYears"
           :majors="majors"
           @closed="closeDialog"
           @submit="onSubmit"
+          @delete="onDelete"
         ></trainingProgram-dialog>
       </app-dialog>
     </table>
@@ -64,14 +64,19 @@ export default {
     async openDialog(trainingProgram) {
       this.visibleDialog = true;
       this.currentTrainingProgram = trainingProgram;
-      this.academicYears = await fetchListAcademicYears();
-      this.majors = await fetchListMajors();
+      const [academicYears, majors] = await Promise.all([fetchListAcademicYears(), fetchListMajors()]);
+      this.academicYears = academicYears;
+      this.majors = majors;
     },
     closeDialog() {
       this.visibleDialog = false;
     },
     async onSubmit(payload) {
       await trainingProgramsStore.$dispatch('updateTrainingPrograms', payload);
+      await trainingProgramsStore.$dispatch('getListTrainingPrograms');
+    },
+    async onDelete(payload) {
+      await trainingProgramsStore.$dispatch('deleteTrainingProgram', payload.id);
       await trainingProgramsStore.$dispatch('getListTrainingPrograms');
     },
   },
@@ -122,5 +127,3 @@ export default {
   }
 }
 </style>
-
-

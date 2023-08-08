@@ -1,60 +1,83 @@
 <template>
   <div class="employee-dialog">
-    <h2 class="title">{{title}}</h2>
+    <h2 class="title">{{ title }}</h2>
     <div class="body">
       <div class="grouptext">
         <div class="group">
-          <div class="inputgroup">
-            <label class="label">Mã CTDT</label>
-            <app-input v-model="$v.code.$model" type="text" class="input" required></app-input>
-          </div>
-          <div v-if="$v.code.$error && !$v.code.required" class="notification">Mã CTĐT không được để trống!</div>
-          <div v-if="!$v.code.minLength" class="notification">Mã CTĐT phải có tối thiểu từ 2 kí tự trở lên!</div>
+          <app-input-v2
+            v-model="code"
+            :error="$v.code.$error"
+            :error-messages="$validationError.code"
+            type="text"
+            required
+            class="inputgroup"
+            label="Mã CTĐT"
+            @input="$v.code.$touch()"
+            @blur="$v.code.$touch()"
+          ></app-input-v2>
         </div>
 
         <div class="group">
-          <div class="inputgroup">
-            <label class="label">Tên CTDT</label>
-            <app-input v-model="$v.name.$model" type="text" class="input" required></app-input>
-          </div>
-          <div v-if="$v.name.$error && !$v.name.required" class="notification">Tên CTĐT không được để trống!</div>
-          <div v-if="!$v.name.minLength" class="notification">Tên CTĐT phải có tối thiểu từ 4 kí tự trở lên!</div>
+          <app-input-v2
+            v-model="name"
+            type="text"
+            required
+            :error="$v.name.$error"
+            :error-messages="$validationError.name"
+            class="inputgroup"
+            label="Tên CTĐT"
+            @input="$v.name.$touch()"
+            @blur="$v.name.$touch()"
+          ></app-input-v2>
         </div>
 
         <div class="group">
-          <div class="inputgroup">
-            <label class="label">Khóa</label>
-            <app-select
-              v-model="$v.academicYearId.$model"
-              :model-value="academicYearId"
-              :value="academicYearId"
-              :value-prop="'id'"
-              :label-prop="'name'"
-              :items="academicYears"
-            ></app-select>
-          </div>
-          <div v-if="!$v.academicYearId.required" class="notification">Khóa không được để trống!</div>
+          <app-select-v2
+            v-model="academicYearId"
+            required
+            label="Khóa"
+            class="inputgroup"
+            :model-value="academicYearId"
+            :value="academicYearId"
+            value-prop="id"
+            label-prop="name"
+            :error="$v.academicYearId.$error"
+            :error-messages="$validationError.academicYearId"
+            :items="academicYears"
+            @input="$v.academicYearId.$touch()"
+            @blur="$v.academicYearId.$touch()"
+          >
+          </app-select-v2>
         </div>
 
         <div class="group">
-          <div class="inputgroup">
-            <label class="label">Ngành</label>
-            <app-select
-              v-model="$v.marjorId.$model"
-              :model-value="marjorId"
-              :value="marjorId"
-              :value-prop="'id'"
-              :label-prop="'name'"
-              :items="majors"
-            ></app-select>
-          </div>
-          <div v-if="!$v.marjorId.required" class="notification">Ngành không được để trống!</div>
+          <app-select-v2
+            v-model="marjorId"
+            required
+            label="Ngành"
+            class="inputgroup"
+            :model-value="marjorId"
+            :value="marjorId"
+            value-prop="id"
+            label-prop="name"
+            :error="$v.marjorId.$error"
+            :error-messages="$validationError.marjorId"
+            :items="majors"
+            @input="$v.marjorId.$touch()"
+            @blur="$v.marjorId.$touch()"
+          >
+          </app-select-v2>
         </div>
       </div>
     </div>
     <div class="footer">
-      <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      <div class="cancel">
+        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+      </div>
+      <div class="submit">
+        <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
+        <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      </div>
     </div>
   </div>
 </template>
@@ -62,9 +85,6 @@
 import { required, minLength } from 'vuelidate/lib/validators';
 export default {
   props: {
-    isEdit: {
-      type: Boolean,
-    },
     majors: {
       type: Array,
       default: () => [],
@@ -75,17 +95,24 @@ export default {
     },
     currentTrainingProgram: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   },
   data() {
     return {
-      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
       name: this.currentTrainingProgram?.name || null,
       code: this.currentTrainingProgram?.code || null,
       marjorId: this.currentTrainingProgram?.marjorId || null,
       academicYearId: this.currentTrainingProgram?.academicYearId || null,
     };
+  },
+  computed: {
+    isEdit() {
+      return !!this.currentTrainingProgram.id;
+    },
+    title() {
+      return !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa';
+    },
   },
   validations() {
     return {
@@ -105,6 +132,22 @@ export default {
       },
     };
   },
+  errorTextValidator: {
+    code: {
+      required: 'Mã CTĐT không được để trống!',
+      minLength: 'Mã CTĐT phải có tối thiểu từ 2 kí tự trở lên!',
+    },
+    name: {
+      required: 'Tên CTĐT không được để trống!',
+      minLength: 'Tên CTĐT phải có tối thiểu từ 4 kí tự trở lên!',
+    },
+    academicYearId: {
+      required: 'Khóa không được để trống!',
+    },
+    marjorId: {
+      required: 'Ngành không được để trống!',
+    },
+  },
   methods: {
     onClosed() {
       this.$emit('closed');
@@ -116,11 +159,17 @@ export default {
         marjorId: this.marjorId,
         academicYearId: this.academicYearId,
       };
-      if(this.isEdit===true){
+      if (this.isEdit) {
         TP.id = this.currentTrainingProgram.id;
       }
       const payload = TP;
       this.$emit('submit', payload);
+      this.$emit('closed');
+    },
+    onDelete() {
+      this.$emit('delete', {
+        id: this.currentTrainingProgram.id,
+      });
       this.$emit('closed');
     },
   },
@@ -128,8 +177,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .employee-dialog {
-  --app-select-height: 32px;
-  --app-select-width: 227px;
   > .title {
     margin: -19px -24px 0px -24px;
     padding-top: 13px;
@@ -157,42 +204,29 @@ export default {
         text-align: left;
         margin-bottom: 26px;
         > .inputgroup {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+          width: 380px;
         }
-      }
-      > .group > .inputgroup > .label {
-        font-family: 'Inter';
-        color: var(--color-back);
-      }
-      > .group > .inputgroup > .input {
-        height: 32px;
-      }
-      > .group > .notification {
-        color: red;
-        text-align: left;
-        font-size: 15px;
-        font-family: 'Inter';
-        margin-top: 16px;
-        margin-bottom: 10px;
       }
     }
   }
   .footer {
     display: flex;
-    justify-content: space-around;
-    align-content: center;
-    margin: 0px 50px 0px 50px;
+    justify-content: space-between;
+    align-items: center;
   }
-  > .footer > .btn {
-    &.-save {
-      --mdc-theme-primary: var(--color-primary);
-    }
-    &.-delete {
-      --mdc-theme-primary: var(--color-gray-base);
-      --mdc-theme-on-primary: var(--color-back);
-    }
+}
+
+.app-button {
+  &.-save {
+    --mdc-theme-primary: var(--color-primary);
+  }
+  &.-close {
+    --mdc-theme-primary: var(--color-gray-base);
+    --mdc-theme-on-primary: var(--color-back);
+  }
+  &.-delete {
+    --mdc-theme-primary: var(--color-error);
+    --mdc-theme-on-primary: var(--color-white);
   }
 }
 </style>

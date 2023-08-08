@@ -5,6 +5,7 @@ import {
   createTrainingProgram,
   fetchListTrainingPrograms,
   deleteTrainingProgramContentByTPId,
+  deleteTrainingProgram,
 } from '~/models/trainingPrograms.model';
 
 export const state = () => ({
@@ -33,5 +34,8 @@ export const actions = {
   },
   async updateTrainingPrograms({ commit, state }, payload) {
     await updateTrainingProgram(payload);
+  },
+  async deleteTrainingProgram({ commit, state }, id) {
+    await deleteTrainingProgram(id);
   },
 };

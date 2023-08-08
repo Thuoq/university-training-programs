@@ -29,3 +29,5 @@ export const updateTrainingProgram = (payload) =>
       },
     })
     .json();
+
+export const deleteTrainingProgram = (id) => apis.universityAPI.delete(`training-programs/${id}`).json();

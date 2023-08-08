@@ -146,7 +146,7 @@ export default {
       phoneNumber: this.currentEmployee?.phoneNumber || '',
       roleId: this.currentEmployee?.roleId || null,
       facultyId: this.currentEmployee?.facultyId || null,
-      positionId: this.currentEmployee?.positionEmployees[0].positionId || null,
+      positionId: this.currentEmployee?.positionEmployees[0]?.positionId || null,
       sectionId: this.currentEmployee?.sectionId || null,
     };
   },

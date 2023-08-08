@@ -205,6 +205,7 @@ export default {
     display: flex;
     align-items: center;
     column-gap: 2px;
+    font-size: 14px;
   }
   > .labelgroup > .required {
     color: var(--color-error);
