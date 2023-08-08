@@ -76,7 +76,7 @@
 
         <div class="group">
           <app-input-v2
-            v-model.number="numberPrerequisiteCredits"
+            v-model="numberPrerequisiteCredits"
             type="text"
             :error="$v.numberPrerequisiteCredits.$error"
             :error-messages="$validationError.numberPrerequisiteCredits"
