@@ -4,6 +4,7 @@ import {
   createAcademicYear,
   fetchListAcademicYears,
   deleteAcademicYearById,
+  fetchSearchListAcademicYears,
 } from '~/models/academicYears.model';
 
 export const state = () => ({
@@ -19,6 +20,10 @@ export const mutations = {
 export const actions = {
   async getListAcademicYears({ commit }) {
     const academicYears = await fetchListAcademicYears();
+    commit('SET_ACADEMIC_YEARS', academicYears);
+  },
+  async searchListAcademicYears({ commit }, payload) {
+    const academicYears = await fetchSearchListAcademicYears(payload);
     commit('SET_ACADEMIC_YEARS', academicYears);
   },
   async createAcademicYears({ commit, state }, payload) {

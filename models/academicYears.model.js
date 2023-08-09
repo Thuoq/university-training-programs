@@ -1,5 +1,7 @@
 import { apis } from '~/apis';
 export const fetchListAcademicYears = () => apis.universityAPI.get('academic-year').json();
+export const fetchSearchListAcademicYears = (payload) =>
+  apis.universityAPI.get(`academic-year?textSearch=${payload}`).json();
 export const createAcademicYear = (payload) =>
   apis.universityAPI
     .post('academic-year', {
