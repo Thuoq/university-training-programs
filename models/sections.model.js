@@ -2,6 +2,8 @@ import { apis } from '~/apis';
 
 export const fetchListSections = () => apis.universityAPI.get('sections').json();
 
+export const fetchSearchListSections = (payload) => apis.universityAPI.get(`sections?textSearch=${payload}`).json();
+
 export const createSection = (payload) =>
   apis.universityAPI
     .post('sections', {

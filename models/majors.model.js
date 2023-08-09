@@ -1,5 +1,6 @@
 import { apis } from '~/apis';
 export const fetchListMajors = () => apis.universityAPI.get('majors').json();
+export const fetchSearchListMajors = (payload) => apis.universityAPI.get(`majors?textSearch=${payload}`).json();
 export const createMajor = (payload) =>
   apis.universityAPI
     .post('majors', {

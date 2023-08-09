@@ -1,5 +1,11 @@
 import { make } from 'vuex-pathify';
-import { updateMajor, createMajor, fetchListMajors, deleteMajorById } from '~/models/majors.model';
+import {
+  updateMajor,
+  createMajor,
+  fetchListMajors,
+  deleteMajorById,
+  fetchSearchListMajors,
+} from '~/models/majors.model';
 
 export const state = () => ({
   majors: null,
@@ -14,6 +20,10 @@ export const mutations = {
 export const actions = {
   async getListMajors({ commit }) {
     const majors = await fetchListMajors();
+    commit('SET_MAJORS', majors);
+  },
+  async searchListMajors({ commit }, payload) {
+    const majors = await fetchSearchListMajors(payload);
     commit('SET_MAJORS', majors);
   },
   async createMajors({ commit, state }, payload) {

@@ -30,6 +30,7 @@ function createAPI(options) {
           }
           if (!res.ok) {
             const body = await res.json();
+            console.log(body.message);
             toast.error(body.message || body || '');
           }
         },

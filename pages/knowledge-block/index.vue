@@ -1,7 +1,10 @@
 <template>
   <div class="knowledge-block-page">
     <layout-title :title="title"></layout-title>
-    <add-knowledge-block class="add-knowledge-block"></add-knowledge-block>
+    <div class="search-input-row">
+      <search-knowledge-block @search="performSearch"></search-knowledge-block>
+      <add-knowledge-block class="add-knowledge-block"></add-knowledge-block>
+    </div>
     <knowledge-block-list
       :knowledge-block-list="formatKnowledgeBlocks"
       class="knowledge-block-list"
@@ -22,11 +25,15 @@
 import KnowledgeBlockDialog from './-knowledge-block-dialog';
 import AddKnowledgeBlock from './-add-knowledge-block';
 import KnowledgeBlockList from './-knowledge-block-list';
+import SearchKnowledgeBlock from './-knowledge-block-search.vue';
 import { fetchListKnowledgeBlock } from '~/models/knowledge-block.model';
 import { pathified } from '~/utils';
 const knowledgeBlockStore = pathified('knowledge-block');
 export default {
-  components: { KnowledgeBlockList, AddKnowledgeBlock, KnowledgeBlockDialog },
+  components: { KnowledgeBlockList, AddKnowledgeBlock, KnowledgeBlockDialog, SearchKnowledgeBlock },
+  async asyncData() {
+    await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
+  },
   data() {
     return {
       title: 'Khối kiến thức',
@@ -53,9 +60,6 @@ export default {
       });
     },
   },
-  async asyncData() {
-    await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
-  },
   methods: {
     async openDialog(val) {
       this.visibleDialog = true;
@@ -70,18 +74,29 @@ export default {
       await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
       this.visibleDialog = false;
     },
+    async performSearch(payload) {
+      await knowledgeBlockStore.$dispatch('searchListKnowLedgeBlock', payload);
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .knowledge-block-page {
-  .add-knowledge-block {
-    text-align: right;
-    margin-top: 40px;
-    margin-bottom: 54px;
-  }
+  // .add-knowledge-block {
+  //   text-align: right;
+  //   margin-top: 40px;
+  //   margin-bottom: 54px;
+  // }
   > .knowledge-block-list {
     width: 100%;
+  }
+
+  > .search-input-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 </style>

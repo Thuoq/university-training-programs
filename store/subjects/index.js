@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { updateSubject, createSubject,fetchListSubjects } from '~/models/subjects.model';
+import { updateSubject, createSubject, fetchListSubjects, fetchSearchListSubjects } from '~/models/subjects.model';
 
 export const state = () => ({
   subjects: null,
@@ -14,6 +14,10 @@ export const mutations = {
 export const actions = {
   async getListSubjects({ commit }) {
     const subjects = await fetchListSubjects();
+    commit('SET_SUBJECTS', subjects);
+  },
+  async searchListSubjects({ commit }, payload) {
+    const subjects = await fetchSearchListSubjects(payload);
     commit('SET_SUBJECTS', subjects);
   },
   async createSubjects({ commit, state }, payload) {

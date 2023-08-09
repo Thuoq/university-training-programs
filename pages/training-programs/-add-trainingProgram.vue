@@ -6,7 +6,7 @@
     </app-button>
     <app-dialog :visible="visibleDialog" @closed="closeDialog">
       <trainingProgram-dialog
-        :academicYears="academicYears"
+        :academic-years="academicYears"
         :majors="majors"
         @closed="closeDialog"
         @submit="onSubmit"

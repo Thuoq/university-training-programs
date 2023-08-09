@@ -36,7 +36,7 @@ export default {
   > .row {
     border: 1px solid rgba(0, 0, 0, 0.15);
     &.-head {
-      color: var(--color-primary);
+      background-color: rgba($color: #3340bf, $alpha: 0.17);
       font-size: 17px;
       line-height: 21px;
       font-weight: 700;

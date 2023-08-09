@@ -46,7 +46,6 @@ export default {
     width: 200px;
     height: 36px;
     background: #d3d8ea;
-    border: 1px solid #000000;
     cursor: pointer;
     --mdc-theme-primary: var(--color-primary);
     --mdc-button-horizontal-padding: 10px;

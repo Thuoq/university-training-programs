@@ -1,5 +1,11 @@
 import { make } from 'vuex-pathify';
-import { updateSection, createSection, fetchListSections, deleteSection } from '~/models/sections.model';
+import {
+  updateSection,
+  createSection,
+  fetchListSections,
+  deleteSection,
+  fetchSearchListSections,
+} from '~/models/sections.model';
 
 export const state = () => ({
   sections: null,
@@ -14,6 +20,10 @@ export const mutations = {
 export const actions = {
   async getListSections({ commit }) {
     const sections = await fetchListSections();
+    commit('SET_SECTIONS', sections);
+  },
+  async searchListSections({ commit }, payload) {
+    const sections = await fetchSearchListSections(payload);
     commit('SET_SECTIONS', sections);
   },
   async createSections({ commit, state }, payload) {

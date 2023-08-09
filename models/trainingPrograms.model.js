@@ -1,5 +1,9 @@
 import { apis } from '~/apis';
 export const fetchListTrainingPrograms = () => apis.universityAPI.get('training-programs').json();
+
+export const fetchSearchListTrainingPrograms = (payload) =>
+  apis.universityAPI.get(`training-programs?textSearch=${payload}`).json();
+
 export const createTrainingProgram = (payload) =>
   apis.universityAPI
     .post('training-programs', {

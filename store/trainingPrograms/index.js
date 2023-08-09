@@ -5,6 +5,7 @@ import {
   createTrainingProgram,
   fetchListTrainingPrograms,
   deleteTrainingProgramContentByTPId,
+  fetchSearchListTrainingPrograms,
 } from '~/models/trainingPrograms.model';
 
 export const state = () => ({
@@ -20,6 +21,10 @@ export const mutations = {
 export const actions = {
   async getListTrainingPrograms({ commit }) {
     const trainingPrograms = await fetchListTrainingPrograms();
+    commit('SET_TRAINING_PROGRAMS', trainingPrograms);
+  },
+  async searchListTrainingPrograms({ commit }, payload) {
+    const trainingPrograms = await fetchSearchListTrainingPrograms(payload);
     commit('SET_TRAINING_PROGRAMS', trainingPrograms);
   },
   async createTrainingPrograms({ commit, state }, payload) {

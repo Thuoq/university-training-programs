@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { createRole, fetchListRoles } from '~/models/roles.model';
+import { createRole, fetchListRoles, fetchSearchListRoles } from '~/models/roles.model';
 
 export const state = () => ({
   roles: null,
@@ -14,6 +14,10 @@ export const mutations = {
 export const actions = {
   async getListRoles({ commit }) {
     const roles = await fetchListRoles();
+    commit('SET_ROLES', roles);
+  },
+  async searchListRoles({ commit }, payload) {
+    const roles = await fetchSearchListRoles(payload);
     commit('SET_ROLES', roles);
   },
   async createRoles({ commit, state }, payload) {

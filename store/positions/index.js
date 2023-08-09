@@ -1,5 +1,11 @@
 import { make } from 'vuex-pathify';
-import { updatePosition, createPosition, fetchListPositions, deletePositionById } from '~/models/positions.model';
+import {
+  updatePosition,
+  createPosition,
+  fetchListPositions,
+  deletePositionById,
+  fetchSearchListPositions,
+} from '~/models/positions.model';
 
 export const state = () => ({
   positions: null,
@@ -14,6 +20,10 @@ export const mutations = {
 export const actions = {
   async getListPositions({ commit }) {
     const positions = await fetchListPositions();
+    commit('SET_POSITIONS', positions);
+  },
+  async searchListPositions({ commit }, payload) {
+    const positions = await fetchSearchListPositions(payload);
     commit('SET_POSITIONS', positions);
   },
   async createPositions({ commit, state }, payload) {
