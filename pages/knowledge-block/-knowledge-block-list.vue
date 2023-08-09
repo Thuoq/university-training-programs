@@ -63,6 +63,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .knowledge-block-list {
+  --mdc-dialog-min-width: 650px;
   border-collapse: collapse;
   padding: 12px 50px 12px 50px;
   font-size: 16px;

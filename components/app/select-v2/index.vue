@@ -16,6 +16,7 @@
         outlined
         class="app-select"
         :value="value"
+        v-bind="$attrs"
         :fixedMenuPosition="fixedMenu"
         @selected="onSelected"
         @opened="$emit('opened', $event)"

@@ -2,36 +2,50 @@
   <div class="knowledge-block-dialog">
     <h2 class="title">{{ title }}</h2>
     <form class="formgroup" @submit.prevent="onSubmit">
-      <div class="row">
-        <label for="parent" class="label">Khối kiến thức cha</label>
-        <app-select
-          id="parent"
-          v-model="knowledgeParentId"
-          :value-prop="'id'"
-          :label-prop="'name'"
-          :model-value="knowledgeParentId"
-          :items="knowledgeBlocks || []"
-          class="input -select"
-        ></app-select>
-      </div>
-      <div class="row">
-        <label for="code" class="label">Mã Khối kiến thức <span class="required">*</span></label>
-        <app-input id="code" v-model.trim="$v.code.$model" class="input" required></app-input>
-      </div>
-      <div v-if="$v.code.$error && !$v.code.required" class="error">Mã Khối kiến thức required</div>
-      <div v-if="!$v.code.minLength" class="error">
-        Mã Khối kiến ít nhất phải có {{ $v.code.$params.minLength.min }}
-      </div>
+      <app-select-v2
+        id="parent"
+        v-model="knowledgeParentId"
+        value-prop="id"
+        label-prop="name"
+        class="row"
+        label="Khối kiến thức cha"
+        :model-value="knowledgeParentId"
+        :items="knowledgeBlocks || []"
+      >
+      </app-select-v2>
 
-      <div class="row">
-        <label for="name" class="label">Tên Khối kiến thức <span class="required">*</span></label>
-        <app-input id="name" v-model="$v.name.$model" required class="input"></app-input>
-      </div>
-      <div v-if="$v.name.$error && !$v.name.required" class="error">Tên Khối kiến thức required</div>
+      <app-input-v2
+        v-model="code"
+        label="Mã Khối kiến thức"
+        required
+        class="row"
+        :error="$v.code.$error"
+        :error-messages="$validationError.code"
+        @input="$v.code.$touch()"
+        @blur="$v.code.$touch()"
+      >
+      </app-input-v2>
+
+      <app-input-v2
+        v-model="name"
+        label="Tên Khối kiến thức"
+        required
+        class="row"
+        :error="$v.name.$error"
+        :error-messages="$validationError.name"
+        @input="$v.name.$touch()"
+        @blur="$v.name.$touch()"
+      >
+      </app-input-v2>
     </form>
     <div class="footer">
-      <app-button raised class="btn -delete" @click="onClosed">Huỷ</app-button>
-      <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      <div class="cancel">
+        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+      </div>
+      <div class="submit">
+        <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
+        <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+      </div>
     </div>
   </div>
 </template>
@@ -43,9 +57,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    isEdit: {
-      type: Boolean,
-    },
     currentKnowledgeBlock: {
       type: Array,
       default: () => [],
@@ -53,11 +64,18 @@ export default {
   },
   data() {
     return {
-      title: !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa',
       code: this.currentKnowledgeBlock[0]?.code || '',
-      knowledgeParentId: this.currentKnowledgeBlock[0]?.knowledgeParentId ||  0,
+      knowledgeParentId: this.currentKnowledgeBlock[0]?.knowledgeParentId || 0,
       name: this.currentKnowledgeBlock[0]?.name || '',
     };
+  },
+  computed: {
+    isEdit() {
+      return !!this.currentKnowledgeBlock[0];
+    },
+    title() {
+      return !this.isEdit ? 'Thêm mới' : 'Chỉnh sửa';
+    },
   },
   validations: {
     code: {
@@ -66,6 +84,15 @@ export default {
     },
     name: {
       required,
+    },
+  },
+  errorTextValidator: {
+    code: {
+      required: 'Mã Khối kiến thức không được để trống',
+      minLength: 'Mã Khối kiến thức phải có tối thiểu từ 4 kí tự trở lên!',
+    },
+    name: {
+      required: 'Tên Khối kiến không được để trống!',
     },
   },
   methods: {
@@ -78,7 +105,7 @@ export default {
         knowledgeParentId: this.knowledgeParentId,
         name: this.name,
       };
-      if(this.isEdit === true){
+      if (this.isEdit) {
         knowledgeBlock.id = this.currentKnowledgeBlock[0].id;
       }
       const payload = knowledgeBlock;
@@ -88,54 +115,56 @@ export default {
       this.$emit('submit', payload);
       this.$emit('closed');
     },
+    onDelete() {
+      this.$emit('delete', this.currentKnowledgeBlock[0].id);
+      this.$emit('closed');
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .knowledge-block-dialog {
   > .title {
-    color: var(--color-back);
-    font-size: 24px;
-    background-color: var(--color-gray-base);
+    margin: -19px -24px 0px -24px;
+    padding-top: 13px;
+    padding-bottom: 10px;
+    height: 27px;
     text-align: center;
-    padding: 13px 0;
+    font-size: 17px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    line-height: 21px;
+    color: var(--color-back);
+    background: #ebebeb;
+    border-bottom: 1px solid var(--color-back);
   }
   > .footer {
     display: flex;
-    justify-content: space-around;
-  }
-  > .footer > .btn {
-    &.-save {
-      --mdc-theme-primary: var(--color-primary);
-    }
-    &.-delete {
-      --mdc-theme-primary: var(--color-gray-base);
-      --mdc-theme-on-primary: var(--color-back);
-    }
+    justify-content: space-between;
+    align-items: center;
   }
 }
 .knowledge-block-dialog > .formgroup {
   padding: 13px 38px;
   --mdc-theme-primary: var(--color-primary);
-  > .error {
-    color: red;
-  }
-
   > .row {
     margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
   }
-  > .row > .label {
-    color: var(--color-back);
+}
+
+.app-button {
+  &.-save {
+    --mdc-theme-primary: var(--color-primary);
   }
-  > .row > .label > .required {
-    color: red;
+  &.-close {
+    --mdc-theme-primary: var(--color-gray-base);
+    --mdc-theme-on-primary: var(--color-back);
   }
-  > .row > .input {
-    width: 60%;
+  &.-delete {
+    --mdc-theme-primary: var(--color-error);
+    --mdc-theme-on-primary: var(--color-white);
   }
 }
 </style>

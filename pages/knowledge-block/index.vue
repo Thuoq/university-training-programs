@@ -2,6 +2,7 @@
   <div class="knowledge-block-page">
     <layout-title :title="title"></layout-title>
     <add-knowledge-block class="add-knowledge-block"></add-knowledge-block>
+
     <knowledge-block-list
       :knowledge-block-list="formatKnowledgeBlocks"
       class="knowledge-block-list"
@@ -27,6 +28,9 @@ import { pathified } from '~/utils';
 const knowledgeBlockStore = pathified('knowledge-block');
 export default {
   components: { KnowledgeBlockList, AddKnowledgeBlock, KnowledgeBlockDialog },
+  async asyncData() {
+    await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
+  },
   data() {
     return {
       title: 'Khối kiến thức',
@@ -52,9 +56,6 @@ export default {
         return state;
       });
     },
-  },
-  async asyncData() {
-    await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
   },
   methods: {
     async openDialog(val) {
