@@ -1,6 +1,6 @@
 import { apis } from '~/apis';
 
-export const fetchListSubjects = () => apis.universityAPI.get('subjects').json();
+export const fetchListSubjects = (q = '') => apis.universityAPI.get(`subjects?${q}`).json();
 
 export const createSubject = (payload) =>
   apis.universityAPI

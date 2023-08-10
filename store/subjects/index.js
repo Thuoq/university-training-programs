@@ -12,8 +12,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListSubjects({ commit }) {
-    const subjects = await fetchListSubjects();
+  async getListSubjects({ commit }, query = {}) {
+    const search = new URLSearchParams(query);
+    const subjects = await fetchListSubjects(search.toString());
     commit('SET_SUBJECTS', subjects);
   },
   async createSubjects({ commit, state }, payload) {

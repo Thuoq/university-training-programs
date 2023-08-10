@@ -19,8 +19,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListTrainingPrograms({ commit }) {
-    const trainingPrograms = await fetchListTrainingPrograms();
+  async getListTrainingPrograms({ commit }, query = {}) {
+    const search = new URLSearchParams(query || {});
+    const trainingPrograms = await fetchListTrainingPrograms(search.toString());
     commit('SET_TRAINING_PROGRAMS', trainingPrograms);
   },
   async createTrainingPrograms({ commit, state }, payload) {

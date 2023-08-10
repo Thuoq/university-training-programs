@@ -1,6 +1,6 @@
 import { apis } from '~/apis';
 
-export const fetchListPositions = () => apis.universityAPI.get('positions').json();
+export const fetchListPositions = (q = '') => apis.universityAPI.get(`positions?${q}`).json();
 
 export const createPosition = (payload) =>
   apis.universityAPI

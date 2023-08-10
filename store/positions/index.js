@@ -12,8 +12,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListPositions({ commit }) {
-    const positions = await fetchListPositions();
+  async getListPositions({ commit }, query = {}) {
+    const search = new URLSearchParams(query || {});
+    const positions = await fetchListPositions(search.toString());
     commit('SET_POSITIONS', positions);
   },
   async createPositions({ commit, state }, payload) {

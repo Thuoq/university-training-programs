@@ -22,7 +22,7 @@
           <td class="cell">{{ subject.coefficient }}</td>
           <td class="cell">{{ subject.numberOfTeachingHours }}</td>
           <td class="cell">
-            <span v-for="x in subject.prerequisiteSubjects" :key="x.id">{{ x.code }} </span>
+            <span>{{ subject.prerequisiteSubjects?.map((pre) => pre?.code)?.join(',') || '' }} </span>
           </td>
           <td class="cell">{{ subject.numberPrerequisiteCredits === 0 ? null : subject.numberPrerequisiteCredits }}</td>
         </tr>
