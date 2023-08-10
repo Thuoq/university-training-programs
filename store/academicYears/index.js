@@ -17,8 +17,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListAcademicYears({ commit }) {
-    const academicYears = await fetchListAcademicYears();
+  async getListAcademicYears({ commit }, query = {}) {
+    const searchParams = new URLSearchParams(query);
+    const academicYears = await fetchListAcademicYears(searchParams.toString());
     commit('SET_ACADEMIC_YEARS', academicYears);
   },
   async createAcademicYears({ commit, state }, payload) {

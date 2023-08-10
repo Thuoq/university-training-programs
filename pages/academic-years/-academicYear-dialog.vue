@@ -51,7 +51,14 @@
 
     <div class="footer">
       <div class="cancel">
-        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+        <app-button
+          v-if="isEdit"
+          :disabled="!currentAcademicYear.canDelete"
+          raised
+          class="btn -delete"
+          @click="onDelete"
+          >Xoá</app-button
+        >
       </div>
       <div class="submit">
         <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
