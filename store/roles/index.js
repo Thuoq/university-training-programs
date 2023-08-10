@@ -12,8 +12,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListRoles({ commit }) {
-    const roles = await fetchListRoles();
+  async getListRoles({ commit }, query = {}) {
+    const search = new URLSearchParams(query || {});
+    const roles = await fetchListRoles(search.toString());
     commit('SET_ROLES', roles);
   },
   async createRoles({ commit, state }, payload) {

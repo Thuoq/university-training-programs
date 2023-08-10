@@ -1,5 +1,10 @@
 import { make } from 'vuex-pathify';
-import { updateKnowledgeBlock, createKnowledgeBlock, fetchListKnowledgeBlock } from '~/models/knowledge-block.model';
+import {
+  updateKnowledgeBlock,
+  createKnowledgeBlock,
+  fetchListKnowledgeBlock,
+  deleteKnowledgeBlockById,
+} from '~/models/knowledge-block.model';
 
 export const state = () => ({
   knowledgeBlocks: null,
@@ -21,5 +26,8 @@ export const actions = {
   },
   async updateKnowLedgeBlock({ commit }, payload) {
     await updateKnowledgeBlock(payload);
+  },
+  async deleteKnowLedgeBlock({ commit }, payload) {
+    await deleteKnowledgeBlockById(payload);
   },
 };

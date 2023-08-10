@@ -40,7 +40,14 @@
     </form>
     <div class="footer">
       <div class="cancel">
-        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+        <app-button
+          v-if="isEdit"
+          :disabled="!currentKnowledgeBlock[0]?.canDelete"
+          raised
+          class="btn -delete"
+          @click="onDelete"
+          >Xoá</app-button
+        >
       </div>
       <div class="submit">
         <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
@@ -116,7 +123,7 @@ export default {
       this.$emit('closed');
     },
     onDelete() {
-      this.$emit('delete', this.currentKnowledgeBlock[0].id);
+      this.$emit('delete', { id: this.currentKnowledgeBlock[0].id });
       this.$emit('closed');
     },
   },

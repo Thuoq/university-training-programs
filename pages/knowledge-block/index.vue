@@ -15,6 +15,7 @@
         :knowledge-blocks="dataKnowledgeBlocks"
         @closed="closeDialog"
         @submit="onSubmit"
+        @delete="onDelete"
       ></knowledge-block-dialog>
     </app-dialog>
   </div>
@@ -70,6 +71,11 @@ export default {
       await knowledgeBlockStore.$dispatch('updateKnowLedgeBlock', payload);
       await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
       this.visibleDialog = false;
+    },
+    async onDelete(payload) {
+      await knowledgeBlockStore.$dispatch('deleteKnowLedgeBlock', payload);
+
+      await knowledgeBlockStore.$dispatch('getListKnowLedgeBlock');
     },
   },
 };

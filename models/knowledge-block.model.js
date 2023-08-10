@@ -13,7 +13,9 @@ export const updateKnowledgeBlock = (payload) =>
       json: {
         name: payload.name,
         code: payload.code,
-        knowledgeParentId: !payload.knowledgeParentId ? null : payload.knowledgeParentId
+        knowledgeParentId: !payload.knowledgeParentId ? null : payload.knowledgeParentId,
       },
     })
     .json();
+
+export const deleteKnowledgeBlockById = (payload) => apis.universityAPI.delete(`knowledge-block/${payload.id}`).json();
