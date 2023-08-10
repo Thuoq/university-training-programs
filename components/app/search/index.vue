@@ -1,14 +1,22 @@
 <template>
-  <div class="search-bar">
+  <div class="search-bar app-search">
     <div class="search-input-wrapper">
-      <input v-model="searchQuery" type="text" :placeholder="placeholder" class="search-input" />
+      <input
+        v-model="searchQuery"
+        type="text"
+        :placeholder="placeholder"
+        class="search-input"
+        @input="debouncedSearch"
+      />
       <mwc-icon class="material-icons search-icon">search</mwc-icon>
     </div>
   </div>
 </template>
 
 <script>
+import { debounce } from 'lodash';
 export default {
+  name: 'AppSearch',
   props: {
     placeholder: {
       type: String,
@@ -20,10 +28,12 @@ export default {
       searchQuery: '',
     };
   },
-  watch: {
-    searchQuery(val) {
-      this.$emit('search', val);
-    },
+
+  methods: {
+    debouncedSearch: debounce(function () {
+      // Your search logic here, e.g., API call
+      this.$emit('search', this.searchQuery);
+    }, 500), // Adjust the debounce delay (in milliseconds) as needed
   },
 };
 </script>

@@ -12,8 +12,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListFaculties({ commit }) {
-    const faculties = await fetchListFaculties();
+  async getListFaculties({ commit }, searchParams = {}) {
+    const search = new URLSearchParams(searchParams);
+    const faculties = await fetchListFaculties(search.toString());
     commit('SET_FACULTIES', faculties);
   },
   async createFaculties({ commit, state }, payload) {

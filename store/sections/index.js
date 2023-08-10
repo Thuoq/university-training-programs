@@ -12,8 +12,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListSections({ commit }) {
-    const sections = await fetchListSections();
+  async getListSections({ commit }, query = {}) {
+    const search = new URLSearchParams(query);
+    const sections = await fetchListSections(search.toString());
     commit('SET_SECTIONS', sections);
   },
   async createSections({ commit, state }, payload) {

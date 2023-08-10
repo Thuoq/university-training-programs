@@ -28,11 +28,13 @@
     </div>
     <div class="footer">
       <div class="cancel">
-        <app-button v-if="isEdit" raised class="btn -delete" @click="onDelete">Xoá</app-button>
+        <app-button v-if="isEdit" :disabled="!currentFaculty.canDelete" raised class="btn -delete" @click="onDelete"
+          >Xoá</app-button
+        >
       </div>
       <div class="submit">
         <app-button raised class="btn -close" @click="onClosed">Huỷ</app-button>
-        <app-button raised class="btn -save" :disabled="$v.$invalid" @click="onSubmit">Lưu</app-button>
+        <app-button :disabled="$v.$invalid" raised class="btn -save" @click="onSubmit">Lưu</app-button>
       </div>
     </div>
   </div>

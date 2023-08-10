@@ -43,8 +43,7 @@
 
 <script>
 export default {
-  name: 'AppSelect',
-
+  name: 'AppSelectV2',
   props: {
     value: {
       type: [String, Number],
