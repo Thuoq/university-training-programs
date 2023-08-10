@@ -33,7 +33,7 @@ export default {
     debouncedSearch: debounce(function () {
       // Your search logic here, e.g., API call
       this.$emit('search', this.searchQuery);
-    }, 500), // Adjust the debounce delay (in milliseconds) as needed
+    }, 300), // Adjust the debounce delay (in milliseconds) as needed
   },
 };
 </script>

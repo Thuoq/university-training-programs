@@ -12,8 +12,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListMajors({ commit }) {
-    const majors = await fetchListMajors();
+  async getListMajors({ commit }, query = {}) {
+    const search = new URLSearchParams(query);
+    const majors = await fetchListMajors(search.toString());
     commit('SET_MAJORS', majors);
   },
   async createMajors({ commit, state }, payload) {

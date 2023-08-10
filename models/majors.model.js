@@ -1,5 +1,5 @@
 import { apis } from '~/apis';
-export const fetchListMajors = () => apis.universityAPI.get('majors').json();
+export const fetchListMajors = (q = '') => apis.universityAPI.get(`majors?${q}`).json();
 export const createMajor = (payload) =>
   apis.universityAPI
     .post('majors', {
