@@ -98,6 +98,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  --mdc-typography-subtitle1-font-size: 14px;
   &.-error {
     --mdc-theme-error: var(--color-error);
     --mdc-text-field-outlined-idle-border-color: var(--color-error);

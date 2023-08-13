@@ -32,7 +32,7 @@
         :error="$v.startYear.$error"
         :error-messages="$validationError.startYear"
         class="inputgroup"
-        label="Tên Năm bắt đầu"
+        label="Năm bắt đầu"
         @input="$v.startYear.$touch()"
         @blur="$v.startYear.$touch()"
       ></app-input-v2>

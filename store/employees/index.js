@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import {updateEmployee,createEmployee,fetchListEmployees } from '~/models/employees.model';
+import { updateEmployee, createEmployee, fetchListEmployees } from '~/models/employees.model';
 
 export const state = () => ({
   employees: null,
@@ -12,8 +12,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async getListEmployees({ commit }) {
-    const employees = await fetchListEmployees();
+  async getListEmployees({ commit }, searchParams = {}) {
+    const search = new URLSearchParams(searchParams);
+    const employees = await fetchListEmployees(search.toString());
     commit('SET_EMPLOYEES', employees);
   },
   async createEmployees({ commit, state }, payload) {

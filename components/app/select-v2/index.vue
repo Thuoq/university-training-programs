@@ -188,6 +188,7 @@ export default {
   align-items: center;
 }
 .app-select-v2 > .wrapper > .app-select {
+  --mdc-typography-subtitle1-font-size: 14px;
   > .item {
     padding: 0 10px;
 

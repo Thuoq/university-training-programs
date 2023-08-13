@@ -1,6 +1,6 @@
 import { apis } from '~/apis';
 
-export const fetchListEmployees = () => apis.universityAPI.get('employees').json();
+export const fetchListEmployees = (q = '') => apis.universityAPI.get(`employees?${q}`).json();
 export const createEmployee = (payload) =>
   apis.universityAPI
     .post('employees', {
@@ -17,7 +17,7 @@ export const updateEmployee = (payload) =>
         employeeCode: payload.employeeCode,
         password: payload.password,
         facultyId: payload.facultyId,
-        positionId: payload.positionId,
+        positionIds: payload.positionIds,
         roleId: payload.roleId,
         sectionId: payload.sectionId,
       },

@@ -33,16 +33,7 @@
         </tr>
       </tbody>
       <app-dialog :visible="visibleDialog" @closed="closeDialog">
-        <employee-dialog
-          :roles="roles"
-          :faculties="faculties"
-          :positions="positions"
-          :is-edit="isEdit"
-          :current-employee="currentEmployee"
-          :sections="sections"
-          @closed="closeDialog"
-          @submit="onSubmit"
-        ></employee-dialog>
+        <employee-dialog :current-employee="currentEmployee" @closed="closeDialog" @submit="onSubmit"></employee-dialog>
       </app-dialog>
     </table>
   </div>
@@ -50,10 +41,6 @@
 <script>
 import EmployeeDialog from './-employee-dialog.vue';
 import { pathified } from '~/utils';
-import { fetchListRoles } from '~/models/roles.model';
-import { fetchListPositions } from '~/models/positions.model';
-import { getListFaculties } from '~/models/faculties.model';
-import { fetchListSections } from '~/models/sections.model';
 const employeesStore = pathified('employees');
 export default {
   components: {
@@ -62,22 +49,13 @@ export default {
   data() {
     return {
       visibleDialog: false,
-      isEdit: true,
       currentEmployee: null,
-      roles: null,
-      faculties: null,
-      positions: null,
-      sections: null,
     };
   },
   computed: {
     employees: employeesStore.$get('employees'),
   },
   async created() {
-    this.roles = await fetchListRoles();
-    this.faculties = await getListFaculties();
-    this.positions = await fetchListPositions();
-    this.sections = await fetchListSections();
     await employeesStore.$dispatch('getListEmployees');
   },
   methods: {
@@ -105,7 +83,7 @@ export default {
     font-size: 16px;
     width: 100%;
   }
-  --mdc-dialog-min-width: 838px;
+  --mdc-dialog-min-width: 900px;
   --mdc-dialog-max-height: 800px;
   --mdc-shape-medium: 15px;
 }

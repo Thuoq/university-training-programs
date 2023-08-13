@@ -173,7 +173,7 @@ export default {
       }
     },
     onChange(faculty) {
-      if (this.sectionId) {
+      if (this.sectionId && this.sections.length) {
         let findIndex = null;
         this.sections.forEach((e) => {
           if (e.id === this.sectionId) {

@@ -9,7 +9,7 @@
         type="text"
         required
         class="inputgroup"
-        label="Mã Khoa"
+        label="Mã Nhóm người dùng"
         @input="$v.code.$touch()"
         @blur="$v.code.$touch()"
       ></app-input-v2>
@@ -21,7 +21,7 @@
         :error="$v.name.$error"
         :error-messages="$validationError.name"
         class="inputgroup"
-        label="Tên Khoa"
+        label="Tên Nhóm người dùng"
         @input="$v.name.$touch()"
         @blur="$v.name.$touch()"
       ></app-input-v2>
